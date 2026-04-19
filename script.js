@@ -9,18 +9,45 @@ const calculateBtn = document.getElementById('calculateBtn');
 const resetBtn = document.getElementById('resetBtn');
 
 // =========================
-// Feet ↔ Metres Calculators
+// Calculator Page Config
+// Uses current file names only
+// No HTML structure changes needed
 // =========================
-if (feetInput && decimalsSelect && resultOutput && calculateBtn && resetBtn) {
+const pathParts = window.location.pathname.split('/');
+const lastPart = pathParts[pathParts.length - 1];
+const currentPage = lastPart && lastPart.includes('.html') ? lastPart : 'index.html';
 
-  function calculateConversion() {
-    const decimals = parseInt(decimalsSelect.value, 10);
+const calculatorConfigs = {
+  'feet-to-metres.html': {
+    calculate: function () {
+      const decimals = parseInt(decimalsSelect.value, 10);
 
-    // =========================
-    // METRES → FEET + INCHES
-    // =========================
-    if (document.title.includes("Metres to Feet")) {
+      const feetValue = parseFloat(feetInput.value);
+      const inchesValue = inchesInput ? parseFloat(inchesInput.value || '0') : 0;
 
+      if (isNaN(feetValue) && isNaN(inchesValue)) {
+        resultOutput.textContent = 'Please enter feet and/or inches';
+        return;
+      }
+
+      const safeFeet = isNaN(feetValue) ? 0 : feetValue;
+      const safeInches = isNaN(inchesValue) ? 0 : inchesValue;
+
+      const extraFeet = Math.floor(safeInches / 12);
+      const remainingInches = parseFloat((safeInches % 12).toFixed(decimals));
+      const finalFeet = safeFeet + extraFeet;
+
+      const totalFeet = finalFeet + (remainingInches / 12);
+      const metres = totalFeet * 0.3048;
+
+      resultOutput.textContent =
+        finalFeet + "'" + remainingInches + '" = ' + metres.toFixed(decimals) + ' m';
+    }
+  },
+
+  'metres-to-feet.html': {
+    calculate: function () {
+      const decimals = parseInt(decimalsSelect.value, 10);
       const metresValue = parseFloat(feetInput.value);
 
       if (isNaN(metresValue)) {
@@ -35,7 +62,6 @@ if (feetInput && decimalsSelect && resultOutput && calculateBtn && resetBtn) {
 
       inches = parseFloat(inches.toFixed(decimals));
 
-      // Handle rounding overflow (e.g. 11.99 → 12)
       if (inches >= 12) {
         feet += 1;
         inches = 0;
@@ -44,55 +70,107 @@ if (feetInput && decimalsSelect && resultOutput && calculateBtn && resetBtn) {
       resultOutput.textContent =
         metresValue + ' m = ' + feet + "'" + inches + '"';
     }
+  },
 
-    // =========================
-    // FEET + INCHES → METRES
-    // =========================
-    else {
+  'cm-to-inches.html': {
+    calculate: function () {
+      const decimals = parseInt(decimalsSelect.value, 10);
+      const cmValue = parseFloat(feetInput.value);
 
-      const feetValue = parseFloat(feetInput.value);
-      const inchesValue = inchesInput ? parseFloat(inchesInput.value || '0') : 0;
-
-      if (isNaN(feetValue) && isNaN(inchesValue)) {
-        resultOutput.textContent = 'Please enter feet and/or inches';
+      if (isNaN(cmValue)) {
+        resultOutput.textContent = 'Please enter a valid number';
         return;
       }
 
-      const safeFeet = isNaN(feetValue) ? 0 : feetValue;
-      const safeInches = isNaN(inchesValue) ? 0 : inchesValue;
-
-      // Handle inches overflow (e.g. 12 inches → +1 foot)
-      const extraFeet = Math.floor(safeInches / 12);
-      const remainingInches = safeInches % 12;
-      const finalFeet = safeFeet + extraFeet;
-
-      const totalFeet = finalFeet + (remainingInches / 12);
-      const metres = totalFeet * 0.3048;
+      const inches = cmValue / 2.54;
 
       resultOutput.textContent =
-        finalFeet + "'" + remainingInches + '" = ' + metres.toFixed(decimals) + ' m';
+        cmValue + ' cm = ' + inches.toFixed(decimals) + ' inches';
+    }
+  },
+
+  'inches-to-cm.html': {
+    calculate: function () {
+      const decimals = parseInt(decimalsSelect.value, 10);
+      const inchesValue = parseFloat(feetInput.value);
+
+      if (isNaN(inchesValue)) {
+        resultOutput.textContent = 'Please enter a valid number';
+        return;
+      }
+
+      const cm = inchesValue * 2.54;
+
+      resultOutput.textContent =
+        inchesValue + ' inches = ' + cm.toFixed(decimals) + ' cm';
+    }
+  },
+
+  'kg-to-lb.html': {
+    calculate: function () {
+      const decimals = parseInt(decimalsSelect.value, 10);
+      const kgValue = parseFloat(feetInput.value);
+
+      if (isNaN(kgValue)) {
+        resultOutput.textContent = 'Please enter a valid number';
+        return;
+      }
+
+      const lb = kgValue * 2.2046226218;
+
+      resultOutput.textContent =
+        kgValue + ' kg = ' + lb.toFixed(decimals) + ' lb';
+    }
+  },
+
+  'lb-to-kg.html': {
+    calculate: function () {
+      const decimals = parseInt(decimalsSelect.value, 10);
+      const lbValue = parseFloat(feetInput.value);
+
+      if (isNaN(lbValue)) {
+        resultOutput.textContent = 'Please enter a valid number';
+        return;
+      }
+
+      const kg = lbValue / 2.2046226218;
+
+      resultOutput.textContent =
+        lbValue + ' lb = ' + kg.toFixed(decimals) + ' kg';
     }
   }
+};
 
-  function resetCalculator() {
-    feetInput.value = '';
-    if (inchesInput) inchesInput.value = '';
-    decimalsSelect.value = '3';
-    resultOutput.textContent = 'Enter a value to begin';
-    feetInput.focus();
-  }
+// =========================
+// Shared Reset Function
+// =========================
+function resetCalculator() {
+  if (feetInput) feetInput.value = '';
+  if (inchesInput) inchesInput.value = '';
+  if (decimalsSelect) decimalsSelect.value = '3';
+  if (resultOutput) resultOutput.textContent = 'Enter a value to begin';
+  if (feetInput) feetInput.focus();
+}
 
-  calculateBtn.addEventListener('click', calculateConversion);
-  resetBtn.addEventListener('click', resetCalculator);
+// =========================
+// Shared Calculator Setup
+// =========================
+if (feetInput && decimalsSelect && resultOutput && calculateBtn && resetBtn) {
+  const activeCalculator = calculatorConfigs[currentPage];
 
-  feetInput.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') calculateConversion();
-  });
+  if (activeCalculator) {
+    calculateBtn.addEventListener('click', activeCalculator.calculate);
+    resetBtn.addEventListener('click', resetCalculator);
 
-  if (inchesInput) {
-    inchesInput.addEventListener('keydown', function (event) {
-      if (event.key === 'Enter') calculateConversion();
+    feetInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') activeCalculator.calculate();
     });
+
+    if (inchesInput) {
+      inchesInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') activeCalculator.calculate();
+      });
+    }
   }
 }
 
