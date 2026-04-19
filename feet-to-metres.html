@@ -42,23 +42,28 @@
       <div>
         <section class="calculator-card" id="calculator">
           <h2>Feet to Metres Calculator</h2>
-          <p>Enter a value in feet and get the result in metres instantly.</p>
+          <p>Enter feet and inches to convert the measurement into metres instantly.</p>
 
-          <div class="form-grid">
-            <div class="field">
-              <label for="feet">Feet</label>
-              <input type="number" id="feet" placeholder="Example: 10" step="any">
-            </div>
+        <div class="form-grid">
+  <div class="field">
+    <label for="feet">Feet</label>
+    <input type="number" id="feet" placeholder="Example: 6" step="1" min="0">
+  </div>
 
-            <div class="field">
-              <label for="decimals">Decimal places</label>
-              <select id="decimals">
-                <option value="2">2 decimal places</option>
-                <option value="3" selected>3 decimal places</option>
-                <option value="4">4 decimal places</option>
-              </select>
-            </div>
-          </div>
+  <div class="field">
+    <label for="inches">Inches</label>
+    <input type="number" id="inches" placeholder="Example: 0" step="any" min="0">
+  </div>
+
+  <div class="field">
+    <label for="decimals">Decimal places</label>
+    <select id="decimals">
+      <option value="2">2 decimal places</option>
+      <option value="3" selected>3 decimal places</option>
+      <option value="4">4 decimal places</option>
+    </select>
+  </div>
+</div>
 
           <div class="button-row">
             <button class="calc-btn calc-btn-primary" id="calculateBtn">Calculate</button>
