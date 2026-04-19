@@ -13,9 +13,9 @@ const resetBtn = document.getElementById('resetBtn');
 // Uses current file names only
 // No HTML structure changes needed
 // =========================
-const pathParts = window.location.pathname.split('/');
-const lastPart = pathParts[pathParts.length - 1];
-const currentPage = lastPart && lastPart.includes('.html') ? lastPart : 'index.html';
+const pathParts = window.location.pathname.split('/').filter(Boolean);
+const lastPart = pathParts[pathParts.length - 1] || 'index.html';
+const currentPage = lastPart.endsWith('.html') ? lastPart : lastPart + '.html';
 
 const calculatorConfigs = {
   'feet-to-metres.html': {
