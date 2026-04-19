@@ -1,51 +1,116 @@
+// =========================
+// Shared Inputs
+// =========================
 const feetInput = document.getElementById('feet');
+const inchesInput = document.getElementById('inches');
 const decimalsSelect = document.getElementById('decimals');
 const resultOutput = document.getElementById('result');
 const calculateBtn = document.getElementById('calculateBtn');
 const resetBtn = document.getElementById('resetBtn');
 
+// =========================
+// Feet ↔ Metres Calculators
+// =========================
 if (feetInput && decimalsSelect && resultOutput && calculateBtn && resetBtn) {
-  function calculateFeetToMetres() {
-    const feet = parseFloat(feetInput.value);
+
+  function calculateConversion() {
     const decimals = parseInt(decimalsSelect.value, 10);
 
-    if (isNaN(feet)) {
-      resultOutput.textContent = 'Please enter a valid number';
-      return;
+    // =========================
+    // METRES → FEET + INCHES
+    // =========================
+    if (document.title.includes("Metres to Feet")) {
+
+      const metresValue = parseFloat(feetInput.value);
+
+      if (isNaN(metresValue)) {
+        resultOutput.textContent = 'Please enter a valid number';
+        return;
+      }
+
+      const totalFeet = metresValue * 3.28084;
+
+      let feet = Math.floor(totalFeet);
+      let inches = (totalFeet - feet) * 12;
+
+      inches = parseFloat(inches.toFixed(decimals));
+
+      // Handle rounding overflow (e.g. 11.99 → 12)
+      if (inches >= 12) {
+        feet += 1;
+        inches = 0;
+      }
+
+      resultOutput.textContent =
+        metresValue + ' m = ' + feet + "'" + inches + '"';
     }
 
-    const metres = feet * 0.3048;
-    resultOutput.textContent = feet + ' ft = ' + metres.toFixed(decimals) + ' m';
+    // =========================
+    // FEET + INCHES → METRES
+    // =========================
+    else {
+
+      const feetValue = parseFloat(feetInput.value);
+      const inchesValue = inchesInput ? parseFloat(inchesInput.value || '0') : 0;
+
+      if (isNaN(feetValue) && isNaN(inchesValue)) {
+        resultOutput.textContent = 'Please enter feet and/or inches';
+        return;
+      }
+
+      const safeFeet = isNaN(feetValue) ? 0 : feetValue;
+      const safeInches = isNaN(inchesValue) ? 0 : inchesValue;
+
+      // Handle inches overflow (e.g. 12 inches → +1 foot)
+      const extraFeet = Math.floor(safeInches / 12);
+      const remainingInches = safeInches % 12;
+      const finalFeet = safeFeet + extraFeet;
+
+      const totalFeet = finalFeet + (remainingInches / 12);
+      const metres = totalFeet * 0.3048;
+
+      resultOutput.textContent =
+        finalFeet + "'" + remainingInches + '" = ' + metres.toFixed(decimals) + ' m';
+    }
   }
 
   function resetCalculator() {
     feetInput.value = '';
+    if (inchesInput) inchesInput.value = '';
     decimalsSelect.value = '3';
     resultOutput.textContent = 'Enter a value to begin';
     feetInput.focus();
   }
 
-  calculateBtn.addEventListener('click', calculateFeetToMetres);
+  calculateBtn.addEventListener('click', calculateConversion);
   resetBtn.addEventListener('click', resetCalculator);
 
   feetInput.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
-      calculateFeetToMetres();
-    }
+    if (event.key === 'Enter') calculateConversion();
   });
+
+  if (inchesInput) {
+    inchesInput.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter') calculateConversion();
+    });
+  }
 }
 
+// =========================
+// Homepage Standard Calculator
+// =========================
 const mainCalcScreen = document.getElementById('mainCalcScreen');
 const mainCalcKeys = document.querySelectorAll('.calc-key');
 
 if (mainCalcScreen && mainCalcKeys.length) {
+
   let currentExpression = '';
 
-  function updateMainCalcScreen(value) {
+  function updateScreen(value) {
     mainCalcScreen.textContent = value || '0';
   }
 
-  function formatExpressionForDisplay(expression) {
+  function formatDisplay(expression) {
     return expression
       .replace(/\*/g, '×')
       .replace(/\//g, '÷')
@@ -56,9 +121,9 @@ if (mainCalcScreen && mainCalcKeys.length) {
     try {
       const safeExpression = expression.replace(/%/g, '/100');
       const result = Function('"use strict"; return (' + safeExpression + ')')();
-      if (result === undefined || Number.isNaN(result) || !Number.isFinite(result)) {
-        return 'Error';
-      }
+
+      if (!isFinite(result)) return 'Error';
+
       return Number(result.toFixed(10)).toString();
     } catch {
       return 'Error';
@@ -67,31 +132,32 @@ if (mainCalcScreen && mainCalcKeys.length) {
 
   mainCalcKeys.forEach((button) => {
     button.addEventListener('click', () => {
+
       const value = button.dataset.value;
       const action = button.dataset.action;
 
       if (action === 'clear') {
         currentExpression = '';
-        updateMainCalcScreen('0');
+        updateScreen('0');
         return;
       }
 
       if (action === 'backspace') {
         currentExpression = currentExpression.slice(0, -1);
-        updateMainCalcScreen(formatExpressionForDisplay(currentExpression) || '0');
+        updateScreen(formatDisplay(currentExpression) || '0');
         return;
       }
 
       if (action === 'equals') {
         const result = evaluateExpression(currentExpression);
         currentExpression = result === 'Error' ? '' : result;
-        updateMainCalcScreen(result);
+        updateScreen(result);
         return;
       }
 
       if (value) {
         currentExpression += value;
-        updateMainCalcScreen(formatExpressionForDisplay(currentExpression));
+        updateScreen(formatDisplay(currentExpression));
       }
     });
   });
