@@ -832,3 +832,53 @@ a:hover {
     font-size: 1.45rem;
   }
 }
+
+.eyebrow {
+  display: inline-block;
+  margin: 0 0 10px;
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.hero-highlights span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: #f8fbff;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.homepage-category-grid,
+.popular-link-grid {
+  margin-top: 16px;
+}
+
+#discovery-guide a {
+  color: var(--primary);
+}
+
+@media (max-width: 720px) {
+  .hero-highlights {
+    gap: 8px;
+  }
+
+  .hero-highlights span {
+    width: 100%;
+    justify-content: center;
+  }
+}
