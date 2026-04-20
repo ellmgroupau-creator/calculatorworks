@@ -15,7 +15,8 @@ const resetBtn = document.getElementById('resetBtn');
 // =========================
 const pathParts = window.location.pathname.split('/');
 const lastPart = pathParts[pathParts.length - 1];
-const currentPage = lastPart && lastPart.includes('.html') ? lastPart : 'index.html';
+const cleanLastPart = lastPart.split('?')[0].split('#')[0];
+const currentPage = cleanLastPart && cleanLastPart.includes('.html') ? cleanLastPart : 'index.html';
 
 const calculatorConfigs = {
   'feet-to-metres.html': {
