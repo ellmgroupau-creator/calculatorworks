@@ -13,10 +13,12 @@ const resetBtn = document.getElementById('resetBtn');
 // Uses current file names only
 // No HTML structure changes needed
 // =========================
+const calculatorSection = document.getElementById('calculator');
+const explicitCalculator = calculatorSection ? calculatorSection.getAttribute('data-calculator') : null;
 const pathParts = window.location.pathname.split('/');
 const lastPart = pathParts[pathParts.length - 1];
 const cleanLastPart = lastPart.split('?')[0].split('#')[0];
-const currentPage = cleanLastPart && cleanLastPart.includes('.html') ? cleanLastPart : 'index.html';
+const currentPage = explicitCalculator || (cleanLastPart && cleanLastPart.includes('.html') ? cleanLastPart : 'index.html');
 
 const calculatorConfigs = {
   'feet-to-metres.html': {
