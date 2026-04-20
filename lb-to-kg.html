@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LB to KG Calculator | CalculatorWorks</title>
+  <meta name="description" content="Convert pounds to kilograms instantly with CalculatorWorks. Includes formula, examples, and a simple conversion tool.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-wrap">
+        <img src="logo.png" alt="CalculatorWorks logo">
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="unit-conversion.html">Unit Conversion</a>
+        <a href="finance.html">Finance</a>
+        <a href="percentage.html">Percentage</a>
+        <a href="calculators.html">All Calculators</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <h1>LB to KG Calculator</h1>
+        <p>
+          Convert pounds to kilograms instantly with a simple calculator,
+          clear formula, and worked examples.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <div class="container content-grid">
+      <div>
+        <section class="calculator-card" id="calculator">
+          <h2>LB to KG Calculator</h2>
+          <p>Enter a value in pounds and get the result in kilograms instantly.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="feet">Pounds</label>
+              <input type="number" id="feet" placeholder="Example: 154" step="any" min="0">
+            </div>
+
+            <div class="field">
+              <label for="decimals">Decimal places</label>
+              <select id="decimals">
+                <option value="2">2 decimal places</option>
+                <option value="3" selected>3 decimal places</option>
+                <option value="4">4 decimal places</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="calc-btn calc-btn-primary" id="calculateBtn">Calculate</button>
+            <button class="calc-btn calc-btn-secondary" id="resetBtn">Reset</button>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Result</span>
+            <div class="result-value" id="result">Enter a value to begin</div>
+          </div>
+        </section>
+
+        <section class="section-card" id="formula">
+          <h2>Formula</h2>
+          <div class="formula-box">
+            <strong>kilograms = pounds ÷ 2.2046226218</strong>
+          </div>
+          <p>Example: 154 lb = 69.853 kg</p>
+        </section>
+
+        <section class="section-card" id="examples">
+          <h2>Worked examples</h2>
+          <div class="example-box">
+            <p><strong>100 lb</strong> = 45.359 kg</p>
+            <p><strong>154 lb</strong> = 69.853 kg</p>
+            <p><strong>220 lb</strong> = 99.790 kg</p>
+          </div>
+        </section>
+
+        <section class="section-card" id="related">
+          <h2>Related calculators</h2>
+          <div class="related-links">
+            <a href="unit-conversion.html">Unit Conversion Hub</a>
+            <a href="kg-to-lb.html">KG to LB Calculator</a>
+            <a href="cm-to-inches.html">CM to Inches Calculator</a>
+            <a href="inches-to-cm.html">Inches to CM Calculator</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>On this page</h3>
+          <ol class="toc">
+            <li><a href="#calculator">Calculator</a></li>
+            <li><a href="#formula">Formula</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#related">Related calculators</a></li>
+          </ol>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Ad area</h3>
+          <div class="ad-box">300 × 250 ad area</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>CalculatorWorks</strong>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
