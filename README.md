@@ -1,14 +1,18 @@
 # CalculatorWorks
 
-CalculatorWorks is a simple calculator website project.
+CalculatorWorks is a static calculator website package prepared for upload.
 
-Current version:
-- Branded homepage
-- Feet to metres calculator
-- Separate HTML, CSS, and JavaScript files
+Current package:
+- Full Site Upload - AdSense Readiness Pass
 
-Planned next:
-- More calculator pages
-- SEO improvements
-- AdSense integration
-- Cloudflare deployment
+This pass adds:
+- Stronger trust and compliance copy across home, about, contact, privacy, and terms pages
+- Consistent future ad-slot placeholders on hub and calculator pages
+- Clearer user-first positioning for monetisation readiness
+- Footer trust messaging and cleaner upload coherence
+
+Pre-upload checks completed:
+- Static HTML/CSS/JS only
+- Legal and contact pages linked site-wide
+- Ad placeholders labelled as future placements, not live ads
+- No framework or build-step changes required

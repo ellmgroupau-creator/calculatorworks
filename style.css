@@ -892,3 +892,69 @@ a:hover {
 .faq-list p {
   margin: 0 0 0.85rem;
 }
+
+
+.trust-note {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: #f8fbff;
+}
+
+.trust-note p:last-child,
+.ad-box p:last-child,
+.footer-note p:last-child {
+  margin-bottom: 0;
+}
+
+.compliance-list {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.ad-slot-label {
+  display: inline-block;
+  margin-bottom: 10px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #e8f4fb;
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ad-box strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.ad-box p {
+  margin: 0 0 8px;
+  max-width: 34ch;
+}
+
+.ad-box-adaptive {
+  min-height: 120px;
+}
+
+.ad-box-sidebar {
+  min-height: 220px;
+}
+
+.ad-box-inline {
+  min-height: 140px;
+}
+
+.sidebar-card-utility {
+  background: #f8fbff;
+}
+
+.footer-note {
+  margin-top: 14px;
+  color: var(--text-soft);
+  font-size: 14px;
+}
