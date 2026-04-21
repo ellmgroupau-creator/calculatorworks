@@ -20,6 +20,7 @@ const lastPart = pathParts[pathParts.length - 1];
 const cleanLastPart = lastPart.split('?')[0].split('#')[0];
 const currentPage = explicitCalculator || (cleanLastPart && cleanLastPart.includes('.html') ? cleanLastPart : 'index.html');
 
+
 const calculatorConfigs = {
   'feet-to-metres.html': {
     calculate: function () {
@@ -469,7 +470,7 @@ const calculatorConfigs = {
       var tipPercent = inchesInput ? parseFloat(inchesInput.value) : NaN;
       var people = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 1;
 
-      if (isNaN(billAmount) || isNaN(tipPercent) || billAmount < 0 || tipPercent < 0 || !people || people < 1) {
+      if (isNaN(billAmount) || isNaN(tipPercent) || billAmount < 0 || tipPercent < 0 || isNaN(people) || people < 1) {
         resultOutput.textContent = 'Please enter valid bill, tip, and split values';
         return;
       }
@@ -575,7 +576,7 @@ const calculatorConfigs = {
 function resetCalculator() {
   if (feetInput) feetInput.value = '';
   if (inchesInput) inchesInput.value = '';
-  if (decimalsSelect) decimalsSelect.value = '3';
+  if (decimalsSelect) decimalsSelect.selectedIndex = 0;
   if (resultOutput) resultOutput.textContent = 'Enter a value to begin';
   if (feetInput) feetInput.focus();
 }
