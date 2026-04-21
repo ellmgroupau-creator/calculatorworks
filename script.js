@@ -461,6 +461,111 @@ const calculatorConfigs = {
       resultOutput.textContent =
         'Average of ' + numbers.length + ' numbers = ' + average.toFixed(decimals);
     }
+  },
+
+  'tip-calculator.html': {
+    calculate: function () {
+      var billAmount = parseFloat(feetInput.value);
+      var tipPercent = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var people = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 1;
+
+      if (isNaN(billAmount) || isNaN(tipPercent) || billAmount < 0 || tipPercent < 0 || !people || people < 1) {
+        resultOutput.textContent = 'Please enter valid bill, tip, and split values';
+        return;
+      }
+
+      var tipAmount = billAmount * (tipPercent / 100);
+      var totalAmount = billAmount + tipAmount;
+      var perPerson = totalAmount / people;
+
+      resultOutput.textContent =
+        'Tip = ' + tipAmount.toFixed(2) + ', total = ' + totalAmount.toFixed(2) + ', per person = ' + perPerson.toFixed(2);
+    }
+  },
+
+  'simple-interest-calculator.html': {
+    calculate: function () {
+      var principal = parseFloat(feetInput.value);
+      var annualRate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var years = decimalsSelect ? parseFloat(decimalsSelect.value) : NaN;
+
+      if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal < 0 || annualRate < 0 || years < 0) {
+        resultOutput.textContent = 'Please enter valid principal, rate, and time values';
+        return;
+      }
+
+      var interest = principal * (annualRate / 100) * years;
+      var total = principal + interest;
+
+      resultOutput.textContent =
+        'Interest = ' + interest.toFixed(2) + ', final balance = ' + total.toFixed(2);
+    }
+  },
+
+  'compound-interest-calculator.html': {
+    calculate: function () {
+      var principal = parseFloat(feetInput.value);
+      var annualRate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var years = decimalsSelect ? parseFloat(decimalsSelect.value) : NaN;
+
+      if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal < 0 || annualRate < 0 || years < 0) {
+        resultOutput.textContent = 'Please enter valid principal, rate, and time values';
+        return;
+      }
+
+      var total = principal * Math.pow(1 + (annualRate / 100), years);
+      var interest = total - principal;
+
+      resultOutput.textContent =
+        'Interest = ' + interest.toFixed(2) + ', final balance = ' + total.toFixed(2);
+    }
+  },
+
+  'loan-repayment-calculator.html': {
+    calculate: function () {
+      var loanAmount = parseFloat(feetInput.value);
+      var annualRate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var years = decimalsSelect ? parseInt(decimalsSelect.value, 10) : NaN;
+
+      if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(years) || loanAmount <= 0 || annualRate < 0 || years <= 0) {
+        resultOutput.textContent = 'Please enter valid loan, rate, and term values';
+        return;
+      }
+
+      var monthlyRate = annualRate / 100 / 12;
+      var payments = years * 12;
+      var monthlyRepayment;
+
+      if (monthlyRate === 0) {
+        monthlyRepayment = loanAmount / payments;
+      } else {
+        monthlyRepayment = loanAmount * monthlyRate * Math.pow(1 + monthlyRate, payments) / (Math.pow(1 + monthlyRate, payments) - 1);
+      }
+
+      resultOutput.textContent =
+        'Estimated monthly repayment = ' + monthlyRepayment.toFixed(2);
+    }
+  },
+
+  'salary-calculator.html': {
+    calculate: function () {
+      var annualSalary = parseFloat(feetInput.value);
+      var hoursPerWeek = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 2;
+
+      if (isNaN(annualSalary) || isNaN(hoursPerWeek) || annualSalary < 0 || hoursPerWeek <= 0) {
+        resultOutput.textContent = 'Please enter valid salary and work hours';
+        return;
+      }
+
+      var monthly = annualSalary / 12;
+      var fortnightly = annualSalary / 26;
+      var weekly = annualSalary / 52;
+      var hourly = annualSalary / (52 * hoursPerWeek);
+
+      resultOutput.textContent =
+        'Monthly = ' + monthly.toFixed(decimals) + ', fortnightly = ' + fortnightly.toFixed(decimals) + ', weekly = ' + weekly.toFixed(decimals) + ', hourly = ' + hourly.toFixed(decimals);
+    }
   }
 };
 

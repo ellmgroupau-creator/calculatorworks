@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tip Calculator | CalculatorWorks</title>
+  <meta name="description" content="Calculate tips, total bill amounts, and per-person splits instantly with the free Tip Calculator from CalculatorWorks.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://calculatorworks.io/tip-calculator.html">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-wrap">
+        <img src="logo.png" alt="CalculatorWorks logo">
+      </a>
+
+      <nav class="main-nav">
+        <a href="index.html">Home</a>
+        <a href="unit-conversion.html">Unit Conversion</a>
+        <a href="finance.html">Finance</a>
+        <a href="percentage.html">Percentage</a>
+        <a href="everyday.html">Everyday</a>
+        <a href="calculators.html">All Calculators</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <h1>Tip Calculator</h1>
+        <p>
+          Work out the tip amount, total bill, and per-person split with a simple and accurate tip calculator.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <div class="container content-grid">
+      <div>
+        <section class="calculator-card" id="calculator" data-calculator="tip-calculator.html">
+          <h2>Tip Calculator</h2>
+          <p>Enter the bill amount, tip percentage, and number of people to split the bill.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="feet">Bill Amount</label>
+              <input type="number" id="feet" placeholder="Example: 120" step="any" min="0">
+            </div>
+
+            <div class="field">
+              <label for="inches">Tip Percentage</label>
+              <input type="number" id="inches" placeholder="Example: 15" step="any" min="0">
+            </div>
+
+            <div class="field">
+              <label for="decimals">People to Split</label>
+              <select id="decimals">
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+                <option value="3" selected>3 people</option>
+                <option value="4">4 people</option>
+                <option value="5">5 people</option>
+                <option value="6">6 people</option>
+                <option value="8">8 people</option>
+                <option value="10">10 people</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="calc-btn calc-btn-primary" id="calculateBtn">Calculate</button>
+            <button class="calc-btn calc-btn-secondary" id="resetBtn">Reset</button>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Result</span>
+            <div class="result-value" id="result">Enter a value to begin</div>
+          </div>
+        </section>
+
+        <section class="section-card" id="formula">
+          <h2>Formula</h2>
+          <div class="formula-box">
+            <strong>tip = bill × (tip percentage ÷ 100)</strong><br>
+            <strong>total = bill + tip</strong><br>
+            <strong>per person = total ÷ number of people</strong>
+          </div>
+          <p>Example: A $120 bill with a 15% tip split 3 ways gives a $18 tip, $138 total, and $46 per person.</p>
+        </section>
+
+        <section class="section-card" id="examples">
+          <h2>Worked examples</h2>
+          <div class="example-box">
+            <p><strong>$80 bill, 10% tip, 2 people</strong> = $8.00 tip, $88.00 total, $44.00 each</p>
+            <p><strong>$120 bill, 15% tip, 3 people</strong> = $18.00 tip, $138.00 total, $46.00 each</p>
+            <p><strong>$200 bill, 20% tip, 4 people</strong> = $40.00 tip, $240.00 total, $60.00 each</p>
+          </div>
+        </section>
+
+        <section class="section-card" id="related">
+          <h2>Related calculators</h2>
+          <div class="related-links">
+            <a href="finance.html">Finance Calculators</a>
+            <a href="discount-calculator.html">Discount Calculator</a>
+            <a href="percentage-calculator.html">Percentage Calculator</a>
+            <a href="salary-calculator.html">Salary Calculator</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>On this page</h3>
+          <ol class="toc">
+            <li><a href="#calculator">Calculator</a></li>
+            <li><a href="#formula">Formula</a></li>
+            <li><a href="#examples">Examples</a></li>
+            <li><a href="#related">Related calculators</a></li>
+          </ol>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Ad area</h3>
+          <div class="ad-box">300 × 250 ad area</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <strong>CalculatorWorks</strong>
+      <div class="footer-links">
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="privacy-policy.html">Privacy Policy</a>
+        <a href="terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

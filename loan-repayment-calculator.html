@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Repayment Calculator | CalculatorWorks</title>
+  <meta name="description" content="Estimate monthly loan repayments with the free Loan Repayment Calculator from CalculatorWorks using a standard amortisation formula.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="canonical" href="https://calculatorworks.io/loan-repayment-calculator.html">
+</head>
+<body>
+  <header class="site-header"><div class="container header-inner"><a href="index.html" class="logo-wrap"><img src="logo.png" alt="CalculatorWorks logo"></a><nav class="main-nav"><a href="index.html">Home</a><a href="unit-conversion.html">Unit Conversion</a><a href="finance.html">Finance</a><a href="percentage.html">Percentage</a><a href="everyday.html">Everyday</a><a href="calculators.html">All Calculators</a></nav></div></header>
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Loan Repayment Calculator</h1><p>Estimate monthly repayments using loan amount, annual interest rate, and loan term in years.</p></div></div></section>
+  <main class="main-content"><div class="container content-grid"><div>
+    <section class="calculator-card" id="calculator" data-calculator="loan-repayment-calculator.html"><h2>Loan Repayment Calculator</h2><p>Enter the loan amount, annual interest rate, and loan term to estimate monthly repayments.</p><div class="form-grid"><div class="field"><label for="feet">Loan Amount</label><input type="number" id="feet" placeholder="Example: 300000" step="any" min="0"></div><div class="field"><label for="inches">Annual Interest Rate (%)</label><input type="number" id="inches" placeholder="Example: 6" step="any" min="0"></div><div class="field"><label for="decimals">Loan Term (Years)</label><select id="decimals"><option value="1">1 year</option><option value="3">3 years</option><option value="5">5 years</option><option value="10">10 years</option><option value="15">15 years</option><option value="20">20 years</option><option value="25">25 years</option><option value="30" selected>30 years</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calculate</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Reset</button></div><div class="result-box"><span class="result-label">Result</span><div class="result-value" id="result">Enter a value to begin</div></div></section>
+    <section class="section-card" id="formula"><h2>Formula</h2><div class="formula-box"><strong>monthly repayment = P × r × (1 + r)^n ÷ ((1 + r)^n - 1)</strong><br><strong>P = loan amount</strong><br><strong>r = monthly interest rate</strong><br><strong>n = total monthly repayments</strong></div><p>Example: A $300,000 loan at 6% over 30 years has an estimated monthly repayment of about $1,798.65.</p></section>
+    <section class="section-card" id="examples"><h2>Worked examples</h2><div class="example-box"><p><strong>$20,000 at 7% over 5 years</strong> = about $396.02 per month</p><p><strong>$300,000 at 6% over 30 years</strong> = about $1,798.65 per month</p><p><strong>$500,000 at 5.5% over 25 years</strong> = about $3,070.34 per month</p></div></section>
+    <section class="section-card" id="related"><h2>Related calculators</h2><div class="related-links"><a href="finance.html">Finance Calculators</a><a href="compound-interest-calculator.html">Compound Interest Calculator</a><a href="simple-interest-calculator.html">Simple Interest Calculator</a><a href="salary-calculator.html">Salary Calculator</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>On this page</h3><ol class="toc"><li><a href="#calculator">Calculator</a></li><li><a href="#formula">Formula</a></li><li><a href="#examples">Examples</a></li><li><a href="#related">Related calculators</a></li></ol></div><div class="sidebar-card"><h3>Ad area</h3><div class="ad-box">300 × 250 ad area</div></div></aside></div></main>
+  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="about.html">About</a><a href="contact.html">Contact</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms</a></div></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>
