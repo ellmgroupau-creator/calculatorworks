@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Celsius to Fahrenheit Calculator | CalculatorWorks</title>
-  <meta name="description" content="Convert Celsius to Fahrenheit instantly with CalculatorWorks. Includes formula, examples, and a simple conversion tool.">
+  <title>BMI Calculator | CalculatorWorks</title>
+  <meta name="description" content="Calculate your Body Mass Index (BMI) instantly with CalculatorWorks. Includes formula, weight category ranges, worked examples, and a simple BMI calculator.">
   <link rel="stylesheet" href="style.css">
-  <link rel="canonical" href="https://calculatorworks.io/celsius-to-fahrenheit.html">
+  <link rel="canonical" href="https://calculatorworks.io/bmi-calculator.html">
 </head>
 <body>
 
@@ -30,9 +30,9 @@
   <section class="hero">
     <div class="container">
       <div class="hero-text">
-        <h1>Celsius to Fahrenheit Calculator</h1>
+        <h1>BMI Calculator</h1>
         <p>
-          Convert Celsius to Fahrenheit instantly with a simple calculator,
+          Calculate your Body Mass Index instantly with a simple calculator,
           clear formula, and worked examples.
         </p>
       </div>
@@ -42,22 +42,27 @@
   <main class="main-content">
     <div class="container content-grid">
       <div>
-        <section class="calculator-card" id="calculator" data-calculator="celsius-to-fahrenheit.html">
-          <h2>Celsius to Fahrenheit Calculator</h2>
-          <p>Enter a temperature in Celsius and get the result in Fahrenheit instantly.</p>
+        <section class="calculator-card" id="calculator" data-calculator="bmi-calculator.html">
+          <h2>BMI Calculator</h2>
+          <p>Enter your weight in kilograms and height in centimetres to calculate your BMI instantly.</p>
 
           <div class="form-grid">
             <div class="field">
-              <label for="feet">Celsius</label>
-              <input type="number" id="feet" placeholder="Example: 25" step="any">
+              <label for="feet">Weight (kg)</label>
+              <input type="number" id="feet" placeholder="Example: 70" step="any" min="0">
+            </div>
+
+            <div class="field">
+              <label for="inches">Height (cm)</label>
+              <input type="number" id="inches" placeholder="Example: 175" step="any" min="0">
             </div>
 
             <div class="field">
               <label for="decimals">Decimal places</label>
               <select id="decimals">
-                <option value="2">2 decimal places</option>
-                <option value="3" selected>3 decimal places</option>
-                <option value="4">4 decimal places</option>
+                <option value="1">1 decimal place</option>
+                <option value="2" selected>2 decimal places</option>
+                <option value="3">3 decimal places</option>
               </select>
             </div>
           </div>
@@ -76,27 +81,38 @@
         <section class="section-card" id="formula">
           <h2>Formula</h2>
           <div class="formula-box">
-            <strong>fahrenheit = (celsius × 9 ÷ 5) + 32</strong>
+            <strong>BMI = weight (kg) &divide; height (m)&sup2;</strong>
           </div>
-          <p>Example: 25°C = 77.000°F</p>
+          <p>Example: 70 kg &divide; 1.75&sup2; = 22.86</p>
+        </section>
+
+        <section class="section-card" id="ranges">
+          <h2>BMI weight categories</h2>
+          <div class="example-box">
+            <p><strong>Under 18.5</strong> &mdash; Underweight</p>
+            <p><strong>18.5 &ndash; 24.9</strong> &mdash; Normal weight</p>
+            <p><strong>25.0 &ndash; 29.9</strong> &mdash; Overweight</p>
+            <p><strong>30.0 and above</strong> &mdash; Obese</p>
+          </div>
         </section>
 
         <section class="section-card" id="examples">
           <h2>Worked examples</h2>
           <div class="example-box">
-            <p><strong>0°C</strong> = 32.000°F</p>
-            <p><strong>25°C</strong> = 77.000°F</p>
-            <p><strong>100°C</strong> = 212.000°F</p>
+            <p><strong>60 kg, 165 cm</strong> &rarr; BMI = 22.04 (Normal weight)</p>
+            <p><strong>85 kg, 180 cm</strong> &rarr; BMI = 26.23 (Overweight)</p>
+            <p><strong>50 kg, 160 cm</strong> &rarr; BMI = 19.53 (Normal weight)</p>
           </div>
         </section>
 
         <section class="section-card" id="related">
           <h2>Related calculators</h2>
           <div class="related-links">
-            <a href="unit-conversion.html">Unit Conversion Hub</a>
-            <a href="fahrenheit-to-celsius.html">Fahrenheit to Celsius Calculator</a>
-            <a href="km-to-miles.html">KM to Miles Calculator</a>
-            <a href="miles-to-km.html">Miles to KM Calculator</a>
+            <a href="everyday.html">Everyday Calculators</a>
+            <a href="average-calculator.html">Average Calculator</a>
+            <a href="age-calculator.html">Age Calculator</a>
+            <a href="kg-to-lb.html">KG to LB Converter</a>
+            <a href="cm-to-inches.html">CM to Inches Converter</a>
           </div>
         </section>
       </div>
@@ -107,6 +123,7 @@
           <ol class="toc">
             <li><a href="#calculator">Calculator</a></li>
             <li><a href="#formula">Formula</a></li>
+            <li><a href="#ranges">Weight categories</a></li>
             <li><a href="#examples">Examples</a></li>
             <li><a href="#related">Related calculators</a></li>
           </ol>
@@ -114,7 +131,7 @@
 
         <div class="sidebar-card">
           <h3>Ad area</h3>
-          <div class="ad-box">300 × 250 ad area</div>
+          <div class="ad-box">300 &times; 250 ad area</div>
         </div>
       </aside>
     </div>

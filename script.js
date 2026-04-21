@@ -305,6 +305,162 @@ const calculatorConfigs = {
       resultOutput.textContent =
         'Sale price = ' + finalPrice.toFixed(decimals) + ' (You save ' + savings.toFixed(decimals) + ')';
     }
+  },
+
+  'bmi-calculator.html': {
+    calculate: function () {
+      const decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 2;
+      const weight = parseFloat(feetInput.value);
+      const heightCm = inchesInput ? parseFloat(inchesInput.value) : NaN;
+
+      if (isNaN(weight) || isNaN(heightCm) || weight <= 0 || heightCm <= 0) {
+        resultOutput.textContent = 'Please enter valid weight and height';
+        return;
+      }
+
+      const heightM = heightCm / 100;
+      const bmi = weight / (heightM * heightM);
+
+      var category = '';
+      if (bmi < 18.5) category = 'Underweight';
+      else if (bmi < 25) category = 'Normal weight';
+      else if (bmi < 30) category = 'Overweight';
+      else category = 'Obese';
+
+      resultOutput.textContent =
+        'BMI = ' + bmi.toFixed(decimals) + ' (' + category + ')';
+    }
+  },
+
+  'age-calculator.html': {
+    calculate: function () {
+      var dobValue = feetInput.value;
+      var endValue = inchesInput ? inchesInput.value : '';
+
+      if (!dobValue) {
+        resultOutput.textContent = 'Please enter a date of birth';
+        return;
+      }
+
+      var dob = new Date(dobValue + 'T00:00:00');
+      var end = endValue ? new Date(endValue + 'T00:00:00') : new Date();
+
+      if (isNaN(dob.getTime())) {
+        resultOutput.textContent = 'Please enter a valid date';
+        return;
+      }
+
+      if (dob > end) {
+        resultOutput.textContent = 'Date of birth must be in the past';
+        return;
+      }
+
+      var years = end.getFullYear() - dob.getFullYear();
+      var months = end.getMonth() - dob.getMonth();
+      var days = end.getDate() - dob.getDate();
+
+      if (days < 0) {
+        months--;
+        var prevMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+        days += prevMonth.getDate();
+      }
+      if (months < 0) {
+        years--;
+        months += 12;
+      }
+
+      resultOutput.textContent =
+        years + ' years, ' + months + ' months, ' + days + ' days';
+    }
+  },
+
+  'time-duration-calculator.html': {
+    calculate: function () {
+      var startValue = feetInput.value;
+      var endValue = inchesInput ? inchesInput.value : '';
+
+      if (!startValue || !endValue) {
+        resultOutput.textContent = 'Please enter both start and end times';
+        return;
+      }
+
+      var startParts = startValue.split(':');
+      var endParts = endValue.split(':');
+
+      var startMinutes = parseInt(startParts[0], 10) * 60 + parseInt(startParts[1], 10);
+      var endMinutes = parseInt(endParts[0], 10) * 60 + parseInt(endParts[1], 10);
+
+      if (endMinutes < startMinutes) {
+        endMinutes += 24 * 60;
+      }
+
+      var diff = endMinutes - startMinutes;
+      var hours = Math.floor(diff / 60);
+      var minutes = diff % 60;
+
+      resultOutput.textContent =
+        hours + ' hours ' + minutes + ' minutes';
+    }
+  },
+
+  'days-between-dates-calculator.html': {
+    calculate: function () {
+      var startValue = feetInput.value;
+      var endValue = inchesInput ? inchesInput.value : '';
+
+      if (!startValue || !endValue) {
+        resultOutput.textContent = 'Please enter both dates';
+        return;
+      }
+
+      var start = new Date(startValue + 'T00:00:00');
+      var end = new Date(endValue + 'T00:00:00');
+
+      if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        resultOutput.textContent = 'Please enter valid dates';
+        return;
+      }
+
+      var diffMs = Math.abs(end - start);
+      var diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
+
+      resultOutput.textContent =
+        diffDays + ' day' + (diffDays !== 1 ? 's' : '');
+    }
+  },
+
+  'average-calculator.html': {
+    calculate: function () {
+      var decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 3;
+      var raw = feetInput.value;
+
+      if (!raw || !raw.trim()) {
+        resultOutput.textContent = 'Please enter numbers separated by commas';
+        return;
+      }
+
+      var parts = raw.split(',');
+      var numbers = [];
+      for (var i = 0; i < parts.length; i++) {
+        var n = parseFloat(parts[i].trim());
+        if (!isNaN(n)) numbers.push(n);
+      }
+
+      if (numbers.length === 0) {
+        resultOutput.textContent = 'Please enter valid numbers';
+        return;
+      }
+
+      var sum = 0;
+      for (var j = 0; j < numbers.length; j++) {
+        sum += numbers[j];
+      }
+
+      var average = sum / numbers.length;
+
+      resultOutput.textContent =
+        'Average of ' + numbers.length + ' numbers = ' + average.toFixed(decimals);
+    }
   }
 };
 
@@ -322,7 +478,7 @@ function resetCalculator() {
 // =========================
 // Shared Calculator Setup
 // =========================
-if (feetInput && decimalsSelect && resultOutput && calculateBtn && resetBtn) {
+if (feetInput && resultOutput && calculateBtn && resetBtn) {
   const activeCalculator = calculatorConfigs[currentPage];
 
   if (activeCalculator) {

@@ -120,4 +120,34 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://calculatorworks.io/everyday.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/bmi-calculator.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/age-calculator.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/time-duration-calculator.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/days-between-dates-calculator.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/average-calculator.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>

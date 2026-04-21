@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Celsius to Fahrenheit Calculator | CalculatorWorks</title>
-  <meta name="description" content="Convert Celsius to Fahrenheit instantly with CalculatorWorks. Includes formula, examples, and a simple conversion tool.">
+  <title>Time Duration Calculator | CalculatorWorks</title>
+  <meta name="description" content="Calculate the duration between two times in hours and minutes with CalculatorWorks. Includes formula, worked examples, and a simple time duration calculator.">
   <link rel="stylesheet" href="style.css">
-  <link rel="canonical" href="https://calculatorworks.io/celsius-to-fahrenheit.html">
+  <link rel="canonical" href="https://calculatorworks.io/time-duration-calculator.html">
 </head>
 <body>
 
@@ -30,10 +30,10 @@
   <section class="hero">
     <div class="container">
       <div class="hero-text">
-        <h1>Celsius to Fahrenheit Calculator</h1>
+        <h1>Time Duration Calculator</h1>
         <p>
-          Convert Celsius to Fahrenheit instantly with a simple calculator,
-          clear formula, and worked examples.
+          Calculate the exact time between two clock times in hours and minutes
+          with a simple calculator, clear explanation, and worked examples.
         </p>
       </div>
     </div>
@@ -42,23 +42,19 @@
   <main class="main-content">
     <div class="container content-grid">
       <div>
-        <section class="calculator-card" id="calculator" data-calculator="celsius-to-fahrenheit.html">
-          <h2>Celsius to Fahrenheit Calculator</h2>
-          <p>Enter a temperature in Celsius and get the result in Fahrenheit instantly.</p>
+        <section class="calculator-card" id="calculator" data-calculator="time-duration-calculator.html">
+          <h2>Time Duration Calculator</h2>
+          <p>Enter a start time and end time to calculate the duration between them.</p>
 
           <div class="form-grid">
             <div class="field">
-              <label for="feet">Celsius</label>
-              <input type="number" id="feet" placeholder="Example: 25" step="any">
+              <label for="feet">Start time</label>
+              <input type="time" id="feet">
             </div>
 
             <div class="field">
-              <label for="decimals">Decimal places</label>
-              <select id="decimals">
-                <option value="2">2 decimal places</option>
-                <option value="3" selected>3 decimal places</option>
-                <option value="4">4 decimal places</option>
-              </select>
+              <label for="inches">End time</label>
+              <input type="time" id="inches">
             </div>
           </div>
 
@@ -74,29 +70,30 @@
         </section>
 
         <section class="section-card" id="formula">
-          <h2>Formula</h2>
+          <h2>How it works</h2>
           <div class="formula-box">
-            <strong>fahrenheit = (celsius × 9 ÷ 5) + 32</strong>
+            <strong>duration = end time &minus; start time</strong>
           </div>
-          <p>Example: 25°C = 77.000°F</p>
+          <p>If the end time is earlier than the start time, the calculator assumes the end time is the following day and adds 24 hours.</p>
         </section>
 
         <section class="section-card" id="examples">
           <h2>Worked examples</h2>
           <div class="example-box">
-            <p><strong>0°C</strong> = 32.000°F</p>
-            <p><strong>25°C</strong> = 77.000°F</p>
-            <p><strong>100°C</strong> = 212.000°F</p>
+            <p><strong>09:00 to 17:30</strong> &rarr; 8 hours 30 minutes</p>
+            <p><strong>14:15 to 18:45</strong> &rarr; 4 hours 30 minutes</p>
+            <p><strong>22:00 to 06:00</strong> &rarr; 8 hours 0 minutes (overnight)</p>
           </div>
         </section>
 
         <section class="section-card" id="related">
           <h2>Related calculators</h2>
           <div class="related-links">
-            <a href="unit-conversion.html">Unit Conversion Hub</a>
-            <a href="fahrenheit-to-celsius.html">Fahrenheit to Celsius Calculator</a>
-            <a href="km-to-miles.html">KM to Miles Calculator</a>
-            <a href="miles-to-km.html">Miles to KM Calculator</a>
+            <a href="everyday.html">Everyday Calculators</a>
+            <a href="days-between-dates-calculator.html">Days Between Dates</a>
+            <a href="age-calculator.html">Age Calculator</a>
+            <a href="average-calculator.html">Average Calculator</a>
+            <a href="bmi-calculator.html">BMI Calculator</a>
           </div>
         </section>
       </div>
@@ -106,7 +103,7 @@
           <h3>On this page</h3>
           <ol class="toc">
             <li><a href="#calculator">Calculator</a></li>
-            <li><a href="#formula">Formula</a></li>
+            <li><a href="#formula">How it works</a></li>
             <li><a href="#examples">Examples</a></li>
             <li><a href="#related">Related calculators</a></li>
           </ol>
@@ -114,7 +111,7 @@
 
         <div class="sidebar-card">
           <h3>Ad area</h3>
-          <div class="ad-box">300 × 250 ad area</div>
+          <div class="ad-box">300 &times; 250 ad area</div>
         </div>
       </aside>
     </div>

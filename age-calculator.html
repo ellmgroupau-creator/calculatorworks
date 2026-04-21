@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Celsius to Fahrenheit Calculator | CalculatorWorks</title>
-  <meta name="description" content="Convert Celsius to Fahrenheit instantly with CalculatorWorks. Includes formula, examples, and a simple conversion tool.">
+  <title>Age Calculator | CalculatorWorks</title>
+  <meta name="description" content="Calculate your exact age in years, months, and days with CalculatorWorks. Includes formula, worked examples, and a simple age calculator.">
   <link rel="stylesheet" href="style.css">
-  <link rel="canonical" href="https://calculatorworks.io/celsius-to-fahrenheit.html">
+  <link rel="canonical" href="https://calculatorworks.io/age-calculator.html">
 </head>
 <body>
 
@@ -30,10 +30,10 @@
   <section class="hero">
     <div class="container">
       <div class="hero-text">
-        <h1>Celsius to Fahrenheit Calculator</h1>
+        <h1>Age Calculator</h1>
         <p>
-          Convert Celsius to Fahrenheit instantly with a simple calculator,
-          clear formula, and worked examples.
+          Find your exact age in years, months, and days with a simple calculator,
+          clear explanation, and worked examples.
         </p>
       </div>
     </div>
@@ -42,23 +42,19 @@
   <main class="main-content">
     <div class="container content-grid">
       <div>
-        <section class="calculator-card" id="calculator" data-calculator="celsius-to-fahrenheit.html">
-          <h2>Celsius to Fahrenheit Calculator</h2>
-          <p>Enter a temperature in Celsius and get the result in Fahrenheit instantly.</p>
+        <section class="calculator-card" id="calculator" data-calculator="age-calculator.html">
+          <h2>Age Calculator</h2>
+          <p>Enter your date of birth to calculate your exact age as of today.</p>
 
           <div class="form-grid">
             <div class="field">
-              <label for="feet">Celsius</label>
-              <input type="number" id="feet" placeholder="Example: 25" step="any">
+              <label for="feet">Date of birth</label>
+              <input type="date" id="feet">
             </div>
 
             <div class="field">
-              <label for="decimals">Decimal places</label>
-              <select id="decimals">
-                <option value="2">2 decimal places</option>
-                <option value="3" selected>3 decimal places</option>
-                <option value="4">4 decimal places</option>
-              </select>
+              <label for="inches">Calculate age on (default: today)</label>
+              <input type="date" id="inches">
             </div>
           </div>
 
@@ -74,29 +70,30 @@
         </section>
 
         <section class="section-card" id="formula">
-          <h2>Formula</h2>
+          <h2>How it works</h2>
           <div class="formula-box">
-            <strong>fahrenheit = (celsius × 9 ÷ 5) + 32</strong>
+            <strong>age = today&rsquo;s date &minus; date of birth</strong>
           </div>
-          <p>Example: 25°C = 77.000°F</p>
+          <p>The calculator counts complete years, then remaining months, then remaining days between the two dates.</p>
         </section>
 
         <section class="section-card" id="examples">
           <h2>Worked examples</h2>
           <div class="example-box">
-            <p><strong>0°C</strong> = 32.000°F</p>
-            <p><strong>25°C</strong> = 77.000°F</p>
-            <p><strong>100°C</strong> = 212.000°F</p>
+            <p><strong>Born 15 Jan 1990, checked 21 Apr 2026</strong> &rarr; 36 years, 3 months, 6 days</p>
+            <p><strong>Born 1 Jul 2000, checked 21 Apr 2026</strong> &rarr; 25 years, 9 months, 20 days</p>
+            <p><strong>Born 31 Dec 2005, checked 21 Apr 2026</strong> &rarr; 20 years, 3 months, 21 days</p>
           </div>
         </section>
 
         <section class="section-card" id="related">
           <h2>Related calculators</h2>
           <div class="related-links">
-            <a href="unit-conversion.html">Unit Conversion Hub</a>
-            <a href="fahrenheit-to-celsius.html">Fahrenheit to Celsius Calculator</a>
-            <a href="km-to-miles.html">KM to Miles Calculator</a>
-            <a href="miles-to-km.html">Miles to KM Calculator</a>
+            <a href="everyday.html">Everyday Calculators</a>
+            <a href="days-between-dates-calculator.html">Days Between Dates</a>
+            <a href="time-duration-calculator.html">Time Duration Calculator</a>
+            <a href="bmi-calculator.html">BMI Calculator</a>
+            <a href="average-calculator.html">Average Calculator</a>
           </div>
         </section>
       </div>
@@ -106,7 +103,7 @@
           <h3>On this page</h3>
           <ol class="toc">
             <li><a href="#calculator">Calculator</a></li>
-            <li><a href="#formula">Formula</a></li>
+            <li><a href="#formula">How it works</a></li>
             <li><a href="#examples">Examples</a></li>
             <li><a href="#related">Related calculators</a></li>
           </ol>
@@ -114,7 +111,7 @@
 
         <div class="sidebar-card">
           <h3>Ad area</h3>
-          <div class="ad-box">300 × 250 ad area</div>
+          <div class="ad-box">300 &times; 250 ad area</div>
         </div>
       </aside>
     </div>
