@@ -882,3 +882,13 @@ a:hover {
     justify-content: center;
   }
 }
+
+
+.faq-list h3 {
+  margin: 1.25rem 0 0.4rem;
+  font-size: 1.05rem;
+}
+
+.faq-list p {
+  margin: 0 0 0.85rem;
+}
