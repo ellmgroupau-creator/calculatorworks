@@ -40,4 +40,9 @@
   <url><loc>https://calculatorworks.io/compound-interest-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://calculatorworks.io/loan-repayment-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://calculatorworks.io/salary-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculatorworks.io/roi-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculatorworks.io/break-even-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculatorworks.io/commission-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculatorworks.io/inflation-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://calculatorworks.io/vat-calculator.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>

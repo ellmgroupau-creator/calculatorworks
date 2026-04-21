@@ -714,6 +714,116 @@ const calculatorConfigs = {
       var totalInterest = totalRepayment - principal;
       resultOutput.textContent = 'Monthly repayment = ' + monthlyRepayment.toFixed(2) + ', total repayment = ' + totalRepayment.toFixed(2) + ', total interest = ' + totalInterest.toFixed(2);
     }
+  },
+
+  'roi-calculator.html': {
+    calculate: function () {
+      var decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 2;
+      var gain = parseFloat(feetInput.value);
+      var cost = inchesInput ? parseFloat(inchesInput.value) : NaN;
+
+      if (isNaN(gain) || isNaN(cost) || cost === 0) {
+        resultOutput.textContent = 'Please enter valid gain and cost values';
+        return;
+      }
+
+      var netProfit = gain - cost;
+      var roi = ((gain - cost) / cost) * 100;
+
+      resultOutput.textContent =
+        'ROI = ' + roi.toFixed(decimals) + '%, net profit = ' + netProfit.toFixed(decimals);
+    }
+  },
+
+  'break-even-calculator.html': {
+    calculate: function () {
+      var fixedCosts = parseFloat(feetInput.value);
+      var sellingPrice = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var variableCost = decimalsSelect ? parseFloat(decimalsSelect.value) : NaN;
+
+      if (isNaN(fixedCosts) || isNaN(sellingPrice) || isNaN(variableCost) || fixedCosts < 0 || sellingPrice < 0 || variableCost < 0) {
+        resultOutput.textContent = 'Please enter valid cost and price values';
+        return;
+      }
+
+      var contribution = sellingPrice - variableCost;
+
+      if (contribution <= 0) {
+        resultOutput.textContent = 'Selling price must be greater than variable cost per unit';
+        return;
+      }
+
+      var breakEvenUnits = Math.ceil(fixedCosts / contribution);
+      var breakEvenRevenue = (breakEvenUnits * sellingPrice);
+
+      resultOutput.textContent =
+        'Break-even = ' + breakEvenUnits.toLocaleString() + ' units, revenue = ' + breakEvenRevenue.toFixed(2);
+    }
+  },
+
+  'commission-calculator.html': {
+    calculate: function () {
+      var sales = parseFloat(feetInput.value);
+      var rate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var basePay = decimalsSelect ? parseFloat(decimalsSelect.value) : 0;
+
+      if (isNaN(sales) || isNaN(rate) || sales < 0 || rate < 0) {
+        resultOutput.textContent = 'Please enter valid sales and rate values';
+        return;
+      }
+
+      if (isNaN(basePay) || basePay < 0) basePay = 0;
+
+      var commission = sales * (rate / 100);
+      var totalPay = basePay + commission;
+
+      resultOutput.textContent =
+        'Commission = ' + commission.toFixed(2) + ', total pay = ' + totalPay.toFixed(2);
+    }
+  },
+
+  'inflation-calculator.html': {
+    calculate: function () {
+      var currentPrice = parseFloat(feetInput.value);
+      var rate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var years = decimalsSelect ? parseFloat(decimalsSelect.value) : NaN;
+
+      if (isNaN(currentPrice) || isNaN(rate) || isNaN(years) || currentPrice < 0 || years < 0) {
+        resultOutput.textContent = 'Please enter valid price, rate, and years';
+        return;
+      }
+
+      var futurePrice = currentPrice * Math.pow(1 + (rate / 100), years);
+      var increase = futurePrice - currentPrice;
+
+      resultOutput.textContent =
+        'Future price = ' + futurePrice.toFixed(2) + ', increase = ' + increase.toFixed(2);
+    }
+  },
+
+  'vat-calculator.html': {
+    calculate: function () {
+      var amount = parseFloat(feetInput.value);
+      var vatRate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var direction = decimalsSelect ? decimalsSelect.value : 'add';
+
+      if (isNaN(amount) || isNaN(vatRate) || amount < 0 || vatRate < 0) {
+        resultOutput.textContent = 'Please enter a valid amount and VAT rate';
+        return;
+      }
+
+      if (direction === 'add') {
+        var vatAmount = amount * (vatRate / 100);
+        var gross = amount + vatAmount;
+        resultOutput.textContent =
+          'Net = ' + amount.toFixed(2) + ', VAT = ' + vatAmount.toFixed(2) + ', gross = ' + gross.toFixed(2);
+      } else {
+        var net = amount / (1 + (vatRate / 100));
+        var vat = amount - net;
+        resultOutput.textContent =
+          'Net = ' + net.toFixed(2) + ', VAT = ' + vat.toFixed(2) + ', gross = ' + amount.toFixed(2);
+      }
+    }
   }
 
 };
@@ -724,7 +834,15 @@ const calculatorConfigs = {
 function resetCalculator() {
   if (feetInput) feetInput.value = '';
   if (inchesInput) inchesInput.value = '';
-  if (decimalsSelect) decimalsSelect.selectedIndex = 0;
+  if (decimalsSelect) {
+    if (decimalsSelect.tagName === 'SELECT') {
+      decimalsSelect.selectedIndex = 0;
+    } else if ('defaultValue' in decimalsSelect) {
+      decimalsSelect.value = decimalsSelect.defaultValue || '';
+    } else {
+      decimalsSelect.value = '';
+    }
+  }
   if (resultOutput) resultOutput.textContent = 'Enter a value to begin';
   if (feetInput) feetInput.focus();
 }
@@ -745,6 +863,12 @@ if (feetInput && resultOutput && calculateBtn && resetBtn) {
 
     if (inchesInput) {
       inchesInput.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter') activeCalculator.calculate();
+      });
+    }
+
+    if (decimalsSelect) {
+      decimalsSelect.addEventListener('keydown', function (event) {
         if (event.key === 'Enter') activeCalculator.calculate();
       });
     }
