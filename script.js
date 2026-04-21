@@ -568,6 +568,154 @@ const calculatorConfigs = {
         'Monthly = ' + monthly.toFixed(decimals) + ', fortnightly = ' + fortnightly.toFixed(decimals) + ', weekly = ' + weekly.toFixed(decimals) + ', hourly = ' + hourly.toFixed(decimals);
     }
   }
+,
+
+  'gpa-calculator.html': {
+    calculate: function () {
+      var decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 2;
+      var rawGrades = feetInput.value;
+      var rawCredits = inchesInput ? inchesInput.value.trim() : '';
+      var gradeMap = {
+        'A+': 4.0, 'A': 4.0, 'A-': 3.7,
+        'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+        'C+': 2.3, 'C': 2.0, 'C-': 1.7,
+        'D+': 1.3, 'D': 1.0, 'D-': 0.7,
+        'F': 0
+      };
+
+      if (!rawGrades || !rawGrades.trim()) {
+        resultOutput.textContent = 'Please enter grades separated by commas';
+        return;
+      }
+
+      var gradeParts = rawGrades.split(',');
+      var grades = [];
+      for (var i = 0; i < gradeParts.length; i++) {
+        var token = gradeParts[i].trim().toUpperCase();
+        if (!token) continue;
+        var value = Object.prototype.hasOwnProperty.call(gradeMap, token) ? gradeMap[token] : parseFloat(token);
+        if (isNaN(value) || value < 0 || value > 4) {
+          resultOutput.textContent = 'Use valid letter grades or grade points between 0.0 and 4.0';
+          return;
+        }
+        grades.push(value);
+      }
+
+      if (grades.length === 0) {
+        resultOutput.textContent = 'Please enter at least one valid grade';
+        return;
+      }
+
+      var totalPoints = 0;
+      for (var j = 0; j < grades.length; j++) totalPoints += grades[j];
+      var gpa = totalPoints / grades.length;
+
+      if (!rawCredits) {
+        resultOutput.textContent = 'GPA = ' + gpa.toFixed(decimals) + ' across ' + grades.length + ' course' + (grades.length === 1 ? '' : 's');
+        return;
+      }
+
+      var creditParts = rawCredits.split(',');
+      if (creditParts.length !== grades.length) {
+        resultOutput.textContent = 'Credits must match the number of grades';
+        return;
+      }
+
+      var weightedPoints = 0;
+      var totalCredits = 0;
+      for (var k = 0; k < creditParts.length; k++) {
+        var credit = parseFloat(creditParts[k].trim());
+        if (isNaN(credit) || credit <= 0) {
+          resultOutput.textContent = 'Credits must be positive numbers';
+          return;
+        }
+        weightedPoints += grades[k] * credit;
+        totalCredits += credit;
+      }
+
+      var weightedGpa = weightedPoints / totalCredits;
+      resultOutput.textContent = 'Weighted GPA = ' + weightedGpa.toFixed(decimals) + ' across ' + totalCredits.toFixed(decimals) + ' credit hours';
+    }
+  },
+
+  'margin-calculator.html': {
+    calculate: function () {
+      var decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 2;
+      var sellingPrice = parseFloat(feetInput.value);
+      var cost = inchesInput ? parseFloat(inchesInput.value) : NaN;
+
+      if (isNaN(sellingPrice) || isNaN(cost) || sellingPrice <= 0 || cost < 0) {
+        resultOutput.textContent = 'Please enter a valid selling price and cost';
+        return;
+      }
+
+      var profit = sellingPrice - cost;
+      var margin = (profit / sellingPrice) * 100;
+      resultOutput.textContent = 'Gross profit = ' + profit.toFixed(decimals) + ', margin = ' + margin.toFixed(decimals) + '%';
+    }
+  },
+
+  'markup-calculator.html': {
+    calculate: function () {
+      var decimals = decimalsSelect ? parseInt(decimalsSelect.value, 10) : 2;
+      var cost = parseFloat(feetInput.value);
+      var markupPercent = inchesInput ? parseFloat(inchesInput.value) : NaN;
+
+      if (isNaN(cost) || isNaN(markupPercent) || cost < 0 || markupPercent < 0) {
+        resultOutput.textContent = 'Please enter a valid cost and markup percentage';
+        return;
+      }
+
+      var markupAmount = cost * (markupPercent / 100);
+      var sellingPrice = cost + markupAmount;
+      resultOutput.textContent = 'Markup amount = ' + markupAmount.toFixed(decimals) + ', selling price = ' + sellingPrice.toFixed(decimals);
+    }
+  },
+
+  'savings-calculator.html': {
+    calculate: function () {
+      var principal = parseFloat(feetInput.value);
+      var annualRate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var years = decimalsSelect ? parseInt(decimalsSelect.value, 10) : NaN;
+
+      if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal < 0 || annualRate < 0 || years <= 0) {
+        resultOutput.textContent = 'Please enter valid savings inputs';
+        return;
+      }
+
+      var futureValue = principal * Math.pow(1 + (annualRate / 100), years);
+      var interestEarned = futureValue - principal;
+      resultOutput.textContent = 'Future balance = ' + futureValue.toFixed(2) + ', interest earned = ' + interestEarned.toFixed(2);
+    }
+  },
+
+  'mortgage-calculator.html': {
+    calculate: function () {
+      var principal = parseFloat(feetInput.value);
+      var annualRate = inchesInput ? parseFloat(inchesInput.value) : NaN;
+      var years = decimalsSelect ? parseInt(decimalsSelect.value, 10) : NaN;
+
+      if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal <= 0 || annualRate < 0 || years <= 0) {
+        resultOutput.textContent = 'Please enter valid mortgage inputs';
+        return;
+      }
+
+      var monthlyRate = annualRate / 100 / 12;
+      var payments = years * 12;
+      var monthlyRepayment;
+
+      if (monthlyRate === 0) {
+        monthlyRepayment = principal / payments;
+      } else {
+        monthlyRepayment = principal * monthlyRate * Math.pow(1 + monthlyRate, payments) / (Math.pow(1 + monthlyRate, payments) - 1);
+      }
+
+      var totalRepayment = monthlyRepayment * payments;
+      var totalInterest = totalRepayment - principal;
+      resultOutput.textContent = 'Monthly repayment = ' + monthlyRepayment.toFixed(2) + ', total repayment = ' + totalRepayment.toFixed(2) + ', total interest = ' + totalInterest.toFixed(2);
+    }
+  }
+
 };
 
 // =========================
