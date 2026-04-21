@@ -850,7 +850,7 @@ a:hover {
   margin-top: 16px;
 }
 
-.hero-highlights span {
+.hero-highlight-pill {
   display: inline-flex;
   align-items: center;
   min-height: 36px;
@@ -861,6 +861,24 @@ a:hover {
   color: var(--text);
   font-size: 14px;
   font-weight: bold;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-highlight-pill:hover,
+.hero-highlight-pill:focus {
+  background: #eaf6fd;
+  border-color: #b9dff2;
+  color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.hero-highlight-pill:focus-visible {
+  outline: 2px solid rgba(20, 148, 213, 0.25);
+  outline-offset: 2px;
+}
+
+.hero-highlight-pill:active {
+  transform: translateY(0);
 }
 
 .homepage-category-grid,
@@ -877,7 +895,7 @@ a:hover {
     gap: 8px;
   }
 
-  .hero-highlights span {
+  .hero-highlight-pill {
     width: 100%;
     justify-content: center;
   }
