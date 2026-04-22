@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de hipoteca para cuota mensual y coste total | CalculatorWorks</title>
+  <meta name="description" content="Usa la calculadora de hipoteca gratis para estimar la cuota mensual, el total pagado y los intereses de un préstamo hipotecario.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="canonical" href="https://calculatorworks.io/es/mortgage-calculator.html">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/mortgage-calculator.html">
+  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/mortgage-calculator.html">
+  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/mortgage-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/mortgage-calculator.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Qué influye más en la cuota de una hipoteca?","acceptedAnswer":{"@type":"Answer","text":"El importe del préstamo, el tipo de interés y el plazo hipotecario."}},{"@type":"Question","name":"¿Incluye impuestos o seguros?","acceptedAnswer":{"@type":"Answer","text":"No. Esta calculadora se centra en estimaciones de principal e intereses."}}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-wrap">
+        <img src="../logo.png" alt="Logotipo de CalculatorWorks">
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Inicio</a>
+        <a href="finance.html">Finanzas</a>
+        <a href="percentage.html">Porcentajes</a>
+        <a href="everyday.html">Uso diario</a>
+        <a href="calculators.html">Todas las calculadoras</a>
+      </nav>
+      <div class="language-switcher" aria-label="Selector de idioma"><a href="../mortgage-calculator.html" lang="en">English</a> <span>|</span> <a href="mortgage-calculator.html" lang="es">Español</a> <span>|</span> <a href="../pt/mortgage-calculator.html" lang="pt">Português</a></div>
+    </div>
+  </header>
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de hipoteca</h1><p>Estima la cuota mensual, el total pagado y los intereses de una hipoteca usando una fórmula de amortización estándar.</p></div></div></section>
+  <main class="main-content"><div class="container content-grid"><div>
+    <section class="calculator-card" id="calculator" data-calculator="mortgage-calculator.html"><h2>Calculadora de hipoteca</h2><p>Introduce el importe de la hipoteca, el interés anual y el plazo para estimar los pagos.</p><div class="form-grid"><div class="field"><label for="feet">Importe de la hipoteca</label><input type="number" id="feet" placeholder="Ejemplo: 500000" step="any" min="0"></div><div class="field"><label for="inches">Interés anual (%)</label><input type="number" id="inches" placeholder="Ejemplo: 6.2" step="any" min="0"></div><div class="field"><label for="decimals">Plazo hipotecario</label><select id="decimals"><option value="10">10 años</option><option value="15">15 años</option><option value="20">20 años</option><option value="25">25 años</option><option value="30" selected>30 años</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduce un valor para empezar</div></div></section>
+    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>cuota mensual = P × r × (1 + r)^n ÷ ((1 + r)^n - 1)</strong><br><strong>total pagado = cuota mensual × n</strong><br><strong>interés total = total pagado - principal</strong></div><p>Ejemplo: una hipoteca de 500,000 al 6.2% durante 30 años tiene una cuota mensual aproximada de 3,062.34.</p></section>
+    <section class="section-card" id="examples"><h2>Ejemplos resueltos</h2><div class="example-box"><p><strong>350,000 al 5.8% durante 25 años</strong> = 2,212.46 al mes</p><p><strong>500,000 al 6.2% durante 30 años</strong> = 3,062.34 al mes</p><p><strong>650,000 al 6% durante 30 años</strong> = 3,897.08 al mes</p></div></section>
+    <section class="section-card" id="guide"><h2>Cómo ayuda esta estimación</h2><p>Es útil para fijar un presupuesto de compra realista, comparar escenarios y entender cómo cambian el coste total y los intereses cuando varía el tipo o el plazo.</p><div class="related-links"><a href="loan-repayment-calculator.html">Comparar con préstamo</a><a href="savings-calculator.html">Estimar crecimiento del ahorro</a><a href="finance.html">Más finanzas</a></div></section>
+    <section class="section-card" id="faq"><h2>Preguntas frecuentes</h2><div class="faq-list"><h3>¿Qué influye más en la cuota?</h3><p>El importe, el tipo de interés y el plazo.</p><h3>¿Incluye impuestos o seguros?</h3><p>No. Se centra solo en principal e intereses.</p><h3>¿Debo compararla con objetivos de ahorro?</h3><p>Sí. Puedes contrastar la cuota con la <a href="savings-calculator.html">Calculadora de ahorro</a>.</p></div></section>
+    <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="loan-repayment-calculator.html">Pago de préstamo</a><a href="savings-calculator.html">Ahorro</a><a href="finance.html">Finanzas</a><a href="calculators.html">Todas las calculadoras</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>En esta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Ejemplos</a></li><li><a href="#related">Relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitaria</h3><div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espacio publicitario futuro</span>
+            <strong>Reservado para un anuncio relevante</strong>
+            <p>Este marcador mantiene el diseño estable para que cualquier anuncio futuro no desplace el contenido.</p>
+            <p>Solo se usará un número limitado de ubicaciones publicitarias.</p>
+          </div></div></aside></div></main>
+
+  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="about.html">Acerca de</a><a href="contact.html">Contacto</a><a href="privacy-policy.html">Política de privacidad</a><a href="terms.html">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
+  <script src="../script.js"></script>
+</body>
+</html>

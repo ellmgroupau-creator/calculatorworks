@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de hipoteca para prestação mensal e custo total | CalculatorWorks</title>
+  <meta name="description" content="Use a calculadora de hipoteca grátis para estimar a prestação mensal, o total pago e os juros de um empréstimo hipotecário.">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="canonical" href="https://calculatorworks.io/pt/mortgage-calculator.html">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/mortgage-calculator.html">
+  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/mortgage-calculator.html">
+  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/mortgage-calculator.html">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/mortgage-calculator.html">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"O que influencia mais a prestação de uma hipoteca?","acceptedAnswer":{"@type":"Answer","text":"O montante do empréstimo, a taxa de juro e o prazo da hipoteca."}},{"@type":"Question","name":"Inclui impostos ou seguros?","acceptedAnswer":{"@type":"Answer","text":"Não. Esta calculadora foca-se em estimativas de capital e juros."}}]}</script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo-wrap">
+        <img src="../logo.png" alt="Logótipo do CalculatorWorks">
+      </a>
+      <nav class="main-nav">
+        <a href="index.html">Início</a>
+        <a href="finance.html">Finanças</a>
+        <a href="percentage.html">Percentagens</a>
+        <a href="everyday.html">Uso diário</a>
+        <a href="calculators.html">Todas as calculadoras</a>
+      </nav>
+      <div class="language-switcher" aria-label="Seletor de idioma"><a href="../mortgage-calculator.html" lang="en">English</a> <span>|</span> <a href="../es/mortgage-calculator.html" lang="es">Español</a> <span>|</span> <a href="mortgage-calculator.html" lang="pt">Português</a></div>
+    </div>
+  </header>
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de hipoteca</h1><p>Estime a prestação mensal, o total pago e os juros de uma hipoteca usando uma fórmula padrão de amortização.</p></div></div></section>
+  <main class="main-content"><div class="container content-grid"><div>
+    <section class="calculator-card" id="calculator" data-calculator="mortgage-calculator.html"><h2>Calculadora de hipoteca</h2><p>Introduza o montante da hipoteca, o juro anual e o prazo para estimar os pagamentos.</p><div class="form-grid"><div class="field"><label for="feet">Montante da hipoteca</label><input type="number" id="feet" placeholder="Exemplo: 500000" step="any" min="0"></div><div class="field"><label for="inches">Juro anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 6.2" step="any" min="0"></div><div class="field"><label for="decimals">Prazo da hipoteca</label><select id="decimals"><option value="10">10 anos</option><option value="15">15 anos</option><option value="20">20 anos</option><option value="25">25 anos</option><option value="30" selected>30 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
+    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>prestação mensal = P × r × (1 + r)^n ÷ ((1 + r)^n - 1)</strong><br><strong>total pago = prestação mensal × n</strong><br><strong>juros totais = total pago - capital</strong></div><p>Exemplo: uma hipoteca de 500,000 a 6.2% durante 30 anos tem uma prestação mensal aproximada de 3,062.34.</p></section>
+    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>350,000 a 5.8% durante 25 anos</strong> = 2,212.46 por mês</p><p><strong>500,000 a 6.2% durante 30 anos</strong> = 3,062.34 por mês</p><p><strong>650,000 a 6% durante 30 anos</strong> = 3,897.08 por mês</p></div></section>
+    <section class="section-card" id="guide"><h2>Como esta estimativa ajuda</h2><p>É útil para definir um orçamento realista de compra, comparar cenários e perceber como o custo total e os juros mudam quando varia a taxa ou o prazo.</p><div class="related-links"><a href="loan-repayment-calculator.html">Comparar com empréstimo</a><a href="savings-calculator.html">Estimar crescimento da poupança</a><a href="finance.html">Mais finanças</a></div></section>
+    <section class="section-card" id="faq"><h2>Perguntas frequentes</h2><div class="faq-list"><h3>O que influencia mais a prestação?</h3><p>O montante, a taxa de juro e o prazo.</p><h3>Inclui impostos ou seguros?</h3><p>Não. Foca-se apenas em capital e juros.</p><h3>Devo compará-la com objetivos de poupança?</h3><p>Sim. Pode comparar a prestação com a <a href="savings-calculator.html">Calculadora de poupança</a>.</p></div></section>
+    <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="loan-repayment-calculator.html">Prestação de empréstimo</a><a href="savings-calculator.html">Poupança</a><a href="finance.html">Finanças</a><a href="calculators.html">Todas as calculadoras</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espaço publicitário futuro</span>
+            <strong>Reservado para um anúncio relevante</strong>
+            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
+            <p>Será usada apenas uma quantidade limitada de posições publicitárias.</p>
+          </div></div></aside></div></main>
+
+  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="about.html">Sobre</a><a href="contact.html">Contacto</a><a href="privacy-policy.html">Política de privacidade</a><a href="terms.html">Termos</a></div><div class="footer-note"><p>O CalculatorWorks publica calculadoras gratuitas com páginas legais claras, dados de contacto visíveis e layouts pensados para o utilizador. Os resultados são informativos e devem ser confirmados antes de decisões importantes.</p></div></div></footer>
+  <script src="../script.js"></script>
+</body>
+</html>

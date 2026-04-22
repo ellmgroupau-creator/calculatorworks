@@ -19,7 +19,43 @@ const pathParts = window.location.pathname.split('/');
 const lastPart = pathParts[pathParts.length - 1];
 const cleanLastPart = lastPart.split('?')[0].split('#')[0];
 const currentPage = explicitCalculator || (cleanLastPart && cleanLastPart.includes('.html') ? cleanLastPart : 'index.html');
+const currentLang = (document.documentElement.lang || 'en').toLowerCase();
 
+function translateCalc(key, fallback) {
+  const translations = {
+    es: {
+      initialPrompt: 'Introduce un valor para empezar',
+      'Please enter valid numbers': 'Introduce números válidos',
+      'Please enter valid loan, rate, and term values': 'Introduce valores válidos de préstamo, interés y plazo',
+      'Please enter valid savings inputs': 'Introduce valores válidos de ahorro',
+      'Please enter valid mortgage inputs': 'Introduce valores válidos de hipoteca',
+      percentageResult: (percentageValue, baseValue, result) => percentageValue + '% de ' + baseValue + ' = ' + result,
+      discountResult: (finalPrice, savings) => 'Precio final = ' + finalPrice + ' (Ahorras ' + savings + ')',
+      loanRepaymentResult: (monthlyRepayment) => 'Cuota mensual estimada = ' + monthlyRepayment,
+      savingsResult: (futureValue, interestEarned) => 'Saldo futuro = ' + futureValue + ', intereses ganados = ' + interestEarned,
+      mortgageResult: (monthlyRepayment, totalRepayment, totalInterest) => 'Cuota mensual = ' + monthlyRepayment + ', total pagado = ' + totalRepayment + ', interés total = ' + totalInterest
+    },
+    pt: {
+      initialPrompt: 'Introduza um valor para começar',
+      'Please enter valid numbers': 'Introduza números válidos',
+      'Please enter valid loan, rate, and term values': 'Introduza valores válidos de empréstimo, taxa e prazo',
+      'Please enter valid savings inputs': 'Introduza valores válidos de poupança',
+      'Please enter valid mortgage inputs': 'Introduza valores válidos de hipoteca',
+      percentageResult: (percentageValue, baseValue, result) => percentageValue + '% de ' + baseValue + ' = ' + result,
+      discountResult: (finalPrice, savings) => 'Preço final = ' + finalPrice + ' (Poupa ' + savings + ')',
+      loanRepaymentResult: (monthlyRepayment) => 'Prestação mensal estimada = ' + monthlyRepayment,
+      savingsResult: (futureValue, interestEarned) => 'Saldo futuro = ' + futureValue + ', juros ganhos = ' + interestEarned,
+      mortgageResult: (monthlyRepayment, totalRepayment, totalInterest) => 'Prestação mensal = ' + monthlyRepayment + ', total pago = ' + totalRepayment + ', juros totais = ' + totalInterest
+    }
+  };
+
+  const langMap = translations[currentLang] || {};
+  if (key in langMap) {
+    const value = langMap[key];
+    return typeof value === 'function' ? value : value;
+  }
+  return fallback !== undefined ? fallback : key;
+}
 
 const calculatorConfigs = {
   'feet-to-metres.html': {
@@ -219,14 +255,14 @@ const calculatorConfigs = {
       const baseValue = inchesInput ? parseFloat(inchesInput.value) : NaN;
 
       if (isNaN(percentageValue) || isNaN(baseValue)) {
-        resultOutput.textContent = 'Please enter valid numbers';
+        resultOutput.textContent = translateCalc('Please enter valid numbers');
         return;
       }
 
       const result = (percentageValue / 100) * baseValue;
 
       resultOutput.textContent =
-        percentageValue + '% of ' + baseValue + ' = ' + result.toFixed(decimals);
+        translateCalc('percentageResult', (percentageValue, baseValue, resultText) => percentageValue + '% of ' + baseValue + ' = ' + resultText)(percentageValue, baseValue, result.toFixed(decimals));
     }
   },
 
@@ -296,7 +332,7 @@ const calculatorConfigs = {
       const discountValue = inchesInput ? parseFloat(inchesInput.value) : NaN;
 
       if (isNaN(originalPrice) || isNaN(discountValue)) {
-        resultOutput.textContent = 'Please enter valid numbers';
+        resultOutput.textContent = translateCalc('Please enter valid numbers');
         return;
       }
 
@@ -304,7 +340,7 @@ const calculatorConfigs = {
       const finalPrice = originalPrice - savings;
 
       resultOutput.textContent =
-        'Sale price = ' + finalPrice.toFixed(decimals) + ' (You save ' + savings.toFixed(decimals) + ')';
+        translateCalc('discountResult', (finalPriceText, savingsText) => 'Sale price = ' + finalPriceText + ' (You save ' + savingsText + ')')(finalPrice.toFixed(decimals), savings.toFixed(decimals));
     }
   },
 
@@ -529,7 +565,7 @@ const calculatorConfigs = {
       var years = decimalsSelect ? parseInt(decimalsSelect.value, 10) : NaN;
 
       if (isNaN(loanAmount) || isNaN(annualRate) || isNaN(years) || loanAmount <= 0 || annualRate < 0 || years <= 0) {
-        resultOutput.textContent = 'Please enter valid loan, rate, and term values';
+        resultOutput.textContent = translateCalc('Please enter valid loan, rate, and term values');
         return;
       }
 
@@ -544,7 +580,7 @@ const calculatorConfigs = {
       }
 
       resultOutput.textContent =
-        'Estimated monthly repayment = ' + monthlyRepayment.toFixed(2);
+        translateCalc('loanRepaymentResult', (monthlyRepaymentText) => 'Estimated monthly repayment = ' + monthlyRepaymentText)(monthlyRepayment.toFixed(2));
     }
   },
 
@@ -679,13 +715,13 @@ const calculatorConfigs = {
       var years = decimalsSelect ? parseInt(decimalsSelect.value, 10) : NaN;
 
       if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal < 0 || annualRate < 0 || years <= 0) {
-        resultOutput.textContent = 'Please enter valid savings inputs';
+        resultOutput.textContent = translateCalc('Please enter valid savings inputs');
         return;
       }
 
       var futureValue = principal * Math.pow(1 + (annualRate / 100), years);
       var interestEarned = futureValue - principal;
-      resultOutput.textContent = 'Future balance = ' + futureValue.toFixed(2) + ', interest earned = ' + interestEarned.toFixed(2);
+      resultOutput.textContent = translateCalc('savingsResult', (futureValueText, interestEarnedText) => 'Future balance = ' + futureValueText + ', interest earned = ' + interestEarnedText)(futureValue.toFixed(2), interestEarned.toFixed(2));
     }
   },
 
@@ -696,7 +732,7 @@ const calculatorConfigs = {
       var years = decimalsSelect ? parseInt(decimalsSelect.value, 10) : NaN;
 
       if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal <= 0 || annualRate < 0 || years <= 0) {
-        resultOutput.textContent = 'Please enter valid mortgage inputs';
+        resultOutput.textContent = translateCalc('Please enter valid mortgage inputs');
         return;
       }
 
@@ -712,7 +748,7 @@ const calculatorConfigs = {
 
       var totalRepayment = monthlyRepayment * payments;
       var totalInterest = totalRepayment - principal;
-      resultOutput.textContent = 'Monthly repayment = ' + monthlyRepayment.toFixed(2) + ', total repayment = ' + totalRepayment.toFixed(2) + ', total interest = ' + totalInterest.toFixed(2);
+      resultOutput.textContent = translateCalc('mortgageResult', (monthlyRepaymentText, totalRepaymentText, totalInterestText) => 'Monthly repayment = ' + monthlyRepaymentText + ', total repayment = ' + totalRepaymentText + ', total interest = ' + totalInterestText)(monthlyRepayment.toFixed(2), totalRepayment.toFixed(2), totalInterest.toFixed(2));
     }
   },
 
@@ -843,7 +879,7 @@ function resetCalculator() {
       decimalsSelect.value = '';
     }
   }
-  if (resultOutput) resultOutput.textContent = 'Enter a value to begin';
+  if (resultOutput) resultOutput.textContent = translateCalc('initialPrompt');
   if (feetInput) feetInput.focus();
 }
 
