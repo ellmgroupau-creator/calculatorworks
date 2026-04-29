@@ -976,3 +976,84 @@ a:hover {
   color: var(--text-soft);
   font-size: 14px;
 }
+
+
+.breadcrumb-wrap {
+  padding-top: 18px;
+}
+
+.breadcrumb-nav {
+  font-size: 14px;
+  color: var(--text-soft);
+}
+
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumb-list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-list li + li::before {
+  content: ">";
+  color: #8a90a2;
+}
+
+.breadcrumb-list a {
+  color: var(--text-soft);
+}
+
+.breadcrumb-list .is-current {
+  color: var(--text);
+  font-weight: bold;
+}
+
+.content-list {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--text-soft);
+}
+
+.content-list li + li {
+  margin-top: 10px;
+}
+
+.table-wrap {
+  overflow-x: auto;
+}
+
+.quickref-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: white;
+}
+
+.quickref-table th,
+.quickref-table td {
+  border: 1px solid var(--border);
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.quickref-table th {
+  background: #f7fbfd;
+}
+
+@media (max-width: 768px) {
+  .breadcrumb-wrap {
+    padding-top: 12px;
+  }
+
+  .breadcrumb-nav {
+    font-size: 13px;
+  }
+}

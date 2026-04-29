@@ -6,10 +6,45 @@
   <title>VAT Calculator to Add or Remove VAT from Any Amount | CalculatorWorks</title>
   <meta name="description" content="Use the free VAT calculator to add VAT to a net price or remove VAT from a gross price. Shows VAT amount, net price, and gross price clearly with formula and examples.">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/vat-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://calculatorworks.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finance Calculators",
+      "item": "https://calculatorworks.io/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "VAT Calculator"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
-  <header class="site-header"><div class="container header-inner"><a href="/" class="logo-wrap"><img src="logo.png" alt="CalculatorWorks logo"></a><nav class="main-nav"><a href="/">Home</a><a href="/unit-conversion">Unit Conversion</a><a href="/finance">Finance</a><a href="/percentage">Percentage</a><a href="/everyday">Everyday</a><a href="/calculators">All Calculators</a></nav></div></header>
+  <header class="site-header"><div class="container header-inner"><a href="/" class="logo-wrap"><img src="logo.png" alt="CalculatorWorks logo" width="4932" height="1659" decoding="async"></a><nav class="main-nav"><a href="/">Home</a><a href="/unit-conversion">Unit Conversion</a><a href="/finance">Finance</a><a href="/percentage">Percentage</a><a href="/everyday">Everyday</a><a href="/calculators">All Calculators</a></nav></div></header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list"><li><a href="/">Home</a></li><li><a href="/finance">Finance Calculators</a></li><li><span class="is-current" aria-current="page">VAT Calculator</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>VAT Calculator</h1><p>Add VAT to a net amount or remove VAT from a gross amount. Works with any VAT or sales tax rate.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="vat-calculator.html"><h2>VAT Calculator</h2><p>Enter an amount and VAT rate. Choose whether to add VAT (net to gross) or remove VAT (gross to net).</p><div class="form-grid"><div class="field"><label for="feet">Amount</label><input type="number" id="feet" placeholder="Example: 100" step="any" min="0"></div><div class="field"><label for="inches">VAT Rate (%)</label><input type="number" id="inches" placeholder="Example: 20" step="any" min="0"></div><div class="field"><label for="decimals">Direction</label><select id="decimals"><option value="add">Add VAT (net to gross)</option><option value="remove">Remove VAT (gross to net)</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calculate</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Reset</button></div><div class="result-box"><span class="result-label">Result</span><div class="result-value" id="result">Enter a value to begin</div></div></section>

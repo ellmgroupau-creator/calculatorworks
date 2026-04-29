@@ -6,10 +6,45 @@
   <title>Break-Even Calculator for Units and Revenue | CalculatorWorks</title>
   <meta name="description" content="Use the free break-even calculator to find how many units you need to sell to cover costs. Shows break-even units and break-even revenue with formula and examples.">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/break-even-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://calculatorworks.io/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finance Calculators",
+      "item": "https://calculatorworks.io/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Break-Even Calculator"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
-  <header class="site-header"><div class="container header-inner"><a href="/" class="logo-wrap"><img src="logo.png" alt="CalculatorWorks logo"></a><nav class="main-nav"><a href="/">Home</a><a href="/unit-conversion">Unit Conversion</a><a href="/finance">Finance</a><a href="/percentage">Percentage</a><a href="/everyday">Everyday</a><a href="/calculators">All Calculators</a></nav></div></header>
+  <header class="site-header"><div class="container header-inner"><a href="/" class="logo-wrap"><img src="logo.png" alt="CalculatorWorks logo" width="4932" height="1659" decoding="async"></a><nav class="main-nav"><a href="/">Home</a><a href="/unit-conversion">Unit Conversion</a><a href="/finance">Finance</a><a href="/percentage">Percentage</a><a href="/everyday">Everyday</a><a href="/calculators">All Calculators</a></nav></div></header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <ol class="breadcrumb-list"><li><a href="/">Home</a></li><li><a href="/finance">Finance Calculators</a></li><li><span class="is-current" aria-current="page">Break-Even Calculator</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Break-Even Calculator</h1><p>Find out how many units you need to sell to cover your fixed and variable costs, and see the break-even revenue target.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="break-even-calculator.html"><h2>Break-Even Calculator</h2><p>Enter your fixed costs, selling price per unit, and variable cost per unit to calculate the break-even point.</p><div class="form-grid"><div class="field"><label for="feet">Fixed Costs</label><input type="number" id="feet" placeholder="Example: 50000" step="any" min="0"></div><div class="field"><label for="inches">Selling Price per Unit</label><input type="number" id="inches" placeholder="Example: 25" step="any" min="0"></div><div class="field"><label for="decimals">Variable Cost per Unit</label><input type="number" id="decimals" placeholder="Example: 10" step="any" min="0"></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calculate</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Reset</button></div><div class="result-box"><span class="result-label">Result</span><div class="result-value" id="result">Enter a value to begin</div></div></section>

@@ -6,17 +6,44 @@
   <title>Calculadora de prestação de empréstimo para estimar o pagamento mensal | CalculatorWorks</title>
   <meta name="description" content="Use a calculadora de prestação de empréstimo grátis para estimar a prestação mensal com fórmula, exemplos e perguntas frequentes.">
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/pt/loan-repayment-calculator">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/loan-repayment-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/loan-repayment-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/loan-repayment-calculator">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/loan-repayment-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://calculatorworks.io/pt/pt/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanças",
+      "item": "https://calculatorworks.io/pt/pt/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de prestação de empréstimo"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks">
+        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -28,6 +55,14 @@
       <div class="language-switcher" aria-label="Seletor de idioma"><a href="/loan-repayment-calculator" lang="en">English</a> <span>|</span> <a href="/es/loan-repayment-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/loan-repayment-calculator" lang="pt">Português</a></div>
     </div>
   </header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de prestação de empréstimo</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de prestação de empréstimo</h1><p>Estime a prestação mensal de um empréstimo com uma fórmula padrão de amortização.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="loan-repayment-calculator.html"><h2>Calculadora de prestação de empréstimo</h2><p>Introduza o montante, a taxa de juro anual e o prazo para estimar a prestação mensal.</p><div class="form-grid"><div class="field"><label for="feet">Montante do empréstimo</label><input type="number" id="feet" placeholder="Exemplo: 20000" step="any" min="0"></div><div class="field"><label for="inches">Juro anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 7.5" step="any" min="0"></div><div class="field"><label for="decimals">Prazo do empréstimo</label><select id="decimals"><option value="1">1 ano</option><option value="3">3 anos</option><option value="5" selected>5 anos</option><option value="7">7 anos</option><option value="10">10 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>

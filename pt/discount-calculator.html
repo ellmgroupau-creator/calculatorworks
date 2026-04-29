@@ -6,17 +6,44 @@
   <title>Calculadora de descontos para preço final e poupança | CalculatorWorks</title>
   <meta name="description" content="Use a calculadora de descontos grátis para obter o preço final e a poupança de uma redução percentual.">
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/pt/discount-calculator">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/discount-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/discount-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/discount-calculator">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/discount-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://calculatorworks.io/pt/pt/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Percentagens",
+      "item": "https://calculatorworks.io/pt/pt/percentage"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de descontos"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks">
+        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -28,6 +55,14 @@
       <div class="language-switcher" aria-label="Seletor de idioma"><a href="/discount-calculator" lang="en">English</a> <span>|</span> <a href="/es/discount-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/discount-calculator" lang="pt">Português</a></div>
     </div>
   </header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/percentage">Percentagens</a></li><li><span class="is-current" aria-current="page">Calculadora de descontos</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de descontos</h1><p>Calcule o preço com desconto e a poupança total a partir do preço original e da percentagem de desconto.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="discount-calculator.html"><h2>Calculadora de descontos</h2><p>Introduza o preço original e o desconto para obter o preço final.</p><div class="form-grid"><div class="field"><label for="feet">Preço original</label><input type="number" id="feet" placeholder="Exemplo: 120" step="any"></div><div class="field"><label for="inches">Desconto (%)</label><input type="number" id="inches" placeholder="Exemplo: 25" step="any"></div><div class="field"><label for="decimals">Casas decimais</label><select id="decimals"><option value="2" selected>2 casas decimais</option><option value="3">3 casas decimais</option><option value="4">4 casas decimais</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>

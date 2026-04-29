@@ -6,17 +6,44 @@
   <title>Calculadora de poupança para saldo futuro e juros | CalculatorWorks</title>
   <meta name="description" content="Use a calculadora de poupança grátis para estimar o saldo futuro e os juros ganhos com capitalização anual.">
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/pt/savings-calculator">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/savings-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/savings-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/savings-calculator">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/savings-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://calculatorworks.io/pt/pt/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanças",
+      "item": "https://calculatorworks.io/pt/pt/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de poupança"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks">
+        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -28,6 +55,14 @@
       <div class="language-switcher" aria-label="Seletor de idioma"><a href="/savings-calculator" lang="en">English</a> <span>|</span> <a href="/es/savings-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/savings-calculator" lang="pt">Português</a></div>
     </div>
   </header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de poupança</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de poupança</h1><p>Estime o saldo futuro e os juros ganhos com uma projeção simples de capitalização anual.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="savings-calculator.html"><h2>Calculadora de poupança</h2><p>Introduza o saldo inicial, o juro anual e o número de anos para projetar o crescimento.</p><div class="form-grid"><div class="field"><label for="feet">Saldo inicial</label><input type="number" id="feet" placeholder="Exemplo: 10000" step="any" min="0"></div><div class="field"><label for="inches">Juro anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 4.5" step="any" min="0"></div><div class="field"><label for="decimals">Anos</label><select id="decimals"><option value="1">1 ano</option><option value="3">3 anos</option><option value="5" selected>5 anos</option><option value="10">10 anos</option><option value="20">20 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>

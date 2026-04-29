@@ -6,17 +6,44 @@
   <title>Calculadora de percentagens para descobrir X% de Y | CalculatorWorks</title>
   <meta name="description" content="Use a calculadora de percentagens grátis para descobrir X% de Y imediatamente, com fórmula, exemplos e perguntas frequentes.">
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/pt/percentage-calculator">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/percentage-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/percentage-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/percentage-calculator">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/percentage-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://calculatorworks.io/pt/pt/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Percentagens",
+      "item": "https://calculatorworks.io/pt/pt/percentage"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de percentagens"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks">
+        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -28,6 +55,14 @@
       <div class="language-switcher" aria-label="Seletor de idioma"><a href="/percentage-calculator" lang="en">English</a> <span>|</span> <a href="/es/percentage-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/percentage-calculator" lang="pt">Português</a></div>
     </div>
   </header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/percentage">Percentagens</a></li><li><span class="is-current" aria-current="page">Calculadora de percentagens</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de percentagens</h1><p>Calcule imediatamente quanto é uma percentagem de um número com uma fórmula simples e exemplos resolvidos.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="percentage-calculator.html"><h2>Calculadora de percentagens</h2><p>Introduza uma percentagem e um número para calcular X% de Y.</p><div class="form-grid"><div class="field"><label for="feet">Percentagem (%)</label><input type="number" id="feet" placeholder="Exemplo: 15" step="any"></div><div class="field"><label for="inches">Número</label><input type="number" id="inches" placeholder="Exemplo: 200" step="any"></div><div class="field"><label for="decimals">Casas decimais</label><select id="decimals"><option value="2">2 casas decimais</option><option value="3" selected>3 casas decimais</option><option value="4">4 casas decimais</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>

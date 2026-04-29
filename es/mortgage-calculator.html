@@ -6,18 +6,45 @@
   <title>Calculadora de hipoteca para cuota mensual y coste total | CalculatorWorks</title>
   <meta name="description" content="Usa la calculadora de hipoteca gratis para estimar la cuota mensual, el total pagado y los intereses de un préstamo hipotecario.">
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/es/mortgage-calculator">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/mortgage-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/mortgage-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/mortgage-calculator">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/mortgage-calculator">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"¿Qué influye más en la cuota de una hipoteca?","acceptedAnswer":{"@type":"Answer","text":"El importe del préstamo, el tipo de interés y el plazo hipotecario."}},{"@type":"Question","name":"¿Incluye impuestos o seguros?","acceptedAnswer":{"@type":"Answer","text":"No. Esta calculadora se centra en estimaciones de principal e intereses."}}]}</script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://calculatorworks.io/es/es/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanzas",
+      "item": "https://calculatorworks.io/es/es/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de hipoteca"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/es/" class="logo-wrap">
-        <img src="../logo.png" alt="Logotipo de CalculatorWorks">
+        <img src="../logo.png" alt="Logotipo de CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/es/">Inicio</a>
@@ -29,6 +56,14 @@
       <div class="language-switcher" aria-label="Selector de idioma"><a href="/mortgage-calculator" lang="en">English</a> <span>|</span> <a href="/es/mortgage-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/mortgage-calculator" lang="pt">Português</a></div>
     </div>
   </header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Ruta de navegación">
+        <ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/finance">Finanzas</a></li><li><span class="is-current" aria-current="page">Calculadora de hipoteca</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de hipoteca</h1><p>Estima la cuota mensual, el total pagado y los intereses de una hipoteca usando una fórmula de amortización estándar.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="mortgage-calculator.html"><h2>Calculadora de hipoteca</h2><p>Introduce el importe de la hipoteca, el interés anual y el plazo para estimar los pagos.</p><div class="form-grid"><div class="field"><label for="feet">Importe de la hipoteca</label><input type="number" id="feet" placeholder="Ejemplo: 500000" step="any" min="0"></div><div class="field"><label for="inches">Interés anual (%)</label><input type="number" id="inches" placeholder="Ejemplo: 6.2" step="any" min="0"></div><div class="field"><label for="decimals">Plazo hipotecario</label><select id="decimals"><option value="10">10 años</option><option value="15">15 años</option><option value="20">20 años</option><option value="25">25 años</option><option value="30" selected>30 años</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduce un valor para empezar</div></div></section>

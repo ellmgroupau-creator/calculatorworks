@@ -6,17 +6,44 @@
   <title>Calculadora de pago de préstamo para estimar la cuota mensual | CalculatorWorks</title>
   <meta name="description" content="Usa la calculadora de pago de préstamo gratis para estimar la cuota mensual con fórmula, ejemplos y preguntas frecuentes.">
   <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/es/loan-repayment-calculator">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/loan-repayment-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/loan-repayment-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/loan-repayment-calculator">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/loan-repayment-calculator">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://calculatorworks.io/es/es/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanzas",
+      "item": "https://calculatorworks.io/es/es/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de pago de préstamo"
+    }
+  ]
+}
+  </script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/es/" class="logo-wrap">
-        <img src="../logo.png" alt="Logotipo de CalculatorWorks">
+        <img src="../logo.png" alt="Logotipo de CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/es/">Inicio</a>
@@ -28,6 +55,14 @@
       <div class="language-switcher" aria-label="Selector de idioma"><a href="/loan-repayment-calculator" lang="en">English</a> <span>|</span> <a href="/es/loan-repayment-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/loan-repayment-calculator" lang="pt">Português</a></div>
     </div>
   </header>
+  <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Ruta de navegación">
+        <ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/finance">Finanzas</a></li><li><span class="is-current" aria-current="page">Calculadora de pago de préstamo</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
   <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de pago de préstamo</h1><p>Estima la cuota mensual de un préstamo con una fórmula estándar de amortización.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="calculator-card" id="calculator" data-calculator="loan-repayment-calculator.html"><h2>Calculadora de pago de préstamo</h2><p>Introduce el importe, el tipo de interés anual y el plazo para estimar la cuota mensual.</p><div class="form-grid"><div class="field"><label for="feet">Importe del préstamo</label><input type="number" id="feet" placeholder="Ejemplo: 20000" step="any" min="0"></div><div class="field"><label for="inches">Interés anual (%)</label><input type="number" id="inches" placeholder="Ejemplo: 7.5" step="any" min="0"></div><div class="field"><label for="decimals">Plazo del préstamo</label><select id="decimals"><option value="1">1 año</option><option value="3">3 años</option><option value="5" selected>5 años</option><option value="7">7 años</option><option value="10">10 años</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduce un valor para empezar</div></div></section>
