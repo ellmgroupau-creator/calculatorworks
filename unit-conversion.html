@@ -5,10 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Unit Conversion Calculators for Length, Weight and Temperature | CalculatorWorks</title>
   <meta name="description" content="Use free unit conversion calculators for feet, metres, inches, centimetres, kilograms, pounds, kilometres, miles, and temperature changes with formulas and examples.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/unit-conversion">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/unit-conversion">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/unit-conversion">
+  <meta property="og:title" content="Unit Conversion Calculators for Length, Weight and Temperature | CalculatorWorks">
+  <meta property="og:description" content="Use free unit conversion calculators for feet, metres, inches, centimetres, kilograms, pounds, kilometres, miles, and temperature changes with formulas and examples.">
+  <meta property="og:url" content="https://calculatorworks.io/unit-conversion">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CalculatorWorks">
+  <meta property="og:image" content="https://calculatorworks.io/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Unit Conversion Calculators for Length, Weight and Temperature | CalculatorWorks">
+  <meta name="twitter:description" content="Use free unit conversion calculators for feet, metres, inches, centimetres, kilograms, pounds, kilometres, miles, and temperature changes with formulas and examples.">
+  <meta name="twitter:image" content="https://calculatorworks.io/logo.png">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -29,7 +42,62 @@
   ]
 }
   </script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why use a dedicated unit converter instead of estimating?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A dedicated converter helps reduce avoidable rounding and mental-maths mistakes when the exact measurement matters."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Which section should I start with?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Start with the unit family that matches your task, such as distance, height, weight, or temperature, then choose the specific converter."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can these pages help with travel or overseas products?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. They are useful for international product listings, travel planning, forms, and any situation where metric and imperial measurements need to be compared."
+      }
+    }
+  ]
+}
+  </script>
 </head>
 <body>
 
@@ -103,9 +171,9 @@
 
         <div class="ad-banner">
           <div class="ad-box ad-box-adaptive">
-            <span class="ad-slot-label">User-first layout</span>
-            <strong>Reserved for a single adaptive banner</strong>
-            <p>This space is intentionally limited and can stay empty until a relevant ad is ready.</p>
+            <span class="ad-slot-label">Site quality note</span>
+            <strong>Navigation and content remain easy to use</strong>
+            <p>CalculatorWorks keeps the main calculator or category content readable and functional whether ads are shown or not.</p>
           </div>
         </div>
 
@@ -160,5 +228,19 @@
 
   <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy-policy">Privacy Policy</a><a href="/terms">Terms</a></div><div class="footer-note"><p>CalculatorWorks publishes free calculator tools with clear legal pages, a public contact page, and user-first page layouts. Calculator results are for general guidance only and should be checked before important decisions.</p></div></div></footer>
 
+  <div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Privacy and ads choices</strong>
+        <p>CalculatorWorks may use cookies and similar technologies for essential site functions and advertising. You can accept ad-related cookies, reject them, or review the privacy policy first.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/privacy-policy">Privacy Policy</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Reject</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Accept</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>

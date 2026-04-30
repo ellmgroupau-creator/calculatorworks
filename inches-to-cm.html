@@ -5,10 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inches to CM Converter (in to cm) | CalculatorWorks</title>
   <meta name="description" content="Convert inches to centimetres with a fast in to cm converter, quick reference values, examples, and practical sizing help for devices, tools, and crafts.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/inches-to-cm">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/inches-to-cm">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/inches-to-cm">
+  <meta property="og:title" content="Inches to CM Converter (in to cm) | CalculatorWorks">
+  <meta property="og:description" content="Convert inches to centimetres with a fast in to cm converter, quick reference values, examples, and practical sizing help for devices, tools, and crafts.">
+  <meta property="og:url" content="https://calculatorworks.io/inches-to-cm">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CalculatorWorks">
+  <meta property="og:image" content="https://calculatorworks.io/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Inches to CM Converter (in to cm) | CalculatorWorks">
+  <meta name="twitter:description" content="Convert inches to centimetres with a fast in to cm converter, quick reference values, examples, and practical sizing help for devices, tools, and crafts.">
+  <meta name="twitter:image" content="https://calculatorworks.io/logo.png">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -33,6 +46,29 @@
     }
   ]
 }
+  </script>
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
   </script>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
 </head>
@@ -163,5 +199,18 @@
   <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy-policy">Privacy Policy</a><a href="/terms">Terms</a></div><div class="footer-note"><p>CalculatorWorks publishes free calculator tools with clear legal pages, a public contact page, and user-first page layouts. Calculator results are for general guidance only and should be checked before important decisions.</p></div></div></footer>
 
   <script src="script.js"></script>
+  <div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Privacy and ads choices</strong>
+        <p>CalculatorWorks may use cookies and similar technologies for essential site functions and advertising. You can accept ad-related cookies, reject them, or review the privacy policy first.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/privacy-policy">Privacy Policy</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Reject</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Accept</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

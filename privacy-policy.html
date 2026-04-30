@@ -5,10 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy | CalculatorWorks</title>
   <meta name="description" content="Read the CalculatorWorks privacy policy, including general information about analytics, advertising, and how contact information may be handled.">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/privacy-policy">
+  <meta property="og:title" content="Privacy Policy | CalculatorWorks">
+  <meta property="og:description" content="Read the CalculatorWorks privacy policy, including general information about analytics, advertising, and how contact information may be handled.">
+  <meta property="og:url" content="https://calculatorworks.io/privacy-policy">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CalculatorWorks">
+  <meta property="og:image" content="https://calculatorworks.io/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Privacy Policy | CalculatorWorks">
+  <meta name="twitter:description" content="Read the CalculatorWorks privacy policy, including general information about analytics, advertising, and how contact information may be handled.">
+  <meta name="twitter:image" content="https://calculatorworks.io/logo.png">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/privacy-policy">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/privacy-policy">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/privacy-policy">
@@ -94,6 +105,10 @@
           <p>Some parts of the site may rely on third-party services such as analytics, hosting, or advertising platforms. Those services may handle data according to their own policies.</p>
         </section>
         <section class="section-card">
+          <h2>Consent choices</h2>
+          <p>Where advertising or consent rules apply, CalculatorWorks may ask you to accept or reject ad-related cookies before personalised ads are requested. If you reject them, the site may limit ad personalisation or ad requests based on the settings available at the time.</p>
+        </section>
+        <section class="section-card">
           <h2>Policy updates</h2>
           <p>This policy may be updated from time to time to reflect changes to the site or its services. Continued use of the site after updates means you accept the revised policy.</p>
         </section>
@@ -139,5 +154,19 @@
 
   <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/about">About</a><a href="/contact">Contact</a><a href="/privacy-policy">Privacy Policy</a><a href="/terms">Terms</a></div><div class="footer-note"><p>CalculatorWorks publishes free calculator tools with clear legal pages, a public contact page, and user-first page layouts. Calculator results are for general guidance only and should be checked before important decisions.</p></div></div></footer>
 
+  <div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Privacy and ads choices</strong>
+        <p>CalculatorWorks may use cookies and similar technologies for essential site functions and advertising. You can accept ad-related cookies, reject them, or review the privacy policy first.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/privacy-policy">Privacy Policy</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Reject</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Accept</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>

@@ -977,3 +977,50 @@ if (mainCalcScreen && mainCalcKeys.length) {
     });
   });
 }
+
+// =========================
+// Consent Banner
+// =========================
+const consentBanner = document.getElementById('consentBanner');
+const consentAccept = document.getElementById('consentAccept');
+const consentReject = document.getElementById('consentReject');
+
+function setConsentChoice(choice) {
+  try { localStorage.setItem('cw-consent-choice', choice); } catch (e) {}
+  if (typeof gtag === 'function') {
+    gtag('consent', 'update', {
+      ad_storage: choice === 'accepted' ? 'granted' : 'denied',
+      ad_user_data: choice === 'accepted' ? 'granted' : 'denied',
+      ad_personalization: choice === 'accepted' ? 'granted' : 'denied',
+      analytics_storage: 'denied'
+    });
+  }
+  window.adsbygoogle = window.adsbygoogle || [];
+  if (choice === 'accepted') {
+    window.adsbygoogle.pauseAdRequests = 0;
+    window.adsbygoogle.requestNonPersonalizedAds = 0;
+  } else {
+    window.adsbygoogle.pauseAdRequests = 1;
+    window.adsbygoogle.requestNonPersonalizedAds = 1;
+  }
+}
+
+if (consentBanner && consentAccept && consentReject) {
+  let storedConsent = null;
+  try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+
+  if (!storedConsent) {
+    consentBanner.hidden = false;
+  }
+
+  consentAccept.addEventListener('click', function () {
+    setConsentChoice('accepted');
+    consentBanner.hidden = true;
+    window.location.reload();
+  });
+
+  consentReject.addEventListener('click', function () {
+    setConsentChoice('rejected');
+    consentBanner.hidden = true;
+  });
+}
