@@ -1009,8 +1009,16 @@ if (consentBanner && consentAccept && consentReject) {
   let storedConsent = null;
   try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
 
+  function hasManagedCmp() {
+    return typeof window.__tcfapi === 'function' || !!document.getElementById('fc-consent-root') || !!document.querySelector('[id*="fc-consent"], [class*="fc-consent"]');
+  }
+
   if (!storedConsent) {
-    consentBanner.hidden = false;
+    setTimeout(function () {
+      if (!hasManagedCmp()) {
+        consentBanner.hidden = false;
+      }
+    }, 1500);
   }
 
   consentAccept.addEventListener('click', function () {
