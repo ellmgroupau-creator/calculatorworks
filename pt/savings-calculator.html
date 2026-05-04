@@ -3,8 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de poupança para saldo futuro e juros | CalculatorWorks</title>
-  <meta name="description" content="Use a calculadora de poupança grátis para estimar o saldo futuro e os juros ganhos com capitalização anual.">
+  <title>Calculadora de poupança | CalculatorWorks</title>
+  <meta name="description" content="Use a calculadora de poupança gratuita com fórmula, exemplos e ferramentas relacionadas.">
+
+  <meta property="og:locale" content="pt_PT">
+  
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
@@ -12,8 +15,7 @@
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/savings-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/savings-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/savings-calculator">
-  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/savings-calculator">
-  <script type="application/ld+json">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/savings-calculator"><script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -38,12 +40,37 @@
   ]
 }
   </script>
-</head>
+
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script></head>
 <body>
-  <header class="site-header">
+    <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
+        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -52,10 +79,10 @@
         <a href="/pt/everyday">Uso diário</a>
         <a href="/pt/calculators">Todas as calculadoras</a>
       </nav>
-      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/savings-calculator" lang="en">English</a> <span>|</span> <a href="/es/savings-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/savings-calculator" lang="pt">Português</a></div>
+      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/savings-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/savings-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/savings-calculator" lang="es">Espanhol</a></div>
     </div>
   </header>
-  <div class="breadcrumb-wrap">
+    <div class="breadcrumb-wrap">
     <div class="container">
       <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
         <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de poupança</span></li></ol>
@@ -63,22 +90,30 @@
     </div>
   </div>
 
-  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de poupança</h1><p>Estime o saldo futuro e os juros ganhos com uma projeção simples de capitalização anual.</p></div></div></section>
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de poupança</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
-    <section class="calculator-card" id="calculator" data-calculator="savings-calculator.html"><h2>Calculadora de poupança</h2><p>Introduza o saldo inicial, o juro anual e o número de anos para projetar o crescimento.</p><div class="form-grid"><div class="field"><label for="feet">Saldo inicial</label><input type="number" id="feet" placeholder="Exemplo: 10000" step="any" min="0"></div><div class="field"><label for="inches">Juro anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 4.5" step="any" min="0"></div><div class="field"><label for="decimals">Anos</label><select id="decimals"><option value="1">1 ano</option><option value="3">3 anos</option><option value="5" selected>5 anos</option><option value="10">10 anos</option><option value="20">20 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
-    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>saldo futuro = capital × (1 + juro anual)^anos</strong><br><strong>juros ganhos = saldo futuro - capital</strong></div><p>Exemplo: 10,000 a 4.5% durante 5 anos gera um saldo aproximado de 12,460.18.</p></section>
-    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>5,000 a 3% durante 3 anos</strong> = 5,463.64</p><p><strong>10,000 a 4.5% durante 5 anos</strong> = 12,460.18</p><p><strong>25,000 a 5% durante 10 anos</strong> = 40,722.34</p></div></section>
-    <section class="section-card" id="guide"><h2>Como usar esta estimativa</h2><p>A calculadora ajuda a definir metas de poupança, comparar taxas de juro e perceber quanto o tempo contribui para o crescimento do capital.</p><div class="related-links"><a href="/pt/loan-repayment-calculator">Comparar com empréstimo</a><a href="/pt/mortgage-calculator">Comparar com hipoteca</a><a href="/pt/finance">Mais finanças</a></div></section>
-    <section class="section-card" id="faq"><h2>Perguntas frequentes</h2><div class="faq-list"><h3>O que significa capitalização anual?</h3><p>Que os juros são adicionados uma vez por ano ao saldo.</p><h3>Serve para uma meta de poupança?</h3><p>Sim. É uma forma rápida de estimar se o capital crescerá ao ritmo esperado.</p><h3>Em que difere de juro composto?</h3><p>Esta página mostra uma versão simples focada no crescimento anual do saldo.</p></div></section>
-    <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/loan-repayment-calculator">Prestação de empréstimo</a><a href="/pt/mortgage-calculator">Hipoteca</a><a href="/pt/finance">Finanças</a><a href="/pt/calculators">Todas as calculadoras</a></div></section>
-  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
+    <section class="calculator-card" id="calculator" data-calculator="savings-calculator.html"><h2>Calculadora de poupança</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Valor inicial</label><input type="number" id="feet" placeholder="Exemplo: 10000" step="any" min="0"></div><div class="field"><label for="inches">Taxa de juro anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 4,5" step="any" min="0"></div><div class="field"><label for="decimals">Prazo de poupança (anos)</label><select id="decimals"><option value="1">1 ano</option><option value="3">3 anos</option><option value="5" selected>5 anos</option><option value="10">10 anos</option><option value="15">15 anos</option><option value="20">20 anos</option><option value="25">25 anos</option><option value="30">30 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
+    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>valor futuro = principal × (1 + taxa)^anos</strong><br><strong>juros ganhos = valor futuro - principal</strong></div><p>Exemplo: US$ 10.000 a 4,5% por 5 anos crescem para cerca de US$ 12.461,82, rendendo cerca de US$ 2.461,82 em juros.</p></section>
+    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>5 000 US$ a 3% durante 3 anos</strong> = 5 463,64 US$</p><p><strong>10 000 US$ a 4,5% durante 5 anos</strong> = 12 461,82 US$</p><p><strong>25 000 US$ a 5% durante 10 anos</strong> = 40 722,37 US$</p></div></section>
+    <section class="section-card" id="guide"><h2>Como usar uma estimativa de crescimento da poupança</h2><p>Esta calculadora é útil para planear metas, objetivos de fundo de emergência e comparar opções de prazo para o dinheiro que deixa investido ou em poupança. Se quiser ver como o crescimento a longo prazo muda, teste diferentes taxas e prazos lado a lado.</p><div class="related-links"><a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a><a href="/pt/mortgage-calculator">Calculadora de hipoteca</a><a href="/pt/salary-calculator">Calculadora de salário</a></div></section><section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de poupança</h2><div class="faq-list"><h3>O que significa capitalização anual?</h3><p>A composição anual significa que os juros são adicionados ao saldo uma vez por ano, e os juros futuros são então ganhos sobre esse saldo maior.</p><h3>Posso usar esta calculadora para uma meta de poupança?</h3><p>Sim. É uma maneira simples de estimar quanto um valor inicial pode crescer até uma data prevista, especialmente se estiver a comparar taxas diferentes.</p><h3>Qual é a diferença entre isso e juros compostos?</h3><p>Esta ferramenta centra-se no saldo futuro da poupança e nos juros obtidos a partir de um valor inicial, enquanto a <a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a> é uma calculadora de crescimento mais geral para cenários de capital e taxa.</p></div></section><section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a><a href="/pt/mortgage-calculator">Calculadora de hipoteca</a><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/loan-repayment-calculator">Calculadora de prestação de empréstimo</a><a href="/pt/calculators">Todas as calculadoras</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
             <span class="ad-slot-label">Espaço publicitário futuro</span>
             <strong>Reservado para um anúncio relevante</strong>
             <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
-            <p>Será usada apenas uma quantidade limitada de posições publicitárias.</p>
+            <p>Só será usado um número limitado de espaços publicitários.</p>
           </div></div></aside></div></main>
-
-  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>O CalculatorWorks publica calculadoras gratuitas com páginas legais claras, dados de contacto visíveis e layouts pensados para o utilizador. Os resultados são informativos e devem ser confirmados antes de decisões importantes.</p></div></div></footer>
-  <script src="../script.js"></script>
+    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer><script src="../script.js"></script><div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opções de privacidade e anúncios</strong>
+        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sobre o CalculatorWorks | CalculatorWorks</title>
-  <meta name="description" content="Conheça o CalculatorWorks, a nossa abordagem para criar calculadoras claras e como procuramos simplificar os cálculos do dia a dia.">
+  <title>Sobre | CalculatorWorks</title>
+  <meta name="description" content="Saiba mais sobre a CalculatorWorks, a nossa abordagem às calculadoras online e o foco em ferramentas claras e fáceis de usar.">
+
+  <meta property="og:locale" content="pt_PT">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
@@ -33,12 +35,37 @@
   ]
 }
   </script>
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
+        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -47,7 +74,7 @@
         <a href="/pt/everyday">Uso diário</a>
         <a href="/pt/calculators">Todas as calculadoras</a>
       </nav>
-      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/about" lang="en">English</a> <span>|</span> <a href="/es/about" lang="es">Español</a> <span>|</span> <a href="/pt/about" lang="pt">Português</a></div>
+      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/about" lang="en">Inglês</a> <span>|</span> <a href="/pt/about" lang="pt">Português</a> <span>|</span> <a href="/es/about" lang="es">Espanhol</a></div>
     </div>
   </header>
   <div class="breadcrumb-wrap">
@@ -58,7 +85,7 @@
     </div>
   </div>
 
-  <section class="hero"><div class="container"><div class="hero-text"><h1>Sobre o CalculatorWorks</h1><p>O CalculatorWorks é uma coleção em crescimento de calculadoras online gratuitas concebidas para tornar os cálculos do dia a dia mais rápidos, simples e fáceis de confirmar.</p></div></div></section>
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Sobre o CalculatorWorks</h1><p>A CalculatorWorks é uma coleção em crescimento de calculadoras online gratuitas concebidas para tornar os cálculos do dia a dia mais rápidos, simples e fáceis de confirmar.</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="section-card"><h2>O que fazemos</h2><p>Publicamos ferramentas práticas para percentagens, descontos, planeamento financeiro e outras operações frequentes. Cada calculadora dá prioridade à rapidez, à clareza e a uma explicação fácil de seguir.</p><p>Nesta fase em português traduzimos e revimos um conjunto controlado de páginas para manter coerência de navegação e qualidade editorial.</p></section>
     <section class="section-card"><h2>A nossa abordagem</h2><p>Concentramo-nos em fórmulas visíveis, exemplos resolvidos e linguagem clara. Se no futuro houver publicidade, continuará a ser limitada e separada do conteúdo principal.</p><div class="trust-note"><p><strong>Design centrado no utilizador:</strong> páginas rápidas, sem registos obrigatórios e com a ferramenta à frente de qualquer outro elemento.</p><p><strong>Monetização prudente:</strong> os anúncios não devem bloquear resultados nem navegação essencial.</p></div></section>
@@ -67,6 +94,21 @@
     <section class="section-card"><h2>O que pode esperar do site</h2><ul class="compliance-list"><li>Ligações claras para Sobre, Contacto, Privacidade e Termos.</li><li>Páginas que explicam a utilidade da ferramenta antes de qualquer publicidade futura.</li><li>Layout estático simples, sem contas obrigatórias nem botões enganadores.</li></ul></section>
   </div><aside class="sidebar"><div class="sidebar-card"><h3>Ligações rápidas</h3><div class="related-links"><a href="/pt/calculators">Todas as calculadoras</a><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Privacidade</a><a href="/pt/terms">Termos</a></div></div><div class="sidebar-card sidebar-card-utility"><h3>Padrões do site</h3><div class="ad-box ad-box-sidebar"><span class="ad-slot-label">Confiança e conformidade</span><strong>O conteúdo útil vem primeiro</strong><p>A navegação, as políticas e a informação de contacto mantêm-se visíveis para que o site seja fácil de perceber.</p></div></div></aside></div></main>
 
-  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>O CalculatorWorks publica calculadoras gratuitas com páginas legais claras, dados de contacto visíveis e layouts pensados para o utilizador. Os resultados são informativos e devem ser confirmados antes de decisões importantes.</p></div></div></footer>
+  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+
+  <script src="../script.js"></script>
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opções de privacidade e anúncios</strong>
+        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

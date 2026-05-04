@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de margem | CalculatorWorks</title>
+  <meta name="description" content="Use a calculadora de margem gratuita com fórmula, exemplos e ferramentas relacionadas.">
+
+  <meta property="og:locale" content="pt_PT">
+  
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="canonical" href="https://calculatorworks.io/pt/margin-calculator">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/margin-calculator">
+  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/margin-calculator">
+  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/margin-calculator">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/margin-calculator">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://calculatorworks.io/pt/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanças",
+      "item": "https://calculatorworks.io/pt/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de margem"
+    }
+  ]
+}
+  </script>
+
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+    <div class="container header-inner">
+      <a href="/pt/" class="logo-wrap">
+        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="4932" height="1659" decoding="async">
+      </a>
+      <nav class="main-nav">
+        <a href="/pt/">Início</a>
+        <a href="/pt/finance">Finanças</a>
+        <a href="/pt/percentage">Percentagens</a>
+        <a href="/pt/everyday">Uso diário</a>
+        <a href="/pt/calculators">Todas as calculadoras</a>
+      </nav>
+      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/margin-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/margin-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/margin-calculator" lang="es">Espanhol</a></div>
+    </div>
+  </header>
+    <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de margem</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de margem</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
+  <main class="main-content"><div class="container content-grid"><div>
+    <section class="calculator-card" id="calculator" data-calculator="margin-calculator.html"><h2>Calculadora de margem</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Preço de venda</label><input type="number" id="feet" placeholder="Exemplo: 120" step="any" min="0"></div><div class="field"><label for="inches">Custo</label><input type="number" id="inches" placeholder="Exemplo: 75" step="any" min="0"></div><div class="field"><label for="decimals">Casas decimais</label><select id="decimals"><option value="0">0 casas decimais</option><option value="1">1 casa decimal</option><option value="2" selected>2 casas decimais</option><option value="3">3 casas decimais</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
+    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>lucro bruto = preço de venda - custo</strong><br><strong>margem % = (lucro bruto ÷ preço de venda) × 100</strong></div><p>Exemplo: vender por 120 € com um custo de 75 € gera 45 € de lucro bruto e uma margem de 37,50%.</p></section>
+    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>Preço de venda 100 €, custo 60 €</strong> = 40 € de lucro, 40,00% de margem</p><p><strong>Preço de venda 120 €, custo 75 €</strong> = 45 € de lucro, 37,50% de margem</p><p><strong>Preço de venda 250 €, custo 180 €</strong> = 70 € de lucro, 28,00% de margem</p></div></section>
+    <section class="section-card" id="guide"><h2>Quando a margem importa</h2><p>Use a margem quando quiser medir o lucro como percentagem do preço de venda. É uma métrica comum no retalho, no comércio eletrónico e nos serviços porque mostra quanto sobra depois de cobrir o custo.</p><div class="related-links"><a href="/pt/markup-calculator">Calculadora de margem sobre custo</a><a href="/pt/discount-calculator">Calculadora de descontos</a><a href="/pt/finance">Calculadoras de finanças</a></div></section><section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de margem</h2><div class="faq-list"><h3>O que é a margem de lucro?</h3><p>A margem de lucro é o lucro bruto dividido pelo preço de venda, expresso em percentagem. Mostra quanto sobra de cada venda depois de cobrir o custo.</p><h3>Qual é a diferença entre margem e margem sobre custo?</h3><p>A margem baseia-se no preço de venda, enquanto a margem sobre custo se baseia no custo. Estão relacionadas, mas não são intercambiáveis.</p><h3>Que calculadora devo usar para definir um preço de venda?</h3><p>Se conhece o seu custo e a margem sobre custo desejada, use a <a href="/pt/markup-calculator">Calculadora de margem sobre custo</a>. Se já conhece o preço de venda e quer medir a rentabilidade, use esta ferramenta.</p></div></section><section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/markup-calculator">Calculadora de margem sobre custo</a><a href="/pt/discount-calculator">Calculadora de descontos</a><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/percentage-calculator">Calculadora de percentagens</a><a href="/pt/calculators">Todas as calculadoras</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espaço publicitário futuro</span>
+            <strong>Reservado para um anúncio relevante</strong>
+            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
+            <p>Só será usado um número limitado de espaços publicitários.</p>
+          </div></div></aside></div></main>
+    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+  <script src="../script.js"></script>
+
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opções de privacidade e anúncios</strong>
+        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

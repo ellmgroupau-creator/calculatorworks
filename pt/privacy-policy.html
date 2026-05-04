@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Política de privacidade | CalculatorWorks</title>
-  <meta name="description" content="Leia a política de privacidade do CalculatorWorks, incluindo informação geral sobre analítica, publicidade e tratamento de dados de contacto.">
+  <meta name="description" content="Leia a política de privacidade da CalculatorWorks para compreender como o site pode tratar cookies, analítica e dados de contacto.">
+
+  <meta property="og:locale" content="pt_PT">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
@@ -33,12 +35,37 @@
   ]
 }
   </script>
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="site-header">
     <div class="container header-inner">
       <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo do CalculatorWorks" width="4932" height="1659" decoding="async">
+        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="4932" height="1659" decoding="async">
       </a>
       <nav class="main-nav">
         <a href="/pt/">Início</a>
@@ -47,7 +74,7 @@
         <a href="/pt/everyday">Uso diário</a>
         <a href="/pt/calculators">Todas as calculadoras</a>
       </nav>
-      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/privacy-policy" lang="en">English</a> <span>|</span> <a href="/es/privacy-policy" lang="es">Español</a> <span>|</span> <a href="/pt/privacy-policy" lang="pt">Português</a></div>
+      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/privacy-policy" lang="en">Inglês</a> <span>|</span> <a href="/pt/privacy-policy" lang="pt">Português</a> <span>|</span> <a href="/es/privacy-policy" lang="es">Espanhol</a></div>
     </div>
   </header>
   <div class="breadcrumb-wrap">
@@ -61,7 +88,7 @@
   <section class="hero"><div class="container"><div class="hero-text"><h1>Política de privacidade</h1><p>Esta política explica de forma geral como o CalculatorWorks pode recolher e usar informação quando visita o site.</p><p class="eyebrow">Última atualização: abril de 2026</p></div></div></section>
   <main class="main-content"><div class="container content-grid"><div>
     <section class="section-card"><h2>Dados de utilização do website</h2><p>Como muitos websites, o CalculatorWorks pode usar analítica básica, registos do servidor e ferramentas semelhantes para compreender a utilização do site, melhorar o desempenho e monitorizar padrões de tráfego. Isto pode incluir informação técnica geral como navegador, páginas visitadas e localização aproximada.</p></section>
-    <section class="section-card"><h2>Cookies e publicidade</h2><p>O CalculatorWorks pode usar cookies ou tecnologias semelhantes para funcionalidade do site, analítica e publicidade. Fornecedores publicitários de terceiros, incluindo a Google, podem usar cookies para apresentar e medir anúncios quando essa funcionalidade estiver ativa.</p><div class="trust-note"><p>Se o Google AdSense ou uma solução semelhante for ativado, os anúncios podem ser personalizados ou não personalizados conforme a sua região, as definições do navegador, os requisitos de consentimento e a configuração do fornecedor em vigor nesse momento.</p></div></section>
+    <section class="section-card"><h2>Cookies e publicidade</h2><p>A CalculatorWorks pode usar cookies ou tecnologias semelhantes para funcionalidade do site, analítica e publicidade. Fornecedores publicitários de terceiros, incluindo a Google, podem usar cookies para apresentar e medir anúncios quando essa funcionalidade estiver ativa.</p><div class="trust-note"><p>Se o Google AdSense ou uma solução semelhante for ativado, os anúncios podem ser personalizados ou não personalizados conforme a sua região, as definições do navegador, os requisitos de consentimento e a configuração do fornecedor em vigor nesse momento.</p></div></section>
     <section class="section-card"><h2>Informação de contacto</h2><p>Se contactar diretamente o CalculatorWorks, os dados fornecidos, como o seu nome ou e-mail, podem ser usados apenas para responder ao seu pedido ou rever o seu comentário.</p></section>
     <section class="section-card"><h2>Serviços de terceiros</h2><p>Algumas partes do site podem depender de serviços de terceiros, como analítica, alojamento ou plataformas publicitárias. Esses serviços podem tratar dados de acordo com as suas próprias políticas.</p></section>
     <section class="section-card"><h2>Atualizações da política</h2><p>Esta política pode ser atualizada ocasionalmente para refletir alterações no site ou nos seus serviços. O uso continuado do site após as atualizações implica aceitação da versão revista.</p></section>
@@ -73,6 +100,21 @@
             <p>Será usada apenas uma quantidade limitada de posições publicitárias.</p>
           </div></div></aside></div></main>
 
-  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>O CalculatorWorks publica calculadoras gratuitas com páginas legais claras, dados de contacto visíveis e layouts pensados para o utilizador. Os resultados são informativos e devem ser confirmados antes de decisões importantes.</p></div></div></footer>
+  <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+
+  <script src="../script.js"></script>
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opções de privacidade e anúncios</strong>
+        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

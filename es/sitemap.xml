@@ -1,87 +1,333 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://calculatorworks.io/es/</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://calculatorworks.io/es/about</loc>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/about</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://calculatorworks.io/es/age-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/age-difference-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/average-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/bmi-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/body-surface-area-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/break-even-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/business-days-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/business-profit-planner-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/business</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/calculators</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/celsius-to-fahrenheit</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/cm-to-inches</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/commission-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/compound-interest-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/concrete-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/contact</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/contribution-margin-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/countdown-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/credit-card-payoff-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/credit-utilization-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/cups-to-ml-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/current-ratio-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/date-add-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/date-time</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/days-between-dates-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/debt-payoff-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/debt-to-income-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/depreciation-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/discount-calculator</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/down-payment-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/due-date-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/emergency-fund-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/everyday</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/fahrenheit-to-celsius</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/feet-to-metres</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/finance</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/flooring-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/gallons-to-litres-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/gpa-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/gravel-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/health</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/hourly-to-salary-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/hours-between-dates-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/household</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/ideal-weight-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/inches-to-cm</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/inflation-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/kg-to-lb</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/km-to-miles</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/kph-to-mph-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/lb-to-kg</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/lean-body-mass-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/litres-per-square-metre-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/litres-to-gallons-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/loan-repayment-calculator</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/margin-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/markup-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/math</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/measurement</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/median-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/metres-to-feet</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/midpoint-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/miles-to-km</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/ml-to-cups-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/mode-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/mortgage-calculator</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/percentage</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://calculatorworks.io/es/mph-to-kph-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/mulch-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/net-worth-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/one-rep-max-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/overtime-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/ovulation-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/pace-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/paint-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/pay-raise-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/paycheck-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/percent-change-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/percentage-calculator</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/percentage-decrease-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/percentage-increase-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/percentage</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/privacy-policy</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/protein-intake-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/quick-ratio-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/ratio-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/refinance-savings-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/roi-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/room-perimeter-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/salary-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/sales-tax-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/savings-calculator</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/savings-goal-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/simple-interest-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/slope-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/square-feet-to-square-metres-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/square-footage-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/square-metres-to-square-feet-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/standard-deviation-calculator</loc>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/terms</loc>
-    <lastmod>2026-04-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/tile-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/time-duration-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/tip-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/unit-conversion</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/vat-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/waist-to-hip-ratio-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/water-intake-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/weeks-between-dates-calculator</loc>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/weighted-average-calculator</loc>
   </url>
 </urlset>

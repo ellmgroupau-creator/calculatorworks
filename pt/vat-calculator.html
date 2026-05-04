@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de IVA | CalculatorWorks</title>
+  <meta name="description" content="Use a calculadora de iva gratuita com fórmula, exemplos e ferramentas relacionadas.">
+
+  <meta property="og:locale" content="pt_PT">
+  
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="canonical" href="https://calculatorworks.io/pt/vat-calculator">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/vat-calculator">
+  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/vat-calculator">
+  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/vat-calculator">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/vat-calculator">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Início",
+      "item": "https://calculatorworks.io/pt/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanças",
+      "item": "https://calculatorworks.io/pt/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de IVA"
+    }
+  ]
+}
+  </script>
+
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+    <div class="container header-inner">
+      <a href="/pt/" class="logo-wrap">
+        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="4932" height="1659" decoding="async">
+      </a>
+      <nav class="main-nav">
+        <a href="/pt/">Início</a>
+        <a href="/pt/finance">Finanças</a>
+        <a href="/pt/percentage">Percentagens</a>
+        <a href="/pt/everyday">Uso diário</a>
+        <a href="/pt/calculators">Todas as calculadoras</a>
+      </nav>
+      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/vat-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/vat-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/vat-calculator" lang="es">Espanhol</a></div>
+    </div>
+  </header>
+    <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
+        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de IVA</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de IVA</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
+  <main class="main-content"><div class="container content-grid"><div>
+    <section class="calculator-card" id="calculator" data-calculator="vat-calculator.html"><h2>Calculadora de IVA</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Valor</label><input type="number" id="feet" placeholder="Exemplo: 100" step="any" min="0"></div><div class="field"><label for="inches">Taxa de IVA (%)</label><input type="number" id="inches" placeholder="Exemplo: 20" step="any" min="0"></div><div class="field"><label for="decimals">Direção</label><select id="decimals"><option value="add">Adicionar IVA (líquido para bruto)</option><option value="remove">Remover IVA (bruto para líquido)</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
+    <section class="section-card" id="formula"><h2>Fórmulas</h2><div class="formula-box"><strong>Adicionando IVA:</strong><br>valor do IVA = preço líquido × (taxa de IVA / 100)<br>preço bruto = preço líquido + valor do IVA<br><br><strong>Remover IVA:</strong><br>preço líquido = preço bruto / (1 + taxa de IVA / 100)<br>valor do IVA = preço bruto - preço líquido</div><p>Adicionar o IVA é uma multiplicação simples. A remoção do IVA exige a divisão por (1 + taxa) em vez de simplesmente subtrair uma percentagem, porque o IVA foi calculado sobre o preço líquido e não sobre o preço bruto.</p></section>
+    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>Adicione 20% de IVA a 100 €:</strong> IVA = 20,00 €; bruto = 120,00 €</p><p><strong>Remova 20% de IVA de 120 €:</strong> líquido = 100,00 €; IVA = 20,00 €</p><p><strong>Adicione 10% de IVA a 250 €:</strong> IVA = 25,00 €; bruto = 275,00 €</p><p><strong>Remova 15% de IVA de 575 €:</strong> líquido = 500,00 €; IVA = 75,00 €</p></div></section>
+    <section class="section-card" id="guide"><h2>Quando usar uma calculadora de IVA</h2><p>O IVA (Imposto sobre Valor Agregado) e impostos similares sobre vendas são aplicados na maioria dos países do mundo. Use esta calculadora ao cotar preços aos clientes, preparar faturas, reconciliar recibos ou calcular o custo de uma compra sem impostos. Funciona com qualquer taxa de imposto baseada em percentagem, não apenas com o IVA.</p><p>As taxas comuns de IVA incluem 20% (Reino Unido), 19% (Alemanha), 21% (Países Baixos e Espanha), 10% (GST na Austrália) e 15% (GST na Nova Zelândia). Confirme sempre a taxa atual aplicável na sua jurisdição.</p></section>
+    <section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de IVA</h2><div class="faq-list"><h3>Posso usar isto para imposto sobre vendas?</h3><p>Sim. A matemática é a mesma para qualquer imposto de consumo baseado em percentagem, seja chamado IVA, GST, imposto sobre vendas ou outro nome. Basta introduzir a taxa aplicável.</p><h3>Porque não posso simplesmente subtrair a percentagem para remover o IVA?</h3><p>Porque o IVA é calculado sobre o preço líquido (antes de impostos), e não sobre o preço bruto. Subtrair 20% de 120 € dá 96 €, e não 100 €. O método correto divide por 1,20 para inverter o cálculo.</p><h3>Que taxa de IVA devo usar?</h3><p>Use uma taxa padrão para o seu país ou a taxa específica aplicável aos bens ou serviços em questão. Muitos países reduziram as taxas para bens essenciais, como alimentos ou roupas infantis.</p></div></section>
+    <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/margin-calculator">Calculadora de margem</a><a href="/pt/markup-calculator">Calculadora de margem sobre custo</a><a href="/pt/discount-calculator">Calculadora de descontos</a><a href="/pt/percentage-calculator">Calculadora de percentagens</a><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/calculators">Todas as calculadoras</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmulas</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#guide">Guia</a></li><li><a href="#faq">Perguntas frequentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espaço publicitário futuro</span>
+            <strong>Reservado para um anúncio relevante</strong>
+            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
+            <p>Só será usado um número limitado de espaços publicitários.</p>
+          </div></div></aside></div></main>
+    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+  <script src="../script.js"></script>
+
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opções de privacidade e anúncios</strong>
+        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

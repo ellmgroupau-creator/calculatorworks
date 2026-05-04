@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de metros a pies | CalculatorWorks</title>
+  <meta name="description" content="Usa la calculadora de metros a pies gratis con fórmula, ejemplos y herramientas relacionadas.">
+
+  <meta property="og:locale" content="es_ES">
+  
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="canonical" href="https://calculatorworks.io/es/metres-to-feet">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/metres-to-feet">
+  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/metres-to-feet">
+  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/metres-to-feet">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/metres-to-feet">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://calculatorworks.io/es/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Conversión de unidades",
+      "item": "https://calculatorworks.io/es/unit-conversion"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de metros a pies"
+    }
+  ]
+}
+  </script>
+
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header class="site-header">
+    <div class="container header-inner">
+      <a href="/es/" class="logo-wrap">
+        <img src="../logo.png" alt="Logotipo de CalculatorWorks" width="4932" height="1659" decoding="async">
+      </a>
+      <nav class="main-nav">
+        <a href="/es/">Inicio</a>
+        <a href="/es/finance">Finanzas</a>
+        <a href="/es/percentage">Porcentajes</a>
+        <a href="/es/everyday">Uso diario</a>
+        <a href="/es/calculators">Todas las calculadoras</a>
+      </nav>
+      <div class="language-switcher" aria-label="Selector de idioma"><a href="/metres-to-feet" lang="en">Inglés</a> <span>|</span> <a href="/es/metres-to-feet" lang="es">Español</a> <span>|</span> <a href="/pt/metres-to-feet" lang="pt">Português</a></div>
+    </div>
+  </header>
+    <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Ruta de navegación">
+        <ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/unit-conversion">Conversión de unidades</a></li><li><span class="is-current" aria-current="page">Calculadora de metros a pies</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <h1>Calculadora de metros a pies</h1>
+        <p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p>
+      </div>
+    </div>
+  </section>
+
+  <main class="main-content">
+    <div class="container content-grid">
+      <div>
+        <section class="calculator-card" id="calculator" data-calculator="metres-to-feet.html">
+          <h2>Calculadora de metros a pies</h2>
+          <p>Introduce los valores necesarios para obtener el resultado al instante.</p>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="feet">Metros</label>
+              <input type="number" id="feet" placeholder="Ejemplo: 1.82" step="any">
+            </div>
+
+            <div class="field">
+              <label for="decimals">Decimales</label>
+              <select id="decimals">
+                <option value="2">2 decimales</option>
+                <option value="3" selected>3 decimales</option>
+                <option value="4">4 decimales</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
+            <button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button>
+          </div>
+
+          <div class="result-box">
+            <span class="result-label">Resultado</span>
+            <div class="result-value" id="result">Introduce un valor para empezar</div>
+          </div>
+        </section>
+
+        <section class="section-card" id="formula">
+          <h2>Fórmula</h2>
+          <div class="formula-box">
+            <strong>pies = metros × 3,28084</strong>
+          </div>
+          <p>Ejemplo: 1,82 metros = 5'11,65"</p>
+        </section>
+
+        <section class="section-card" id="examples">
+          <h2>Ejemplos resueltos</h2>
+          <div class="example-box">
+            <p><strong>1.50 m</strong> = 4'11.06"</p>
+            <p><strong>1.82 m</strong> = 5'11.65"</p>
+            <p><strong>2.00 m</strong> = 6'6.74"</p>
+          </div>
+        </section>
+
+        <section class="section-card" id="guide"><h2>Cuándo utilizar este conversor de metros a pies</h2><p>Las medidas métricas son estándar en muchos países, pero los pies y las pulgadas todavía aparecen en listados de bienes raíces, estadísticas de gimnasios y deportes, y descripciones de productos importados. Este conversor es útil cuando necesita cambiar una altura o dimensión métrica a un formato imperial más familiar.</p><ul class="content-list"><li>Convierte la altura métrica en pies y pulgadas para formularios internacionales, perfiles de fitness y listados de deportes.</li><li>Comprueba medidas de habitaciones y muebles cuando el plano está en sistema métrico pero los detalles del producto están en sistema imperial.</li><li>Usa la tabla de referencia para comparaciones rápidas y luego la calculadora cuando necesites pies y pulgadas exactos.</li></ul></section><section class="section-card" id="quick-reference"><h2>Referencia rápida de metros a pies</h2><div class="table-wrap"><table class="quickref-table"><thead><tr><th>Metros</th><th>Pies y pulgadas</th></tr></thead><tbody><tr><td>1.50 m</td><td>4'11"</td></tr><tr><td>1.70 m</td><td>5'7"</td></tr><tr><td>1.80 m</td><td>5'11"</td></tr><tr><td>2.00 m</td><td>6'7"</td></tr></tbody></table></div></section><section class="section-card" id="faq"><h2>Preguntas frecuentes sobre metros a pies</h2><div class="faq-list"><h3>¿Cuántos pies hay en un metro?</h3><p>Un metro equivale aproximadamente a 3,28084 pies. Luego, la calculadora convierte la parte decimal en pulgadas para obtener un resultado familiar de pies y pulgadas.</p><h3>¿Por qué no mostrar solo pies decimales?</h3><p>La gente suele leer la altura y medidas similares en pies y pulgadas, así que dividir el resultado lo hace más fácil de usar.</p><h3>¿Puedo usar esto para medir la construcción?</h3><p>Sí. Sirve para alturas de techo, dimensiones de muebles, tamaños de habitaciones y otras medidas expresadas en metros.</p></div></section><section class="section-card" id="related">
+          <h2>Calculadoras relacionadas</h2>
+          <div class="related-links">
+            <a href="/es/unit-conversion">Calculadoras de conversión de unidades</a>
+            <a href="/es/feet-to-metres">Calculadora de pies a metros</a>
+            <a href="/es/inches-to-cm">Calculadora de pulgadas a cm</a>
+            <a href="/es/cm-to-inches">Calculadora de cm a pulgadas</a>
+          </div>
+        </section>
+      </div>
+
+      <aside class="sidebar">
+        <div class="sidebar-card">
+          <h3>En esta página</h3>
+          <ol class="toc">
+            <li><a href="#calculator">Calculadora</a></li>
+            <li><a href="#formula">Fórmula</a></li>
+            <li><a href="#examples">Ejemplos</a></li>
+            <li><a href="#guide">Cuándo usarlo</a></li><li><a href="#quick-reference">Referencia rápida</a></li><li><a href="#faq">Preguntas frecuentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li>
+          </ol>
+        </div>
+
+        <div class="sidebar-card">
+          <h3>Área publicitaria</h3>
+          <div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espacio publicitario futuro</span>
+            <strong>Reservado para un anuncio relevante</strong>
+            <p>Este marcador mantiene el diseño estable para que cualquier anuncio futuro no desplace el contenido.</p>
+            <p>Solo se usará un número limitado de ubicaciones publicitarias.</p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/es/about">Acerca de</a><a href="/es/contact">Contacto</a><a href="/es/privacy-policy">Política de privacidad</a><a href="/es/terms">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
+
+  <script src="../script.js"></script>
+
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opciones de privacidad y anuncios</strong>
+        <p>CalculatorWorks puede usar cookies y tecnologías similares para funciones esenciales del sitio y publicidad. Puedes aceptar las cookies relacionadas con anuncios, rechazarlas o revisar primero la política de privacidad.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/es/privacy-policy">Política de privacidad</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rechazar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

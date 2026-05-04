@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadoras online gratis de porcentajes, finanzas y más | CalculatorWorks</title>
-  <meta name="description" content="Usa calculadoras online gratis para porcentajes, descuentos, hipotecas, ahorros y cálculos cotidianos en CalculatorWorks.">
+  <title>Calculadoras online gratis por categoría | CalculatorWorks</title>
+  <meta name="description" content="Explora la colección completa en español y entra en cada herramienta con navegación localizada y resultados coherentes.">
+
+  <meta property="og:locale" content="es_ES">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
@@ -13,53 +15,31 @@
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/">
   <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/">
-<script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": "https://calculatorworks.io/es/#website",
-        "name": "CalculatorWorks",
-        "url": "https://calculatorworks.io/es/",
-        "description": "Calculadoras online gratis para porcentajes, descuentos, hipotecas, ahorros y cálculos cotidianos.",
-        "inLanguage": "es"
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://calculatorworks.io/es/#faq",
-        "url": "https://calculatorworks.io/es/",
-        "inLanguage": "es",
-        "mainEntity": [
-          {
-            "@type": "Question",
-            "name": "¿Qué calculadoras puedo usar en CalculatorWorks?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "En esta fase en español puedes usar herramientas de porcentajes, descuentos, ahorro, hipoteca y pagos de préstamos, además de páginas de navegación y confianza."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Qué calculadoras son mejores para compras y precios?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "Empieza con la Calculadora de descuentos y la Calculadora de porcentajes."
-            }
-          },
-          {
-            "@type": "Question",
-            "name": "¿Qué herramientas sirven para préstamos y vivienda?",
-            "acceptedAnswer": {
-              "@type": "Answer",
-              "text": "La Calculadora de pago de préstamo y la Calculadora de hipoteca cubren esos escenarios básicos."
-            }
-          }
-        ]
-      }
-    ]
-  }
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
   </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="site-header">
@@ -74,112 +54,26 @@
         <a href="/es/everyday">Uso diario</a>
         <a href="/es/calculators">Todas las calculadoras</a>
       </nav>
-      <div class="language-switcher" aria-label="Selector de idioma"><a href="/" lang="en">English</a> <span>|</span> <a href="/es/" lang="es">Español</a> <span>|</span> <a href="/pt/" lang="pt">Português</a></div>
+      <div class="language-switcher" aria-label="Selector de idioma"><a href="/" lang="en">Inglés</a> <span>|</span> <a href="/es/" lang="es">Español</a> <span>|</span> <a href="/pt/" lang="pt">Português</a></div>
     </div>
   </header>
-  <section class="hero">
-    <div class="container hero-grid">
-      <div class="hero-text">
-        <p class="eyebrow">Calculadoras online gratis</p>
-        <h1>Herramientas de cálculo y conversión para el día a día</h1>
-        <p>CalculatorWorks te ayuda a resolver porcentajes, descuentos, ahorros e importes de préstamos en segundos. Empieza con la calculadora de esta página o entra en una herramienta específica para obtener una respuesta más precisa.</p>
-        <div class="hero-buttons">
-          <a href="#browse-categories" class="btn btn-secondary">Ver categorías</a>
-          <a href="/es/about" class="btn btn-secondary">Por qué CalculatorWorks</a>
-        </div>
-        <div class="hero-highlights">
-          <a href="/es/percentage" class="hero-highlight-pill">Calculadoras de porcentajes</a>
-          <a href="/es/finance" class="hero-highlight-pill">Calculadoras financieras</a>
-          <a href="/es/everyday" class="hero-highlight-pill">Calculadoras de uso diario</a>
-          <a href="/es/mortgage-calculator" class="hero-highlight-pill">Hipoteca</a>
-          <a href="/es/savings-calculator" class="hero-highlight-pill">Ahorro</a>
-          <a href="/es/discount-calculator" class="hero-highlight-pill">Descuentos</a>
-        </div>
-      </div>
-      <div class="hero-card calculator-hero">
-        <div class="calc-shell">
-          <div class="calc-top-accent"></div>
-          <div class="calc-screen" id="mainCalcScreen">0</div>
-          <div class="calc-keys">
-            <button type="button" class="calc-key calc-key-light" data-action="clear">C</button>
-            <button type="button" class="calc-key calc-key-light" data-action="backspace">⌫</button>
-            <button type="button" class="calc-key calc-key-light" data-value="%">%</button>
-            <button type="button" class="calc-key calc-key-accent" data-value="/">÷</button>
-            <button type="button" class="calc-key" data-value="7">7</button>
-            <button type="button" class="calc-key" data-value="8">8</button>
-            <button type="button" class="calc-key" data-value="9">9</button>
-            <button type="button" class="calc-key" data-value="*">×</button>
-            <button type="button" class="calc-key" data-value="4">4</button>
-            <button type="button" class="calc-key" data-value="5">5</button>
-            <button type="button" class="calc-key" data-value="6">6</button>
-            <button type="button" class="calc-key" data-value="-">−</button>
-            <button type="button" class="calc-key" data-value="1">1</button>
-            <button type="button" class="calc-key" data-value="2">2</button>
-            <button type="button" class="calc-key" data-value="3">3</button>
-            <button type="button" class="calc-key" data-value="+">+</button>
-            <button type="button" class="calc-key calc-key-zero" data-value="0">0</button>
-            <button type="button" class="calc-key" data-value=".">.</button>
-            <button type="button" class="calc-key calc-key-accent" data-action="equals">=</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <main class="main-content">
-    <div class="container">
-      <section class="section-card" id="browse-categories">
-        <h2>Explora las calculadoras por categoría</h2>
-        <p>Estas páginas te llevan directamente a las herramientas más útiles sin mezclar enlaces a secciones aún no traducidas.</p>
-        <div class="card-grid homepage-category-grid">
-          <a href="/es/percentage" class="link-card"><h3>Porcentajes</h3><p>Calcula porcentajes, variaciones y descuentos con fórmulas claras.</p></a>
-          <a href="/es/finance" class="link-card"><h3>Finanzas</h3><p>Estimaciones para préstamos, hipotecas, ahorro y planificación sencilla.</p></a>
-          <a href="/es/everyday" class="link-card"><h3>Uso diario</h3><p>Herramientas prácticas para tareas cotidianas y cálculos rápidos.</p></a>
-          <a href="/es/calculators" class="link-card"><h3>Todas las calculadoras</h3><p>Consulta el índice completo de la fase 1 en español.</p></a>
-          <a href="/es/mortgage-calculator" class="link-card"><h3>Calculadora de hipoteca</h3><p>Estima la cuota mensual, el total a pagar y los intereses.</p></a>
-          <a href="/es/discount-calculator" class="link-card"><h3>Calculadora de descuentos</h3><p>Obtén el precio final y el ahorro de una oferta.</p></a>
-        </div>
-      </section>
-      <section class="section-card" id="popular-tools">
-        <h2>Calculadoras destacadas</h2>
-        <p>Una selección útil para búsquedas habituales sobre compras, crédito y ahorro.</p>
-        <div class="related-links popular-link-grid">
-          <a href="/es/percentage-calculator">Calculadora de porcentajes</a>
-          <a href="/es/discount-calculator">Calculadora de descuentos</a>
-          <a href="/es/loan-repayment-calculator">Calculadora de pago de préstamo</a>
-          <a href="/es/mortgage-calculator">Calculadora de hipoteca</a>
-          <a href="/es/savings-calculator">Calculadora de ahorro</a>
-          <a href="/es/finance">Más herramientas financieras</a>
-        </div>
-      </section>
-      <section class="section-card" id="discovery-guide">
-        <h2>Encuentra la herramienta correcta más rápido</h2>
-        <p>Si comparas precios, empieza en <a href="/es/discount-calculator">Descuentos</a> o en la sección de <a href="/es/percentage">Porcentajes</a>. Si estás planificando pagos o ahorro, entra en <a href="/es/finance">Finanzas</a>. Para una visión general del contenido traducido, usa <a href="/es/calculators">Todas las calculadoras</a>.</p>
-        <div class="related-links">
-          <a href="/es/percentage">Ver porcentajes</a>
-          <a href="/es/finance">Ver finanzas</a>
-          <a href="/es/everyday">Ver uso diario</a>
-          <a href="/es/calculators">Índice completo</a>
-        </div>
-      </section>
-      <section class="section-card" id="homepage-faqs">
-        <h2>Preguntas frecuentes de CalculatorWorks</h2>
-        <div class="faq-list">
-          <h3>¿Qué calculadoras puedo usar en CalculatorWorks?</h3>
-          <p>En esta fase en español puedes usar herramientas de porcentajes, descuentos, ahorro, hipoteca y pagos de préstamos, además de páginas de navegación y confianza.</p>
-          <h3>¿Qué calculadoras son mejores para compras y precios?</h3>
-          <p>Empieza con la <a href="/es/discount-calculator">Calculadora de descuentos</a> y la <a href="/es/percentage-calculator">Calculadora de porcentajes</a>.</p>
-          <h3>¿Qué herramientas sirven para préstamos y vivienda?</h3>
-          <p>La <a href="/es/loan-repayment-calculator">Calculadora de pago de préstamo</a> y la <a href="/es/mortgage-calculator">Calculadora de hipoteca</a> cubren esos escenarios básicos.</p>
-        </div>
-      </section>
-      <section class="section-card" id="site-trust">
-        <h2>Por qué usuarios y anunciantes pueden confiar en este sitio</h2>
-        <p>Las páginas traducidas mantienen navegación clara, textos legales completos, enlaces coherentes y contenido útil antes de cualquier monetización futura.</p>
-      </section>
-    </div>
-  </main>
-
+  <section class="hero"><div class="container hero-grid"><div class="hero-text"><p class="eyebrow">CalculatorWorks</p><h1>Calculadoras online gratis por categoría</h1><p>Explora la colección completa en español y entra en cada herramienta con navegación localizada y resultados coherentes.</p><div class="hero-highlights"><a href="/es/percentage" class="hero-highlight-pill">Porcentajes</a><a href="/es/finance" class="hero-highlight-pill">Finanzas</a><a href="/es/everyday" class="hero-highlight-pill">Uso diario</a><a href="/es/calculators" class="hero-highlight-pill">Todas las calculadoras</a><a href="/es/business" class="hero-highlight-pill">Negocios</a><a href="/es/unit-conversion" class="hero-highlight-pill">Conversión de unidades</a></div></div><div class="hero-card calculator-hero"><div class="calc-shell"><div class="calc-top-accent"></div><div class="calc-screen" id="mainCalcScreen">0</div><div class="calc-keys"><button type="button" class="calc-key calc-key-light" data-action="clear">C</button><button type="button" class="calc-key calc-key-light" data-action="backspace">⌫</button><button type="button" class="calc-key calc-key-light" data-value="%">%</button><button type="button" class="calc-key calc-key-accent" data-value="/">÷</button><button type="button" class="calc-key" data-value="7">7</button><button type="button" class="calc-key" data-value="8">8</button><button type="button" class="calc-key" data-value="9">9</button><button type="button" class="calc-key" data-value="*">×</button><button type="button" class="calc-key" data-value="4">4</button><button type="button" class="calc-key" data-value="5">5</button><button type="button" class="calc-key" data-value="6">6</button><button type="button" class="calc-key" data-value="-">−</button><button type="button" class="calc-key" data-value="1">1</button><button type="button" class="calc-key" data-value="2">2</button><button type="button" class="calc-key" data-value="3">3</button><button type="button" class="calc-key" data-value="+">+</button><button type="button" class="calc-key calc-key-zero" data-value="0">0</button><button type="button" class="calc-key" data-value=".">.</button><button type="button" class="calc-key calc-key-accent" data-action="equals">=</button></div></div></div></div></section>
+  <main class="main-content"><div class="container"><section class="section-card" id="browse-categories"><h2>Todas las calculadoras</h2><p>Explora la colección completa en español y entra en cada herramienta con navegación localizada y resultados coherentes.</p><div class="card-grid homepage-category-grid"><a href="/es/percentage" class="link-card"><h3>Porcentajes</h3><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></a><a href="/es/finance" class="link-card"><h3>Finanzas</h3><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></a><a href="/es/everyday" class="link-card"><h3>Uso diario</h3><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></a><a href="/es/calculators" class="link-card"><h3>Todas las calculadoras</h3><p>Explora la colección completa en español y entra en cada herramienta con navegación localizada y resultados coherentes.</p></a><a href="/es/business" class="link-card"><h3>Negocios</h3><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></a><a href="/es/unit-conversion" class="link-card"><h3>Conversión de unidades</h3><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></a></div></section><section class="section-card" id="popular-tools"><h2>Calculadoras relacionadas</h2><div class="related-links popular-link-grid"><a href="/es/percentage-calculator">Calculadora de porcentajes</a><a href="/es/discount-calculator">Calculadora de descuentos</a><a href="/es/loan-repayment-calculator">Calculadora de pago de préstamo</a><a href="/es/mortgage-calculator">Calculadora de hipoteca</a><a href="/es/savings-calculator">Calculadora de ahorro</a><a href="/es/age-calculator">Calculadora de edad</a><a href="/es/bmi-calculator">Calculadora de IMC</a><a href="/es/salary-calculator">Calculadora de salario</a></div></section></div></main>
   <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/es/about">Acerca de</a><a href="/es/contact">Contacto</a><a href="/es/privacy-policy">Política de privacidad</a><a href="/es/terms">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
   <script src="../script.js"></script>
+
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opciones de privacidad y anuncios</strong>
+        <p>CalculatorWorks puede usar cookies y tecnologías similares para funciones esenciales del sitio y publicidad. Puedes aceptar las cookies relacionadas con anuncios, rechazarlas o revisar primero la política de privacidad.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/es/privacy-policy">Política de privacidad</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rechazar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceptar</button>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

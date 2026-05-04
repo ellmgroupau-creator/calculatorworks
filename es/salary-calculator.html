@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de salario | CalculatorWorks</title>
+  <meta name="description" content="Usa la calculadora de salario gratis con fórmula, ejemplos y herramientas relacionadas.">
+
+  <meta property="og:locale" content="es_ES">
+  
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/logo.png" type="image/png">
+  <link rel="canonical" href="https://calculatorworks.io/es/salary-calculator">
+  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/salary-calculator">
+  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/salary-calculator">
+  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/salary-calculator">
+  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/salary-calculator">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Inicio",
+      "item": "https://calculatorworks.io/es/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Finanzas",
+      "item": "https://calculatorworks.io/es/finance"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Calculadora de salario"
+    }
+  ]
+}
+  </script>
+
+
+  <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  (function () {
+    var storedConsent = null;
+    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
+    var consentGranted = storedConsent === 'accepted';
+    gtag('consent', 'default', {
+      ad_storage: consentGranted ? 'granted' : 'denied',
+      ad_user_data: consentGranted ? 'granted' : 'denied',
+      ad_personalization: consentGranted ? 'granted' : 'denied',
+      analytics_storage: 'denied',
+      functionality_storage: 'granted',
+      security_storage: 'granted',
+      wait_for_update: 500
+    });
+    window.adsbygoogle = window.adsbygoogle || [];
+    if (!consentGranted) {
+      window.adsbygoogle.pauseAdRequests = 1;
+      window.adsbygoogle.requestNonPersonalizedAds = 1;
+    }
+  })();
+  </script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header class="site-header">
+    <div class="container header-inner">
+      <a href="/es/" class="logo-wrap">
+        <img src="../logo.png" alt="Logotipo de CalculatorWorks" width="4932" height="1659" decoding="async">
+      </a>
+      <nav class="main-nav">
+        <a href="/es/">Inicio</a>
+        <a href="/es/finance">Finanzas</a>
+        <a href="/es/percentage">Porcentajes</a>
+        <a href="/es/everyday">Uso diario</a>
+        <a href="/es/calculators">Todas las calculadoras</a>
+      </nav>
+      <div class="language-switcher" aria-label="Selector de idioma"><a href="/salary-calculator" lang="en">Inglés</a> <span>|</span> <a href="/es/salary-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/salary-calculator" lang="pt">Português</a></div>
+    </div>
+  </header>
+    <div class="breadcrumb-wrap">
+    <div class="container">
+      <nav class="breadcrumb-nav" aria-label="Ruta de navegación">
+        <ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/finance">Finanzas</a></li><li><span class="is-current" aria-current="page">Calculadora de salario</span></li></ol>
+      </nav>
+    </div>
+  </div>
+
+  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de salario</h1><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></div></div></section>
+  <main class="main-content"><div class="container content-grid"><div>
+    <section class="calculator-card" id="calculator" data-calculator="salary-calculator.html"><h2>Calculadora de salario</h2><p>Introduce los valores necesarios para obtener el resultado al instante.</p><div class="form-grid"><div class="field"><label for="feet">Salario anual</label><input type="number" id="feet" placeholder="Ejemplo: 85000" step="any" min="0"></div><div class="field"><label for="inches">Horas por semana</label><input type="number" id="inches" placeholder="Ejemplo: 38" step="any" min="1"></div><div class="field"><label for="decimals">Precisión de visualización</label><select id="decimals"><option value="0">0 decimales</option><option value="1">1 decimal</option><option value="2" selected>2 decimales</option><option value="3">3 decimales</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduce un valor para empezar</div></div></section>
+    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>salario mensual = salario anual ÷ 12</strong><br><strong>salario quincenal = salario anual ÷ 26</strong><br><strong>salario semanal = salario anual ÷ 52</strong><br><strong>salario por hora = salario anual ÷ (52 × horas por semana)</strong></div><p>Ejemplo: Un salario anual de $85.000 durante una semana de 38 horas equivale aproximadamente a $7.083,33 mensuales, $3.269,23 quincenales, $1.634,62 semanales y $43,02 por hora.</p></section>
+    <section class="section-card" id="examples"><h2>Ejemplos resueltos</h2><div class="example-box"><p><strong>Salario de 60.000 $, 38 horas/semana</strong> = 5.000,00 $ al mes, 30,36 $ por hora</p><p><strong>Salario de 85.000 $, 38 horas/semana</strong> = 7.083,33 $ al mes, 43,02 $ por hora</p><p><strong>Salario de 120.000 $, 40 horas/semana</strong> = 10.000,00 $ al mes, 57,69 $ por hora</p></div></section>
+    <section class="section-card" id="guide">
+          <h2>Cómo ayudan los desgloses salariales a la hora de hacer presupuestos</h2>
+          <p>Conocer su salario en diferentes intervalos hace que sea más fácil comparar los ingresos con los gastos. Las cifras mensuales ayudan con el alquiler, los servicios públicos y las suscripciones. Las cantidades semanales o quincenales son útiles si esa es la frecuencia con la que le pagan, y una tarifa por hora le permite comparar ofertas de trabajo o evaluar las horas extras de manera justa.</p>
+          <p>Dividir un salario anual en períodos más pequeños también resalta cuánto hay disponible para ahorrar o invertir en cada ciclo de pago. Combinar esta calculadora con una herramienta de ahorro o hipoteca puede ayudarle a ver si un salario determinado respalda cómodamente sus objetivos financieros.</p>
+        </section>
+
+        <section class="section-card" id="faq">
+          <h2>Preguntas frecuentes sobre la calculadora de salario</h2>
+          <div class="faq-list">
+            <h3>¿Esta calculadora incluye impuestos?</h3>
+            <p>No. Los resultados muestran únicamente el salario bruto. Las tasas impositivas varían según el país, el estado y las circunstancias individuales, por lo que las cifras aquí representan su salario antes de cualquier deducción. Usa esto como punto de partida y consulte a una calculadora de impuestos o a un contador para conocer el salario neto (que se lleva a casa).</p>
+            <h3>¿Cómo se calcula el salario por hora?</h3>
+            <p>La calculadora divide el salario anual entre 52 semanas y luego lo divide nuevamente por la cantidad de horas que trabaja por semana. Por ejemplo, un salario de 80.000 dólares a 40 horas semanales da 80.000 dólares / (52 x 40) = 38,46 dólares por hora.</p>
+            <h3>¿Puedo usar esto para tarifas de contratista o autónomo?</h3>
+            <p>Puedes utilizarla como guía aproximada, pero los contratistas normalmente deben contabilizar los impuestos sobre el trabajo por cuenta propia, los seguros, las licencias no remuneradas y los gastos comerciales. Una regla general común es agregar entre un 25 y un 30 % al salario equivalente de un empleado al establecer una tarifa por hora para autónomos.</p>
+          </div>
+        </section>
+
+        <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/es/finance">Calculadoras de finanzas</a><a href="/es/tip-calculator">Calculadora de propinas</a><a href="/es/loan-repayment-calculator">Calculadora de pago de préstamo</a><a href="/es/savings-calculator">Calculadora de ahorro</a><a href="/es/mortgage-calculator">Calculadora de hipoteca</a><a href="/es/average-calculator">Calculadora de promedio</a></div></section>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>En esta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Ejemplos</a></li><li><a href="#guide">Guía</a></li><li><a href="#faq">Preguntas frecuentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitaria</h3><div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espacio publicitario futuro</span>
+            <strong>Reservado para un anuncio relevante</strong>
+            <p>Este marcador mantiene el diseño estable para que cualquier anuncio futuro no desplace el contenido.</p>
+            <p>Solo se usará un número limitado de ubicaciones publicitarias.</p>
+          </div></div></aside></div></main>
+    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/es/about">Acerca de</a><a href="/es/contact">Contacto</a><a href="/es/privacy-policy">Política de privacidad</a><a href="/es/terms">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
+  <script src="../script.js"></script>
+
+<div class="consent-banner" id="consentBanner" hidden>
+    <div class="consent-banner__inner container">
+      <div class="consent-banner__copy">
+        <strong>Opciones de privacidad y anuncios</strong>
+        <p>CalculatorWorks puede usar cookies y tecnologías similares para funciones esenciales del sitio y publicidad. Puedes aceptar las cookies relacionadas con anuncios, rechazarlas o revisar primero la política de privacidad.</p>
+      </div>
+      <div class="consent-banner__actions">
+        <a class="consent-banner__link" href="/es/privacy-policy">Política de privacidad</a>
+        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rechazar</button>
+        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
