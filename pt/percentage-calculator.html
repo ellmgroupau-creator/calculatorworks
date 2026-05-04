@@ -5,21 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de percentagens para descobrir X% de Y | CalculatorWorks</title>
   <meta name="description" content="Use a calculadora de percentagens grátis para descobrir X% de Y imediatamente, com fórmula, exemplos e perguntas frequentes.">
-  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <link rel="stylesheet" href="../style.css">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="/logo.png" type="image/png">
   <link rel="canonical" href="https://calculatorworks.io/pt/percentage-calculator">
-  <meta property="og:title" content="Calculadora de percentagens para descobrir X% de Y | CalculatorWorks">
-  <meta property="og:description" content="Use a calculadora de percentagens grátis para descobrir X% de Y imediatamente, com fórmula, exemplos e perguntas frequentes.">
-  <meta property="og:url" content="https://calculatorworks.io/pt/percentage-calculator">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="CalculatorWorks">
-  <meta property="og:image" content="https://calculatorworks.io/logo.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Calculadora de percentagens para descobrir X% de Y | CalculatorWorks">
-  <meta name="twitter:description" content="Use a calculadora de percentagens grátis para descobrir X% de Y imediatamente, com fórmula, exemplos e perguntas frequentes.">
-  <meta name="twitter:image" content="https://calculatorworks.io/logo.png">
   <link rel="alternate" hreflang="en" href="https://calculatorworks.io/percentage-calculator">
   <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/percentage-calculator">
   <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/percentage-calculator">
@@ -49,49 +38,6 @@
   ]
 }
   </script>
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  (function () {
-    var storedConsent = null;
-    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
-    var consentGranted = storedConsent === 'accepted';
-    gtag('consent', 'default', {
-      ad_storage: consentGranted ? 'granted' : 'denied',
-      ad_user_data: consentGranted ? 'granted' : 'denied',
-      ad_personalization: consentGranted ? 'granted' : 'denied',
-      analytics_storage: 'denied',
-      functionality_storage: 'granted',
-      security_storage: 'granted',
-      wait_for_update: 500
-    });
-    window.adsbygoogle = window.adsbygoogle || [];
-    if (!consentGranted) {
-      window.adsbygoogle.pauseAdRequests = 1;
-      window.adsbygoogle.requestNonPersonalizedAds = 1;
-    }
-  })();
-  </script>
-  <script async src="https://fundingchoicesmessages.google.com/i/pub-2464432500978448?ers=1"></script>
-  <script>
-    (function() {
-      function signalGooglefcPresent() {
-        if (!window.frames['googlefcPresent']) {
-          if (document.body) {
-            var iframe = document.createElement('iframe');
-            iframe.style = 'width: 0; height: 0; border: none; z-index: -1000; left: -1000px; top: -1000px;';
-            iframe.style.display = 'none';
-            iframe.name = 'googlefcPresent';
-            document.body.appendChild(iframe);
-          } else {
-            setTimeout(signalGooglefcPresent, 0);
-          }
-        }
-      }
-      signalGooglefcPresent();
-    })();
-  </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
 </head>
 <body>
   <header class="site-header">
@@ -122,30 +68,18 @@
     <section class="calculator-card" id="calculator" data-calculator="percentage-calculator.html"><h2>Calculadora de percentagens</h2><p>Introduza uma percentagem e um número para calcular X% de Y.</p><div class="form-grid"><div class="field"><label for="feet">Percentagem (%)</label><input type="number" id="feet" placeholder="Exemplo: 15" step="any"></div><div class="field"><label for="inches">Número</label><input type="number" id="inches" placeholder="Exemplo: 200" step="any"></div><div class="field"><label for="decimals">Casas decimais</label><select id="decimals"><option value="2">2 casas decimais</option><option value="3" selected>3 casas decimais</option><option value="4">4 casas decimais</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Limpar</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
     <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>resultado = (percentagem ÷ 100) × número</strong></div><p>Exemplo: 15% de 200 = 30.000</p></section>
     <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>10% de 50</strong> = 5.000</p><p><strong>15% de 200</strong> = 30.000</p><p><strong>22,5% de 80</strong> = 18.000</p></div></section>
-    <section class="section-card" id="guide"><h2>Utilizações comuns</h2><p>Esta ferramenta é útil para impostos, gorjetas, descontos, comissões e verificações rápidas de cálculo mental.</p><p>Também é a opção mais simples quando já conhece a percentagem e o valor base. Se a sua dúvida real for sobre desconto, variação entre dois valores ou aumento percentual aplicado, uma ferramenta mais específica dará uma resposta mais direta.</p><div class="related-links"><a href="/pt/discount-calculator">Calculadora de descontos</a><a href="/pt/percentage">Centro de percentagens</a><a href="/pt/finance">Finanças</a></div></section>
-    <section class="section-card" id="faq"><h2>Perguntas frequentes</h2><div class="faq-list"><h3>Como calculo X% de um número?</h3><p>Multiplique o número pela percentagem e divida por 100.</p><h3>Quando devo usar esta ferramenta?</h3><p>Quando já conhece a percentagem e o número base.</p><h3>Serve para descontos?</h3><p>Sim. Pode calcular aqui o valor descontado e depois usar a <a href="/pt/discount-calculator">Calculadora de descontos</a> para ver o preço final.</p><h3>Em que difere de um aumento ou redução percentual?</h3><p>Aqui obtém o valor percentual sobre uma base. As calculadoras de aumento ou redução aplicam depois esse valor ao número original.</p></div></section>
+    <section class="section-card" id="guide"><h2>Utilizações comuns</h2><p>Esta ferramenta é útil para impostos, gorjetas, descontos, comissões e verificações rápidas de cálculo mental.</p><div class="related-links"><a href="/pt/discount-calculator">Calculadora de descontos</a><a href="/pt/percentage">Centro de percentagens</a><a href="/pt/finance">Finanças</a></div></section>
+    <section class="section-card" id="faq"><h2>Perguntas frequentes</h2><div class="faq-list"><h3>Como calculo X% de um número?</h3><p>Multiplique o número pela percentagem e divida por 100.</p><h3>Quando devo usar esta ferramenta?</h3><p>Quando já conhece a percentagem e o número base.</p><h3>Serve para descontos?</h3><p>Sim. Pode calcular aqui o valor descontado e depois usar a <a href="/pt/discount-calculator">Calculadora de descontos</a> para ver o preço final.</p></div></section>
     <section class="section-card" id="ad-planning"><h2>Guia do cálculo e anúncios</h2><p>O cálculo, a fórmula e os exemplos mantêm-se acima de qualquer publicidade futura.</p></section>
     <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/percentage">Centro de percentagens</a><a href="/pt/discount-calculator">Calculadora de descontos</a><a href="/pt/loan-repayment-calculator">Prestação de empréstimo</a></div></section>
-  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Padrões da página</h3><div class="ad-box ad-box-sidebar">
-            <span class="ad-slot-label">Layout centrado no utilizador</span>
-            <strong>A ferramenta e a explicação continuam em primeiro plano</strong>
-            <p>O CalculatorWorks mantém fórmulas, resultados, navegação e links legais visíveis em cada página.</p>
+  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
+            <span class="ad-slot-label">Espaço publicitário futuro</span>
+            <strong>Reservado para um anúncio relevante</strong>
+            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
+            <p>Será usada apenas uma quantidade limitada de posições publicitárias.</p>
           </div></div></aside></div></main>
 
   <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>O CalculatorWorks publica calculadoras gratuitas com páginas legais claras, dados de contacto visíveis e layouts pensados para o utilizador. Os resultados são informativos e devem ser confirmados antes de decisões importantes.</p></div></div></footer>
   <script src="../script.js"></script>
-  <div class="consent-banner" id="consentBanner" hidden>
-    <div class="consent-banner__inner container">
-      <div class="consent-banner__copy">
-        <strong>Opções de privacidade e anúncios</strong>
-        <p>O CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
-      </div>
-      <div class="consent-banner__actions">
-        <a class="consent-banner__link" href="/pt/privacy-policy">Política de Privacidade</a>
-        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
-        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
-      </div>
-    </div>
-  </div>
 </body>
 </html>

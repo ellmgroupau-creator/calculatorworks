@@ -21,8 +21,18 @@ const cleanLastPart = lastPart.split('?')[0].split('#')[0];
 const currentPage = explicitCalculator || (cleanLastPart && cleanLastPart.includes('.html') ? cleanLastPart : 'index.html');
 const currentLang = (document.documentElement.lang || 'en').toLowerCase();
 
+function formatLocalDate(dateValue) {
+  var year = dateValue.getFullYear();
+  var month = String(dateValue.getMonth() + 1).padStart(2, '0');
+  var day = String(dateValue.getDate()).padStart(2, '0');
+  return year + '-' + month + '-' + day;
+}
+
 function translateCalc(key, fallback) {
   const translations = {
+    en: {
+      initialPrompt: 'Enter a value to begin'
+    },
     es: {
       initialPrompt: 'Introduce un valor para empezar',
       'Please enter valid numbers': 'Introduce números válidos',
@@ -860,6 +870,183 @@ const calculatorConfigs = {
           'Net = ' + net.toFixed(2) + ', VAT = ' + vat.toFixed(2) + ', gross = ' + amount.toFixed(2);
       }
     }
+  },
+  'age-difference-calculator.html': {
+    calculate: function () { var a=feetInput.value, b=inchesInput?inchesInput.value:''; if(!a||!b){resultOutput.textContent='Please enter both birth dates';return;} var d1=new Date(a+'T00:00:00'), d2=new Date(b+'T00:00:00'); if(isNaN(d1.getTime())||isNaN(d2.getTime())){resultOutput.textContent='Please enter valid dates';return;} var o=d1<=d2?d1:d2, y=d1<=d2?d2:d1, yrs=y.getFullYear()-o.getFullYear(), mos=y.getMonth()-o.getMonth(); if(y.getDate()<o.getDate())mos--; if(mos<0){yrs--; mos+=12;} resultOutput.textContent='Age difference = '+yrs+' years, '+mos+' months'; }
+  },
+  'body-surface-area-calculator.html': {
+    calculate: function () { var w=parseFloat(feetInput.value), h=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(w)||isNaN(h)||w<=0||h<=0){resultOutput.textContent='Please enter valid body weight and height values';return;} resultOutput.textContent='Body surface area = '+Math.sqrt((h*w)/3600).toFixed(2)+' m²'; }
+  },
+  'business-days-calculator.html': {
+    calculate: function () { var sv=feetInput.value, ev=inchesInput?inchesInput.value:''; if(!sv||!ev){resultOutput.textContent='Please enter both dates';return;} var s=new Date(sv+'T00:00:00'), e=new Date(ev+'T00:00:00'); if(isNaN(s.getTime())||isNaN(e.getTime())){resultOutput.textContent='Please enter valid dates';return;} var step=e>=s?1:-1, cur=new Date(s.getTime()), n=0; while(cur.getTime()!==e.getTime()){ cur.setDate(cur.getDate()+step); var day=cur.getDay(); if(day!==0&&day!==6)n+=step; } resultOutput.textContent='Business days = '+n; }
+  },
+  'business-profit-planner-calculator.html': {
+    calculate: function () { var u=parseFloat(feetInput.value), p=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(u)||isNaN(p)||u<0||p<0){resultOutput.textContent='Please enter valid unit and profit values';return;} resultOutput.textContent='Projected profit = '+(u*p).toFixed(2); }
+  },
+  'concrete-calculator.html': {
+    calculate: function () { var l=parseFloat(feetInput.value), w=inchesInput?parseFloat(inchesInput.value):NaN, d=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(l)||isNaN(w)||isNaN(d)||l<=0||w<=0||d<=0){resultOutput.textContent='Please enter valid slab dimensions';return;} resultOutput.textContent='Concrete volume = '+(l*w*d).toFixed(2)+' cubic metres'; }
+  },
+  'contribution-margin-calculator.html': {
+    calculate: function () { var p=parseFloat(feetInput.value), v=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(p)||isNaN(v)||p<=0||v<0||v>p){resultOutput.textContent='Please enter valid selling price and variable cost values';return;} var c=p-v; resultOutput.textContent='Contribution per unit = '+c.toFixed(2)+', contribution margin ratio = '+((c/p)*100).toFixed(2)+'%'; }
+  },
+  'countdown-calculator.html': {
+    calculate: function () { var v=feetInput.value; if(!v){resultOutput.textContent='Please enter a future date';return;} var t=new Date(v+'T00:00:00'); var now=new Date(), start=new Date(now.getFullYear(),now.getMonth(),now.getDate()); if(isNaN(t.getTime())){resultOutput.textContent='Please enter a valid date';return;} resultOutput.textContent='Days remaining = '+Math.round((t-start)/(1000*60*60*24)); }
+  },
+  'credit-card-payoff-calculator.html': {
+    calculate: function () { var b=parseFloat(feetInput.value), r=inchesInput?parseFloat(inchesInput.value):NaN, p=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(b)||isNaN(r)||isNaN(p)||b<=0||r<0||p<=0){resultOutput.textContent='Please enter a valid balance, APR, and monthly payment';return;} var mr=r/100/12,m=0,ti=0,c=b; while(c>0&&m<1200){var i=c*mr;if(p<=i&&mr>0){resultOutput.textContent='Monthly payment must be higher than monthly interest';return;} c=c+i-p; ti+=i; m++; if(c<0)c=0;} resultOutput.textContent='Estimated payoff time = '+m+' months, total interest = '+ti.toFixed(2); }
+  },
+  'credit-utilization-calculator.html': {
+    calculate: function () { var b=parseFloat(feetInput.value), l=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(b)||isNaN(l)||b<0||l<=0){resultOutput.textContent='Please enter valid balance and credit limit values';return;} resultOutput.textContent='Credit utilization = '+((b/l)*100).toFixed(2)+'%'; }
+  },
+  'cups-to-ml-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid volume';return;} resultOutput.textContent=v+' cups = '+(v*236.588).toFixed(2)+' mL'; }
+  },
+  'current-ratio-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), l=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(l)||a<0||l<=0){resultOutput.textContent='Please enter valid current assets and liabilities';return;} resultOutput.textContent='Current ratio = '+(a/l).toFixed(2); }
+  },
+  'date-add-calculator.html': {
+    calculate: function () { var sv=feetInput.value, d=inchesInput?parseFloat(inchesInput.value):NaN; if(!sv||isNaN(d)){resultOutput.textContent='Please enter a valid start date and number of days';return;} var dt=new Date(sv+'T00:00:00'); if(isNaN(dt.getTime())){resultOutput.textContent='Please enter a valid date';return;} dt.setDate(dt.getDate()+Math.round(d)); resultOutput.textContent='Resulting date = '+formatLocalDate(dt); }
+  },
+  'debt-payoff-calculator.html': {
+    calculate: function () { var b=parseFloat(feetInput.value), r=inchesInput?parseFloat(inchesInput.value):NaN, p=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(b)||isNaN(r)||isNaN(p)||b<=0||r<0||p<=0){resultOutput.textContent='Please enter valid balance, interest rate, and payment values';return;} var mr=r/100/12,m=0,ti=0,c=b; while(c>0&&m<1200){var i=c*mr;if(p<=i&&mr>0){resultOutput.textContent='Monthly payment must be higher than monthly interest';return;} c=c+i-p; ti+=i; m++; if(c<0)c=0;} resultOutput.textContent='Estimated payoff time = '+m+' months, total interest = '+ti.toFixed(2); }
+  },
+  'debt-to-income-calculator.html': {
+    calculate: function () { var d=parseFloat(feetInput.value), i=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(d)||isNaN(i)||d<0||i<=0){resultOutput.textContent='Please enter valid monthly debt and income values';return;} resultOutput.textContent='Debt-to-income ratio = '+((d/i)*100).toFixed(2)+'%'; }
+  },
+  'depreciation-calculator.html': {
+    calculate: function () { var c=parseFloat(feetInput.value), s=inchesInput?parseFloat(inchesInput.value):NaN, y=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(c)||isNaN(s)||isNaN(y)||c<0||s<0||y<=0||s>c){resultOutput.textContent='Please enter valid cost, salvage value, and useful life values';return;} resultOutput.textContent='Annual depreciation = '+((c-s)/y).toFixed(2); }
+  },
+  'down-payment-calculator.html': {
+    calculate: function () { var p=parseFloat(feetInput.value), d=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(p)||isNaN(d)||p<=0||d<0||d>100){resultOutput.textContent='Please enter a valid property price and percentage';return;} var dp=p*(d/100); resultOutput.textContent='Down payment = '+dp.toFixed(2)+', loan amount = '+(p-dp).toFixed(2); }
+  },
+  'due-date-calculator.html': {
+    calculate: function () { var v=feetInput.value; if(!v){resultOutput.textContent='Please enter the first day of the last menstrual period';return;} var d=new Date(v+'T00:00:00'); if(isNaN(d.getTime())){resultOutput.textContent='Please enter a valid date';return;} d.setDate(d.getDate()+280); resultOutput.textContent='Estimated due date = '+formatLocalDate(d); }
+  },
+  'emergency-fund-calculator.html': {
+    calculate: function () { var e=parseFloat(feetInput.value), m=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(e)||isNaN(m)||e<0||m<=0){resultOutput.textContent='Please enter valid expenses and coverage months';return;} resultOutput.textContent='Emergency fund target = '+(e*m).toFixed(2); }
+  },
+  'flooring-calculator.html': {
+    calculate: function () { var l=parseFloat(feetInput.value), w=inchesInput?parseFloat(inchesInput.value):NaN, x=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(l)||isNaN(w)||isNaN(x)||l<=0||w<=0||x<0){resultOutput.textContent='Please enter valid room dimensions and waste allowance';return;} var a=l*w; resultOutput.textContent='Room area = '+a.toFixed(2)+', flooring to buy = '+(a*(1+(x/100))).toFixed(2); }
+  },
+  'gallons-to-litres-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid volume';return;} resultOutput.textContent=v+' US gallons = '+(v*3.78541).toFixed(2)+' litres'; }
+  },
+  'gravel-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), d=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(d)||a<=0||d<=0){resultOutput.textContent='Please enter a valid area and gravel depth';return;} resultOutput.textContent='Gravel volume = '+(a*(d/100)).toFixed(2)+' cubic metres'; }
+  },
+  'hourly-to-salary-calculator.html': {
+    calculate: function () { var r=parseFloat(feetInput.value), h=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(r)||isNaN(h)||r<0||h<=0){resultOutput.textContent='Please enter a valid hourly rate and hours';return;} var w=r*h,a=w*52; resultOutput.textContent='Weekly pay = '+w.toFixed(2)+', monthly pay = '+(a/12).toFixed(2)+', annual pay = '+a.toFixed(2); }
+  },
+  'hours-between-dates-calculator.html': {
+    calculate: function () { var sv=feetInput.value, ev=inchesInput?inchesInput.value:''; if(!sv||!ev){resultOutput.textContent='Please enter both date-time values';return;} var s=new Date(sv), e=new Date(ev); if(isNaN(s.getTime())||isNaN(e.getTime())){resultOutput.textContent='Please enter valid date-time values';return;} resultOutput.textContent='Hours between dates = '+(Math.abs(e-s)/(1000*60*60)).toFixed(2); }
+  },
+  'ideal-weight-calculator.html': {
+    calculate: function () { var h=parseFloat(feetInput.value), f=inchesInput?parseFloat(inchesInput.value):0; if(isNaN(h)||isNaN(f)||h<=0){resultOutput.textContent='Please enter a valid height and frame adjustment';return;} var over=Math.max((h/2.54)-60,0), base=50+(2.3*over), adj=base*(1+(f/100)); resultOutput.textContent='Baseline ideal weight = '+base.toFixed(2)+' kg, adjusted estimate = '+adj.toFixed(2)+' kg'; }
+  },
+  'kph-to-mph-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid speed';return;} resultOutput.textContent=v+' kph = '+(v*0.621371).toFixed(2)+' mph'; }
+  },
+  'lean-body-mass-calculator.html': {
+    calculate: function () { var w=parseFloat(feetInput.value), b=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(w)||isNaN(b)||w<=0||b<0||b>=100){resultOutput.textContent='Please enter a valid body weight and body-fat percentage';return;} resultOutput.textContent='Lean body mass = '+(w*(1-(b/100))).toFixed(2)+' kg'; }
+  },
+  'litres-per-square-metre-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), r=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(r)||a<0||r<0){resultOutput.textContent='Please enter a valid area and rate';return;} resultOutput.textContent='Total litres = '+(a*r).toFixed(2); }
+  },
+  'litres-to-gallons-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid volume';return;} resultOutput.textContent=v+' litres = '+(v*0.264172).toFixed(2)+' US gallons'; }
+  },
+  'median-calculator.html': {
+    calculate: function () { var raw=feetInput.value; if(!raw||!raw.trim()){resultOutput.textContent='Please enter numbers separated by commas';return;} var n=raw.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}).sort(function(a,b){return a-b;}); if(!n.length){resultOutput.textContent='Please enter valid numbers';return;} var m=Math.floor(n.length/2), med=n.length%2?n[m]:(n[m-1]+n[m])/2; resultOutput.textContent='Median = '+med.toFixed(2); }
+  },
+  'midpoint-calculator.html': {
+    calculate: function () { var p1=feetInput.value.split(',').map(function(x){return parseFloat(x.trim());}), p2=inchesInput?inchesInput.value.split(',').map(function(x){return parseFloat(x.trim());}):[]; if(p1.length!==2||p2.length!==2||p1.some(isNaN)||p2.some(isNaN)){resultOutput.textContent='Please enter both points as x,y';return;} resultOutput.textContent='Midpoint = ('+((p1[0]+p2[0])/2).toFixed(2)+', '+((p1[1]+p2[1])/2).toFixed(2)+')'; }
+  },
+  'ml-to-cups-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid volume';return;} resultOutput.textContent=v+' mL = '+(v/236.588).toFixed(2)+' cups'; }
+  },
+  'mode-calculator.html': {
+    calculate: function () { var raw=feetInput.value; if(!raw||!raw.trim()){resultOutput.textContent='Please enter numbers separated by commas';return;} var n=raw.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}); if(!n.length){resultOutput.textContent='Please enter valid numbers';return;} var c={}, mx=0; n.forEach(function(v){var k=v.toString(); c[k]=(c[k]||0)+1; if(c[k]>mx)mx=c[k];}); if(mx===1){resultOutput.textContent='No mode: all values appear once';return;} var m=Object.keys(c).filter(function(k){return c[k]===mx;}); resultOutput.textContent='Mode = '+m.join(', '); }
+  },
+  'mph-to-kph-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid speed';return;} resultOutput.textContent=v+' mph = '+(v*1.60934).toFixed(2)+' kph'; }
+  },
+  'mulch-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), d=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(d)||a<=0||d<=0){resultOutput.textContent='Please enter a valid area and mulch depth';return;} resultOutput.textContent='Mulch volume = '+(a*(d/100)).toFixed(2)+' cubic metres'; }
+  },
+  'net-worth-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), l=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(l)||a<0||l<0){resultOutput.textContent='Please enter valid asset and liability values';return;} resultOutput.textContent='Net worth = '+(a-l).toFixed(2); }
+  },
+  'one-rep-max-calculator.html': {
+    calculate: function () { var w=parseFloat(feetInput.value), r=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(w)||isNaN(r)||w<=0||r<1||r>=37){resultOutput.textContent='Please enter a valid lifted weight and rep count below 37';return;} resultOutput.textContent='Estimated one-rep max = '+(w*36/(37-r)).toFixed(2); }
+  },
+  'overtime-calculator.html': {
+    calculate: function () { var r=parseFloat(feetInput.value), h=inchesInput?parseFloat(inchesInput.value):NaN, m=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(r)||isNaN(h)||isNaN(m)||r<0||h<0||m<1){resultOutput.textContent='Please enter valid hourly rate, hours, and multiplier values';return;} var reg=Math.min(h,40), ot=Math.max(h-40,0), g=(reg*r)+(ot*r*m); resultOutput.textContent='Regular hours = '+reg.toFixed(2)+', overtime hours = '+ot.toFixed(2)+', gross pay = '+g.toFixed(2); }
+  },
+  'ovulation-calculator.html': {
+    calculate: function () { var s=feetInput.value, c=inchesInput?parseFloat(inchesInput.value):NaN; if(!s||isNaN(c)||c<20){resultOutput.textContent='Please enter a valid cycle start date and cycle length';return;} var d=new Date(s+'T00:00:00'); d.setDate(d.getDate()+Math.round(c)-14); resultOutput.textContent='Estimated ovulation date = '+formatLocalDate(d); }
+  },
+  'pace-calculator.html': {
+    calculate: function () { var d=parseFloat(feetInput.value), t=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(d)||isNaN(t)||d<=0||t<=0){resultOutput.textContent='Please enter a valid distance and time';return;} var p=t/d,m=Math.floor(p),s=Math.round((p-m)*60); if(s===60){m+=1;s=0;} resultOutput.textContent='Average pace = '+m+':' + (s<10?'0'+s:s) + ' per km'; }
+  },
+  'paint-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), c=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(c)||a<=0||c<=0){resultOutput.textContent='Please enter a valid area and coverage rate';return;} resultOutput.textContent='Estimated paint needed = '+(a/c).toFixed(2)+' litres'; }
+  },
+  'pay-raise-calculator.html': {
+    calculate: function () { var s=parseFloat(feetInput.value), r=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(s)||isNaN(r)||s<0||r<0){resultOutput.textContent='Please enter valid salary and raise values';return;} var a=s*(r/100); resultOutput.textContent='Raise amount = '+a.toFixed(2)+', new salary = '+(s+a).toFixed(2); }
+  },
+  'paycheck-calculator.html': {
+    calculate: function () { var s=parseFloat(feetInput.value), p=inchesInput?parseFloat(inchesInput.value):NaN, t=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(s)||isNaN(p)||isNaN(t)||s<0||p<=0||t<0||t>100){resultOutput.textContent='Please enter valid salary, pay periods, and tax rate values';return;} var g=s/p; resultOutput.textContent='Gross per pay period = '+g.toFixed(2)+', post-tax estimate = '+(g*(1-(t/100))).toFixed(2); }
+  },
+  'protein-intake-calculator.html': {
+    calculate: function () { var w=parseFloat(feetInput.value), g=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(w)||isNaN(g)||w<=0||g<=0){resultOutput.textContent='Please enter a valid body weight and protein target';return;} resultOutput.textContent='Daily protein target = '+(w*g).toFixed(2)+' grams'; }
+  },
+  'quick-ratio-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), l=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(a)||isNaN(l)||a<0||l<=0){resultOutput.textContent='Please enter valid quick assets and liabilities';return;} resultOutput.textContent='Quick ratio = '+(a/l).toFixed(2); }
+  },
+  'ratio-calculator.html': {
+    calculate: function () { var a=parseInt(feetInput.value,10), b=inchesInput?parseInt(inchesInput.value,10):NaN; function gcd(x,y){return y===0?x:gcd(y,x%y);} if(isNaN(a)||isNaN(b)||a<=0||b<=0){resultOutput.textContent='Please enter two positive whole numbers';return;} var g=gcd(a,b); resultOutput.textContent='Simplified ratio = '+(a/g)+':'+(b/g); }
+  },
+  'refinance-savings-calculator.html': {
+    calculate: function () { var c=parseFloat(feetInput.value), n=inchesInput?parseFloat(inchesInput.value):NaN, m=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(c)||isNaN(n)||isNaN(m)||c<0||n<0||m<=0){resultOutput.textContent='Please enter valid payment and term values';return;} resultOutput.textContent='Monthly savings = '+(c-n).toFixed(2)+', total savings = '+((c-n)*m).toFixed(2); }
+  },
+  'room-perimeter-calculator.html': {
+    calculate: function () { var l=parseFloat(feetInput.value), w=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(l)||isNaN(w)||l<=0||w<=0){resultOutput.textContent='Please enter valid room dimensions';return;} resultOutput.textContent='Perimeter = '+(2*(l+w)).toFixed(2); }
+  },
+  'sales-tax-calculator.html': {
+    calculate: function () { var p=parseFloat(feetInput.value), r=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(p)||isNaN(r)||p<0||r<0){resultOutput.textContent='Please enter a valid price and tax rate';return;} var t=p*(r/100); resultOutput.textContent='Sales tax = '+t.toFixed(2)+', final price = '+(p+t).toFixed(2); }
+  },
+  'savings-goal-calculator.html': {
+    calculate: function () { var g=parseFloat(feetInput.value), c=inchesInput?parseFloat(inchesInput.value):NaN, m=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(g)||isNaN(c)||isNaN(m)||g<=0||c<0||m<=0||c>g){resultOutput.textContent='Please enter a valid goal, current savings amount, and monthly contribution';return;} resultOutput.textContent='Estimated time to goal = '+Math.ceil((g-c)/m)+' months'; }
+  },
+  'slope-calculator.html': {
+    calculate: function () { var p1=feetInput.value.split(',').map(function(x){return parseFloat(x.trim());}), p2=inchesInput?inchesInput.value.split(',').map(function(x){return parseFloat(x.trim());}):[]; if(p1.length!==2||p2.length!==2||p1.some(isNaN)||p2.some(isNaN)){resultOutput.textContent='Please enter both points as x,y';return;} var dx=p2[0]-p1[0]; if(dx===0){resultOutput.textContent='Slope is undefined for a vertical line';return;} resultOutput.textContent='Slope = '+((p2[1]-p1[1])/dx).toFixed(2); }
+  },
+  'square-feet-to-square-metres-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid area';return;} resultOutput.textContent=v+' sq ft = '+(v*0.092903).toFixed(2)+' sq m'; }
+  },
+  'square-footage-calculator.html': {
+    calculate: function () { var l=parseFloat(feetInput.value), w=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(l)||isNaN(w)||l<=0||w<=0){resultOutput.textContent='Please enter valid length and width values';return;} resultOutput.textContent='Area = '+(l*w).toFixed(2)+' square units'; }
+  },
+  'square-metres-to-square-feet-calculator.html': {
+    calculate: function () { var v=parseFloat(feetInput.value); if(isNaN(v)||v<0){resultOutput.textContent='Please enter a valid area';return;} resultOutput.textContent=v+' sq m = '+(v*10.7639).toFixed(2)+' sq ft'; }
+  },
+  'standard-deviation-calculator.html': {
+    calculate: function () { var raw=feetInput.value; if(!raw||!raw.trim()){resultOutput.textContent='Please enter numbers separated by commas';return;} var n=raw.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}); if(!n.length){resultOutput.textContent='Please enter valid numbers';return;} var s=0; n.forEach(function(v){s+=v;}); var mean=s/n.length, sq=0; n.forEach(function(v){sq+=Math.pow(v-mean,2);}); resultOutput.textContent='Population standard deviation = '+Math.sqrt(sq/n.length).toFixed(2); }
+  },
+  'tile-calculator.html': {
+    calculate: function () { var a=parseFloat(feetInput.value), l=inchesInput?parseFloat(inchesInput.value):NaN, w=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(a)||isNaN(l)||isNaN(w)||a<=0||l<=0||w<=0){resultOutput.textContent='Please enter valid area and tile dimensions';return;} var ta=(l/100)*(w/100); resultOutput.textContent='Estimated tile quantity = '+Math.ceil(a/ta)+' tiles'; }
+  },
+  'waist-to-hip-ratio-calculator.html': {
+    calculate: function () { var w=parseFloat(feetInput.value), h=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(w)||isNaN(h)||w<=0||h<=0){resultOutput.textContent='Please enter valid waist and hip measurements';return;} resultOutput.textContent='Waist-to-hip ratio = '+(w/h).toFixed(2); }
+  },
+  'water-intake-calculator.html': {
+    calculate: function () { var w=parseFloat(feetInput.value), a=inchesInput?parseFloat(inchesInput.value):NaN; if(isNaN(w)||isNaN(a)||w<=0||a<0){resultOutput.textContent='Please enter valid weight and activity values';return;} resultOutput.textContent='Estimated daily water intake = '+(((w*35)+(a*12))/1000).toFixed(2)+' litres'; }
+  },
+  'weeks-between-dates-calculator.html': {
+    calculate: function () { var sv=feetInput.value, ev=inchesInput?inchesInput.value:''; if(!sv||!ev){resultOutput.textContent='Please enter both dates';return;} var s=new Date(sv+'T00:00:00'), e=new Date(ev+'T00:00:00'); if(isNaN(s.getTime())||isNaN(e.getTime())){resultOutput.textContent='Please enter valid dates';return;} resultOutput.textContent='Weeks between dates = '+(Math.abs(e-s)/(1000*60*60*24*7)).toFixed(2); }
+  },
+  'weighted-average-calculator.html': {
+    calculate: function () { var rv=feetInput.value, rw=inchesInput?inchesInput.value:''; if(!rv||!rw){resultOutput.textContent='Please enter values and matching weights';return;} var v=rv.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}); var w=rw.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}); if(!v.length||v.length!==w.length){resultOutput.textContent='Values and weights must contain the same number of valid entries';return;} var t=0, tw=0; for(var i=0;i<v.length;i++){ if(w[i]<=0){resultOutput.textContent='Weights must be positive numbers';return;} t+=v[i]*w[i]; tw+=w[i]; } resultOutput.textContent='Weighted average = '+(t/tw).toFixed(2); }
   }
 
 };
@@ -1009,16 +1196,8 @@ if (consentBanner && consentAccept && consentReject) {
   let storedConsent = null;
   try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
 
-  function hasManagedCmp() {
-    return typeof window.__tcfapi === 'function' || !!document.getElementById('fc-consent-root') || !!document.querySelector('[id*="fc-consent"], [class*="fc-consent"]');
-  }
-
   if (!storedConsent) {
-    setTimeout(function () {
-      if (!hasManagedCmp()) {
-        consentBanner.hidden = false;
-      }
-    }, 1500);
+    consentBanner.hidden = false;
   }
 
   consentAccept.addEventListener('click', function () {
