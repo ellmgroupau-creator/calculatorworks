@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
-
 Sitemap: https://calculatorworks.io/sitemap.xml
-Sitemap: https://calculatorworks.io/es/sitemap.xml
-Sitemap: https://calculatorworks.io/pt/sitemap.xml
