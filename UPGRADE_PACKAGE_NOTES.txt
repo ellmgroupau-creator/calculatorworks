@@ -1,0 +1,29 @@
+CalculatorWorks Safe Upgrade Package - 2026-05-09
+
+This package was created as a separate upgraded copy of the uploaded site. It does not intentionally change calculator JavaScript logic or the existing static architecture.
+
+Main changes included:
+1. Optimised logo.png from the original oversized asset and added logo.webp. The original was preserved as logo-original-large.png.
+2. Updated logo image width/height attributes from 4932x1659 to 1200x404 across HTML files.
+3. Strengthened contact.html with a real contact email placeholder: contact@calculatorworks.io. Replace this email before publishing if you want a different address.
+4. Strengthened privacy-policy.html for AdSense readiness, including Google advertising, cookies, user choices, third-party vendors, and calculator input handling.
+5. Expanded about.html with clearer quality standards.
+6. Expanded index.html with stronger homepage SEO/trust content and added Organization structured data.
+7. Added safe content-depth sections to key category pages.
+8. Added safe content-depth sections to selected high-value calculator pages without changing calculator forms, IDs, or script.js.
+9. Added FAQPage structured data to selected priority pages where it was not already present.
+10. Updated sitemap lastmod entries for changed top-level English HTML pages where present.
+
+Important manual step:
+- Confirm the contact email is correct before publishing. If contact@calculatorworks.io does not exist yet, either create it or replace it everywhere with your preferred email address.
+
+Files intentionally not changed:
+- script.js calculator logic was not edited.
+- CSS layout was not redesigned.
+- Existing redirect/alias files were not removed.
+
+Recommended publishing method:
+- Do not overwrite your live site blindly.
+- Compare this package against your current folder.
+- Deploy to a Cloudflare Pages preview branch or test deployment first.
+- Check several calculators manually: homepage calculator, percentage, compound interest, BMI, credit card payoff, and a unit converter.
