@@ -1,21 +1,20 @@
 <!DOCTYPE html>
+
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de prestação de empréstimo | CalculatorWorks</title>
-  <meta name="description" content="Use a calculadora de prestação de empréstimo gratuita com fórmula, exemplos e ferramentas relacionadas.">
-
-  <meta property="og:locale" content="pt_PT">
-  
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="/logo.png" type="image/png">
-  <link rel="canonical" href="https://calculatorworks.io/pt/loan-repayment-calculator">
-  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/loan-repayment-calculator">
-  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/loan-repayment-calculator">
-  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/loan-repayment-calculator">
-  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/loan-repayment-calculator">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calculadora de prestação de empréstimo | CalculatorWorks</title>
+<meta content="Use a calculadora de prestação de empréstimo gratuita com fórmula, exemplos e ferramentas relacionadas." name="description"/>
+<meta content="pt_PT" property="og:locale"/>
+<link href="../style.css" rel="stylesheet"/>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/logo.png" rel="icon" type="image/png"/>
+<link href="https://calculatorworks.io/pt/loan-repayment-calculator" rel="canonical"/>
+<link href="https://calculatorworks.io/loan-repayment-calculator" hreflang="en" rel="alternate"/>
+<link href="https://calculatorworks.io/es/loan-repayment-calculator" hreflang="es" rel="alternate"/>
+<link href="https://calculatorworks.io/pt/loan-repayment-calculator" hreflang="pt" rel="alternate"/>
+<link href="https://calculatorworks.io/loan-repayment-calculator" hreflang="x-default" rel="alternate"/>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -41,9 +40,7 @@
   ]
 }
   </script>
-
-
-  <script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   (function () {
@@ -66,59 +63,52 @@
     }
   })();
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448"></script>
 </head>
 <body>
-    <header class="site-header">
-    <div class="container header-inner">
-      <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="1200" height="404" decoding="async">
-      </a>
-      <nav class="main-nav">
-        <a href="/pt/">Início</a>
-        <a href="/pt/finance">Finanças</a>
-        <a href="/pt/percentage">Percentagens</a>
-        <a href="/pt/everyday">Uso diário</a>
-        <a href="/pt/calculators">Todas as calculadoras</a>
-      </nav>
-      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/loan-repayment-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/loan-repayment-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/loan-repayment-calculator" lang="es">Espanhol</a></div>
-    </div>
-  </header>
-    <div class="breadcrumb-wrap">
-    <div class="container">
-      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
-        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de prestação de empréstimo</span></li></ol>
-      </nav>
-    </div>
-  </div>
-
-  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de prestação de empréstimo</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
-  <main class="main-content"><div class="container content-grid"><div>
-    <section class="calculator-card" id="calculator" data-calculator="loan-repayment-calculator.html"><h2>Calculadora de prestação de empréstimo</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Montante do empréstimo</label><input type="number" id="feet" placeholder="Exemplo: 300000" step="any" min="0"></div><div class="field"><label for="inches">Taxa de juro anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 6" step="any" min="0"></div><div class="field"><label for="decimals">Prazo do empréstimo (anos)</label><select id="decimals"><option value="1">1 ano</option><option value="3">3 anos</option><option value="5">5 anos</option><option value="10">10 anos</option><option value="15">15 anos</option><option value="20">20 anos</option><option value="25">25 anos</option><option value="30" selected>30 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
-    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>prestação mensal = P × r × (1 + r)^n ÷ ((1 + r)^n - 1)</strong><br><strong>P = montante do empréstimo</strong><br><strong>r = taxa de juro mensal</strong><br><strong>n = total de prestações mensais</strong></div><p>Exemplo: um empréstimo de 300.000 € a 6% durante 30 anos tem uma prestação mensal estimada de cerca de 1.798,65 €.</p></section>
-    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>20.000 $ a 7% durante 5 anos</strong> = cerca de 396,02 $ por mês</p><p><strong>300.000 $ a 6% durante 30 anos</strong> = cerca de 1.798,65 $ por mês</p><p><strong>500.000 $ a 5,5% durante 25 anos</strong> = cerca de 3.070,34 $ por mês</p></div></section>
-    <section class="section-card" id="guide"><h2>Como usar esta estimativa de prestação do empréstimo</h2><p>Use esta ferramenta para comparar prestações antes de pedir um empréstimo pessoal, automóvel ou outro financiamento a prazo. Pequenas alterações na taxa ou no prazo podem fazer uma diferença visível no fluxo de caixa mensal, por isso vale a pena testar vários cenários antes de decidir.</p><div class="related-links"><a href="/pt/mortgage-calculator">Calculadora de hipoteca</a><a href="/pt/savings-calculator">Calculadora de poupança</a><a href="/pt/salary-calculator">Calculadora de salário</a></div></section><section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de prestação de empréstimo</h2><div class="faq-list"><h3>O que afeta a minha prestação mensal?</h3><p>A prestação depende sobretudo do montante do empréstimo, da taxa de juro e do prazo. Taxas mais altas e saldos maiores costumam aumentar o pagamento mensal.</p><h3>Posso usar esta calculadora para empréstimos automóveis e pessoais?</h3><p>Sim. Esta calculadora é adequada para empréstimos amortizáveis standard em que reembolsa capital e juros ao longo de um prazo fixo.</p><h3>Qual é a diferença entre esta calculadora e a calculadora de hipoteca?</h3><p>A <a href="/pt/mortgage-calculator">Calculadora de hipoteca</a> destina-se a crédito habitação e também destaca o reembolso total e os juros totais em prazos mais longos.</p></div></section><section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/mortgage-calculator">Calculadora de hipoteca</a><a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a><a href="/pt/simple-interest-calculator">Calculadora de juros simples</a><a href="/pt/salary-calculator">Calculadora de salário</a><a href="/pt/savings-calculator">Calculadora de poupança</a></div></section>
-  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
-            <span class="ad-slot-label">Espaço publicitário futuro</span>
-            <strong>Reservado para um anúncio relevante</strong>
-            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
-            <p>Só será usado um número limitado de espaços publicitários.</p>
-          </div></div></aside></div></main>
-    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
-  <script src="../script.js"></script>
-
-<div class="consent-banner" id="consentBanner" hidden>
-    <div class="consent-banner__inner container">
-      <div class="consent-banner__copy">
-        <strong>Opções de privacidade e anúncios</strong>
-        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
-      </div>
-      <div class="consent-banner__actions">
-        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
-        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
-        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
-      </div>
-    </div>
-  </div>
+<header class="site-header">
+<div class="container header-inner">
+<a class="logo-wrap" href="/pt/">
+<img alt="Logótipo da CalculatorWorks" decoding="async" height="404" src="../logo.png" width="1200"/>
+</a>
+<nav class="main-nav">
+<a href="/pt/">Início</a>
+<a href="/pt/finance">Finanças</a>
+<a href="/pt/percentage">Percentagens</a>
+<a href="/pt/everyday">Uso diário</a>
+<a href="/pt/calculators">Todas as calculadoras</a>
+</nav>
+<div aria-label="Seletor de idioma" class="language-switcher"><a href="/loan-repayment-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/loan-repayment-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/loan-repayment-calculator" lang="es">Espanhol</a></div>
+</div>
+</header>
+<div class="breadcrumb-wrap">
+<div class="container">
+<nav aria-label="Navegação estrutural" class="breadcrumb-nav">
+<ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span aria-current="page" class="is-current">Calculadora de prestação de empréstimo</span></li></ol>
+</nav>
+</div>
+</div>
+<section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de prestação de empréstimo</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
+<main class="main-content"><div class="container content-grid"><div>
+<section class="calculator-card" data-calculator="loan-repayment-calculator.html" id="calculator"><h2>Calculadora de prestação de empréstimo</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Montante do empréstimo</label><input id="feet" min="0" placeholder="Exemplo: 300000" step="any" type="number"/></div><div class="field"><label for="inches">Taxa de juro anual (%)</label><input id="inches" min="0" placeholder="Exemplo: 6" step="any" type="number"/></div><div class="field"><label for="decimals">Prazo do empréstimo (anos)</label><select id="decimals"><option value="1">1 ano</option><option value="3">3 anos</option><option value="5">5 anos</option><option value="10">10 anos</option><option value="15">15 anos</option><option value="20">20 anos</option><option value="25">25 anos</option><option selected="" value="30">30 anos</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
+<section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>prestação mensal = P × r × (1 + r)^n ÷ ((1 + r)^n - 1)</strong><br/><strong>P = montante do empréstimo</strong><br/><strong>r = taxa de juro mensal</strong><br/><strong>n = total de prestações mensais</strong></div><p>Exemplo: um empréstimo de 300.000 € a 6% durante 30 anos tem uma prestação mensal estimada de cerca de 1.798,65 €.</p></section>
+<section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>20.000 $ a 7% durante 5 anos</strong> = cerca de 396,02 $ por mês</p><p><strong>300.000 $ a 6% durante 30 anos</strong> = cerca de 1.798,65 $ por mês</p><p><strong>500.000 $ a 5,5% durante 25 anos</strong> = cerca de 3.070,34 $ por mês</p></div></section>
+<section class="section-card" id="guide"><h2>Como usar esta estimativa de prestação do empréstimo</h2><p>Use esta ferramenta para comparar prestações antes de pedir um empréstimo pessoal, automóvel ou outro financiamento a prazo. Pequenas alterações na taxa ou no prazo podem fazer uma diferença visível no fluxo de caixa mensal, por isso vale a pena testar vários cenários antes de decidir.</p><div class="related-links"><a href="/pt/mortgage-calculator">Calculadora de hipoteca</a><a href="/pt/savings-calculator">Calculadora de poupança</a><a href="/pt/salary-calculator">Calculadora de salário</a></div></section><section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de prestação de empréstimo</h2><div class="faq-list"><h3>O que afeta a minha prestação mensal?</h3><p>A prestação depende sobretudo do montante do empréstimo, da taxa de juro e do prazo. Taxas mais altas e saldos maiores costumam aumentar o pagamento mensal.</p><h3>Posso usar esta calculadora para empréstimos automóveis e pessoais?</h3><p>Sim. Esta calculadora é adequada para empréstimos amortizáveis standard em que reembolsa capital e juros ao longo de um prazo fixo.</p><h3>Qual é a diferença entre esta calculadora e a calculadora de hipoteca?</h3><p>A <a href="/pt/mortgage-calculator">Calculadora de hipoteca</a> destina-se a crédito habitação e também destaca o reembolso total e os juros totais em prazos mais longos.</p></div></section><section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/mortgage-calculator">Calculadora de hipoteca</a><a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a><a href="/pt/simple-interest-calculator">Calculadora de juros simples</a><a href="/pt/salary-calculator">Calculadora de salário</a><a href="/pt/savings-calculator">Calculadora de poupança</a></div></section>
+</div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="help-box"><strong>Helpful next steps</strong><p>Use the calculator result as a guide, then review the formula and related calculators for context.</p></div></div></aside></div></main>
+<footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+<script src="../script.js"></script>
+<div class="consent-banner" hidden="" id="consentBanner">
+<div class="consent-banner__inner container">
+<div class="consent-banner__copy">
+<strong>Opções de privacidade e anúncios</strong>
+<p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+</div>
+<div class="consent-banner__actions">
+<a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+<button class="calc-btn calc-btn-secondary" id="consentReject" type="button">Rejeitar</button>
+<button class="calc-btn calc-btn-primary" id="consentAccept" type="button">Aceitar</button>
+</div>
+</div>
+</div>
 </body>
 </html>

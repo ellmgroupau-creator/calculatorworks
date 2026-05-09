@@ -1,32 +1,21 @@
 <!DOCTYPE html>
+
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de inflação | CalculatorWorks</title>
-  <meta name="description" content="Use a calculadora de inflação gratuita com fórmula, exemplos e ferramentas relacionadas.">
-
-  <meta property="og:locale" content="pt_PT">
-  
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="/logo.png" type="image/png">
-  <link rel="canonical" href="https://calculatorworks.io/pt/inflation-calculator">
-  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/inflation-calculator">
-  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/inflation-calculator">
-  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/inflation-calculator">
-  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/inflation-calculator">
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <script type="application/ld+json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calculadora de inflação | CalculatorWorks</title>
+<meta content="Use a calculadora de inflação gratuita com fórmula, exemplos e ferramentas relacionadas." name="description"/>
+<meta content="pt_PT" property="og:locale"/>
+<link href="../style.css" rel="stylesheet"/>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/logo.png" rel="icon" type="image/png"/>
+<link href="https://calculatorworks.io/pt/inflation-calculator" rel="canonical"/>
+<link href="https://calculatorworks.io/inflation-calculator" hreflang="en" rel="alternate"/>
+<link href="https://calculatorworks.io/es/inflation-calculator" hreflang="es" rel="alternate"/>
+<link href="https://calculatorworks.io/pt/inflation-calculator" hreflang="pt" rel="alternate"/>
+<link href="https://calculatorworks.io/inflation-calculator" hreflang="x-default" rel="alternate"/>
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -51,9 +40,7 @@
   ]
 }
   </script>
-
-
-  <script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   (function () {
@@ -76,61 +63,54 @@
     }
   })();
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448"></script>
 </head>
 <body>
-    <header class="site-header">
-    <div class="container header-inner">
-      <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="1200" height="404" decoding="async">
-      </a>
-      <nav class="main-nav">
-        <a href="/pt/">Início</a>
-        <a href="/pt/finance">Finanças</a>
-        <a href="/pt/percentage">Percentagens</a>
-        <a href="/pt/everyday">Uso diário</a>
-        <a href="/pt/calculators">Todas as calculadoras</a>
-      </nav>
-      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/inflation-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/inflation-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/inflation-calculator" lang="es">Espanhol</a></div>
-    </div>
-  </header>
-    <div class="breadcrumb-wrap">
-    <div class="container">
-      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
-        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span class="is-current" aria-current="page">Calculadora de inflação</span></li></ol>
-      </nav>
-    </div>
-  </div>
-
-  <section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de inflação</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
-  <main class="main-content"><div class="container content-grid"><div>
-    <section class="calculator-card" id="calculator" data-calculator="inflation-calculator.html"><h2>Calculadora de inflação</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Preço atual</label><input type="number" id="feet" placeholder="Exemplo: 100" step="any" min="0"></div><div class="field"><label for="inches">Taxa de inflação anual (%)</label><input type="number" id="inches" placeholder="Exemplo: 3" step="any" min="0"></div><div class="field"><label for="decimals">Número de anos</label><input type="number" id="decimals" placeholder="Exemplo: 10" step="any" min="0"></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
-    <section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>preço futuro = preço atual × (1 + taxa / 100) ^ anos</strong><br><strong>aumento por inflação = preço futuro - preço atual</strong></div><p>Esta fórmula utiliza crescimento composto para projetar como um preço aumenta ano após ano a uma taxa de inflação constante. O resultado mostra o custo estimado após o número especificado de anos.</p></section>
-    <section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>100 € a 3% durante 10 anos:</strong> preço futuro = 134,39 €, aumento = 34,39 €</p><p><strong>50 € a 5% durante 20 anos:</strong> preço futuro = 132,66 €, aumento = 82,66 €</p><p><strong>250 € a 2,5% durante 5 anos:</strong> preço futuro = 282,85 €, aumento = 32,85 €</p></div></section>
-    <section class="section-card" id="guide"><h2>Porque a inflação importa</h2><p>A inflação reduz o poder de compra ao longo do tempo. Um euro hoje compra mais do que um euro no futuro. Compreender a inflação é importante para o planeamento da reforma, negociações salariais, contratos de longo prazo e decisões de investimento.</p><p>Esta calculadora assume uma taxa de inflação anual constante, o que é útil para estimativas rápidas. Na realidade, a inflação flutua ano a ano. Para comparações históricas, procure os dados reais do IPC do seu país. Para as projeções futuras, as metas de inflação do banco central (normalmente 2-3% nas economias desenvolvidas) constituem uma base razoável.</p></section>
-    <section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de inflação</h2><div class="faq-list"><h3>Que taxa de inflação devo usar?</h3><p>Para o planeamento geral, 2-3% é uma base comum em muitos países desenvolvidos. Verifique o seu secretária nacional de estatísticas ou banco central para obter os números atuais. Utilize taxas mais elevadas para estimativas conservadoras ou para países com inflação mais elevada.</p><h3>Isso explica a deflação?</h3><p>Pode introduzir uma taxa de inflação negativa para modelar a deflação (queda dos preços), embora a deflação sustentada seja incomum na maioria das economias modernas.</p><h3>Como isso difere de uma calculadora de juros compostos?</h3><p>A matemática é idêntica, mas o contexto é diferente. Uma calculadora de juros compostos mostra como as poupanças crescem, enquanto esta ferramenta mostra como os custos aumentam. Ambas usam a fórmula de crescimento composto.</p></div></section>
-    <section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a><a href="/pt/savings-calculator">Calculadora de poupança</a><a href="/pt/roi-calculator">Calculadora de ROI</a><a href="/pt/salary-calculator">Calculadora de salário</a><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/calculators">Todas as calculadoras</a></div></section>
-  </div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#guide">Guia</a></li><li><a href="#faq">Perguntas frequentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="ad-box ad-box-sidebar">
-            <span class="ad-slot-label">Espaço publicitário futuro</span>
-            <strong>Reservado para um anúncio relevante</strong>
-            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
-            <p>Só será usado um número limitado de espaços publicitários.</p>
-          </div></div></aside></div></main>
-    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
-  <script src="../script.js"></script>
-
-<div class="consent-banner" id="consentBanner" hidden>
-    <div class="consent-banner__inner container">
-      <div class="consent-banner__copy">
-        <strong>Opções de privacidade e anúncios</strong>
-        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
-      </div>
-      <div class="consent-banner__actions">
-        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
-        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
-        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
-      </div>
-    </div>
-  </div>
+<header class="site-header">
+<div class="container header-inner">
+<a class="logo-wrap" href="/pt/">
+<img alt="Logótipo da CalculatorWorks" decoding="async" height="404" src="../logo.png" width="1200"/>
+</a>
+<nav class="main-nav">
+<a href="/pt/">Início</a>
+<a href="/pt/finance">Finanças</a>
+<a href="/pt/percentage">Percentagens</a>
+<a href="/pt/everyday">Uso diário</a>
+<a href="/pt/calculators">Todas as calculadoras</a>
+</nav>
+<div aria-label="Seletor de idioma" class="language-switcher"><a href="/inflation-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/inflation-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/inflation-calculator" lang="es">Espanhol</a></div>
+</div>
+</header>
+<div class="breadcrumb-wrap">
+<div class="container">
+<nav aria-label="Navegação estrutural" class="breadcrumb-nav">
+<ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/finance">Finanças</a></li><li><span aria-current="page" class="is-current">Calculadora de inflação</span></li></ol>
+</nav>
+</div>
+</div>
+<section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de inflação</h1><p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p></div></div></section>
+<main class="main-content"><div class="container content-grid"><div>
+<section class="calculator-card" data-calculator="inflation-calculator.html" id="calculator"><h2>Calculadora de inflação</h2><p>Introduza os valores necessários para obter o resultado imediatamente.</p><div class="form-grid"><div class="field"><label for="feet">Preço atual</label><input id="feet" min="0" placeholder="Exemplo: 100" step="any" type="number"/></div><div class="field"><label for="inches">Taxa de inflação anual (%)</label><input id="inches" min="0" placeholder="Exemplo: 3" step="any" type="number"/></div><div class="field"><label for="decimals">Número de anos</label><input id="decimals" min="0" placeholder="Exemplo: 10" step="any" type="number"/></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div></section>
+<section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>preço futuro = preço atual × (1 + taxa / 100) ^ anos</strong><br/><strong>aumento por inflação = preço futuro - preço atual</strong></div><p>Esta fórmula utiliza crescimento composto para projetar como um preço aumenta ano após ano a uma taxa de inflação constante. O resultado mostra o custo estimado após o número especificado de anos.</p></section>
+<section class="section-card" id="examples"><h2>Exemplos resolvidos</h2><div class="example-box"><p><strong>100 € a 3% durante 10 anos:</strong> preço futuro = 134,39 €, aumento = 34,39 €</p><p><strong>50 € a 5% durante 20 anos:</strong> preço futuro = 132,66 €, aumento = 82,66 €</p><p><strong>250 € a 2,5% durante 5 anos:</strong> preço futuro = 282,85 €, aumento = 32,85 €</p></div></section>
+<section class="section-card" id="guide"><h2>Porque a inflação importa</h2><p>A inflação reduz o poder de compra ao longo do tempo. Um euro hoje compra mais do que um euro no futuro. Compreender a inflação é importante para o planeamento da reforma, negociações salariais, contratos de longo prazo e decisões de investimento.</p><p>Esta calculadora assume uma taxa de inflação anual constante, o que é útil para estimativas rápidas. Na realidade, a inflação flutua ano a ano. Para comparações históricas, procure os dados reais do IPC do seu país. Para as projeções futuras, as metas de inflação do banco central (normalmente 2-3% nas economias desenvolvidas) constituem uma base razoável.</p></section>
+<section class="section-card" id="faq"><h2>Perguntas frequentes sobre a calculadora de inflação</h2><div class="faq-list"><h3>Que taxa de inflação devo usar?</h3><p>Para o planeamento geral, 2-3% é uma base comum em muitos países desenvolvidos. Verifique o seu secretária nacional de estatísticas ou banco central para obter os números atuais. Utilize taxas mais elevadas para estimativas conservadoras ou para países com inflação mais elevada.</p><h3>Isso explica a deflação?</h3><p>Pode introduzir uma taxa de inflação negativa para modelar a deflação (queda dos preços), embora a deflação sustentada seja incomum na maioria das economias modernas.</p><h3>Como isso difere de uma calculadora de juros compostos?</h3><p>A matemática é idêntica, mas o contexto é diferente. Uma calculadora de juros compostos mostra como as poupanças crescem, enquanto esta ferramenta mostra como os custos aumentam. Ambas usam a fórmula de crescimento composto.</p></div></section>
+<section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/pt/compound-interest-calculator">Calculadora de juros compostos</a><a href="/pt/savings-calculator">Calculadora de poupança</a><a href="/pt/roi-calculator">Calculadora de ROI</a><a href="/pt/salary-calculator">Calculadora de salário</a><a href="/pt/finance">Calculadoras de finanças</a><a href="/pt/calculators">Todas as calculadoras</a></div></section>
+</div><aside class="sidebar"><div class="sidebar-card"><h3>Nesta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Exemplos</a></li><li><a href="#guide">Guia</a></li><li><a href="#faq">Perguntas frequentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitária</h3><div class="help-box"><strong>Helpful next steps</strong><p>Use the calculator result as a guide, then review the formula and related calculators for context.</p></div></div></aside></div></main>
+<footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+<script src="../script.js"></script>
+<div class="consent-banner" hidden="" id="consentBanner">
+<div class="consent-banner__inner container">
+<div class="consent-banner__copy">
+<strong>Opções de privacidade e anúncios</strong>
+<p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+</div>
+<div class="consent-banner__actions">
+<a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+<button class="calc-btn calc-btn-secondary" id="consentReject" type="button">Rejeitar</button>
+<button class="calc-btn calc-btn-primary" id="consentAccept" type="button">Aceitar</button>
+</div>
+</div>
+</div>
 </body>
 </html>

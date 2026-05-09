@@ -1,21 +1,20 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de Celsius a Fahrenheit | CalculatorWorks</title>
-  <meta name="description" content="Usa la calculadora de celsius a fahrenheit gratis con fórmula, ejemplos y herramientas relacionadas.">
-
-  <meta property="og:locale" content="es_ES">
-  
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="/logo.png" type="image/png">
-  <link rel="canonical" href="https://calculatorworks.io/es/celsius-to-fahrenheit">
-  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/celsius-to-fahrenheit">
-  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/celsius-to-fahrenheit">
-  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/celsius-to-fahrenheit">
-  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/celsius-to-fahrenheit"><script type="application/ld+json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calculadora de Celsius a Fahrenheit | CalculatorWorks</title>
+<meta content="Usa la calculadora de celsius a fahrenheit gratis con fórmula, ejemplos y herramientas relacionadas." name="description"/>
+<meta content="es_ES" property="og:locale"/>
+<link href="../style.css" rel="stylesheet"/>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/logo.png" rel="icon" type="image/png"/>
+<link href="https://calculatorworks.io/es/celsius-to-fahrenheit" rel="canonical"/>
+<link href="https://calculatorworks.io/celsius-to-fahrenheit" hreflang="en" rel="alternate"/>
+<link href="https://calculatorworks.io/es/celsius-to-fahrenheit" hreflang="es" rel="alternate"/>
+<link href="https://calculatorworks.io/pt/celsius-to-fahrenheit" hreflang="pt" rel="alternate"/>
+<link href="https://calculatorworks.io/celsius-to-fahrenheit" hreflang="x-default" rel="alternate"/><script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -40,9 +39,7 @@
   ]
 }
   </script>
-
-
-  <script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   (function () {
@@ -65,144 +62,123 @@
     }
   })();
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script></head>
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448"></script></head>
 <body>
-
-    <header class="site-header">
-    <div class="container header-inner">
-      <a href="/es/" class="logo-wrap">
-        <img src="../logo.png" alt="Logotipo de CalculatorWorks" width="1200" height="404" decoding="async">
-      </a>
-      <nav class="main-nav">
-        <a href="/es/">Inicio</a>
-        <a href="/es/finance">Finanzas</a>
-        <a href="/es/percentage">Porcentajes</a>
-        <a href="/es/everyday">Uso diario</a>
-        <a href="/es/calculators">Todas las calculadoras</a>
-      </nav>
-      <div class="language-switcher" aria-label="Selector de idioma"><a href="/celsius-to-fahrenheit" lang="en">Inglés</a> <span>|</span> <a href="/es/celsius-to-fahrenheit" lang="es">Español</a> <span>|</span> <a href="/pt/celsius-to-fahrenheit" lang="pt">Português</a></div>
-    </div>
-  </header>
-    <div class="breadcrumb-wrap">
-    <div class="container">
-      <nav class="breadcrumb-nav" aria-label="Ruta de navegación">
-        <ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/unit-conversion">Conversión de unidades</a></li><li><span class="is-current" aria-current="page">Calculadora de Celsius a Fahrenheit</span></li></ol>
-      </nav>
-    </div>
-  </div>
-
-
-  <section class="hero">
-    <div class="container">
-      <div class="hero-text">
-        <h1>Calculadora de Celsius a Fahrenheit</h1>
-        <p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p>
-      </div>
-    </div>
-  </section>
-
-  <main class="main-content">
-    <div class="container content-grid">
-      <div>
-        <section class="calculator-card" id="calculator" data-calculator="celsius-to-fahrenheit.html">
-          <h2>Calculadora de Celsius a Fahrenheit</h2>
-          <p>Introduce los valores necesarios para obtener el resultado al instante.</p>
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="feet">Celsius</label>
-              <input type="number" id="feet" placeholder="Ejemplo: 25" step="any">
-            </div>
-
-            <div class="field">
-              <label for="decimals">Decimales</label>
-              <select id="decimals">
-                <option value="2">2 decimales</option>
-                <option value="3" selected>3 decimales</option>
-                <option value="4">4 decimales</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="button-row">
-            <button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
-            <button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button>
-          </div>
-
-          <div class="result-box">
-            <span class="result-label">Resultado</span>
-            <div class="result-value" id="result">Introduce un valor para empezar</div>
-          </div>
-        </section>
-
-        <section class="section-card" id="formula">
-          <h2>Fórmula</h2>
-          <div class="formula-box">
-            <strong>grados fahrenheit = (celsios × 9 ÷ 5) + 32</strong>
-          </div>
-          <p>Ejemplo: 25°C = 77.000°F</p>
-        </section>
-
-        <section class="section-card" id="examples">
-          <h2>Ejemplos resueltos</h2>
-          <div class="example-box">
-            <p><strong>0°C</strong> = 32.000°F</p>
-            <p><strong>25°C</strong> = 77.000°F</p>
-            <p><strong>100°C</strong> = 212.000°F</p>
-          </div>
-        </section>
-
-        <section class="section-card" id="guide"><h2>Cuándo utilizar este conversor de grados Celsius a Fahrenheit</h2><p>Celsius se usa ampliamente para el clima, recetas y configuraciones de electrodomésticos en muchos países, mientras que Fahrenheit sigue siendo común en otros. Este conversor le ayuda a interpretar las temperaturas rápidamente sin tener que adivinar.</p><ul class="content-list"><li>Convierte pronósticos meteorológicos cuando viaje o lea informes meteorológicos internacionales.</li><li>Cambie las temperaturas de la receta y del horno de Celsius a Fahrenheit.</li><li>Usa la tabla de referencia rápida para la sala común, la cocina y las temperaturas exteriores.</li></ul></section><section class="section-card" id="quick-reference"><h2>Referencia rápida de Celsius a Fahrenheit</h2><div class="table-wrap"><table class="quickref-table"><thead><tr><th>Celsius</th><th>Fahrenheit</th></tr></thead><tbody><tr><td>0 °C</td><td>32 °F</td></tr><tr><td>20 °C</td><td>68 °F</td></tr><tr><td>37 °C</td><td>98.6 °F</td></tr><tr><td>200 °C</td><td>392 °F</td></tr></tbody></table></div></section><section class="section-card" id="faq"><h2>Preguntas frecuentes sobre celsius a Fahrenheit</h2><div class="faq-list"><h3>¿Cuál es la fórmula de Celsius a Fahrenheit?</h3><p>La fórmula es Fahrenheit = Celsius × 9/5 + 32. La calculadora hace esto instantáneamente para cualquier temperatura.</p><h3>¿Es 0 °C el punto de congelación del agua?</h3><p>Sí. 0 °C equivale a 32 °F, que es el punto de congelación del agua a presión estándar.</p><h3>¿Esto es útil para cocinar y hornos?</h3><p>Sí. Es útil cuando las recetas están escritas en grados Celsius pero su horno o electrodoméstico usa Fahrenheit.</p></div></section><section class="section-card" id="related">
-          <h2>Calculadoras relacionadas</h2>
-          <div class="related-links">
-            <a href="/es/unit-conversion">Calculadoras de conversión de unidades</a>
-            <a href="/es/fahrenheit-to-celsius">Calculadora de Fahrenheit a Celsius</a>
-            <a href="/es/km-to-miles">Calculadora de km a millas</a>
-            <a href="/es/miles-to-km">Calculadora de millas a km</a>
-          </div>
-        </section>
-      </div>
-
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <h3>En esta página</h3>
-          <ol class="toc">
-            <li><a href="#calculator">Calculadora</a></li>
-            <li><a href="#formula">Fórmula</a></li>
-            <li><a href="#examples">Ejemplos</a></li>
-            <li><a href="#guide">Cuándo usarlo</a></li><li><a href="#quick-reference">Referencia rápida</a></li><li><a href="#faq">Preguntas frecuentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li>
-          </ol>
-        </div>
-
-        <div class="sidebar-card">
-          <h3>Área publicitaria</h3>
-          <div class="ad-box ad-box-sidebar">
-            <span class="ad-slot-label">Espacio publicitario futuro</span>
-            <strong>Reservado para un anuncio relevante</strong>
-            <p>Este marcador mantiene el diseño estable para que cualquier anuncio futuro no desplace el contenido.</p>
-            <p>Solo se usará un número limitado de ubicaciones publicitarias.</p>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/es/about">Acerca de</a><a href="/es/contact">Contacto</a><a href="/es/privacy-policy">Política de privacidad</a><a href="/es/terms">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
-
-  <script src="../script.js"></script>
-
-<div class="consent-banner" id="consentBanner" hidden>
-    <div class="consent-banner__inner container">
-      <div class="consent-banner__copy">
-        <strong>Opciones de privacidad y anuncios</strong>
-        <p>CalculatorWorks puede usar cookies y tecnologías similares para funciones esenciales del sitio y publicidad. Puedes aceptar las cookies relacionadas con anuncios, rechazarlas o revisar primero la política de privacidad.</p>
-      </div>
-      <div class="consent-banner__actions">
-        <a class="consent-banner__link" href="/es/privacy-policy">Política de privacidad</a>
-        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rechazar</button>
-        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceptar</button>
-      </div>
-    </div>
-  </div>
+<header class="site-header">
+<div class="container header-inner">
+<a class="logo-wrap" href="/es/">
+<img alt="Logotipo de CalculatorWorks" decoding="async" height="404" src="../logo.png" width="1200"/>
+</a>
+<nav class="main-nav">
+<a href="/es/">Inicio</a>
+<a href="/es/finance">Finanzas</a>
+<a href="/es/percentage">Porcentajes</a>
+<a href="/es/everyday">Uso diario</a>
+<a href="/es/calculators">Todas las calculadoras</a>
+</nav>
+<div aria-label="Selector de idioma" class="language-switcher"><a href="/celsius-to-fahrenheit" lang="en">Inglés</a> <span>|</span> <a href="/es/celsius-to-fahrenheit" lang="es">Español</a> <span>|</span> <a href="/pt/celsius-to-fahrenheit" lang="pt">Português</a></div>
+</div>
+</header>
+<div class="breadcrumb-wrap">
+<div class="container">
+<nav aria-label="Ruta de navegación" class="breadcrumb-nav">
+<ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/unit-conversion">Conversión de unidades</a></li><li><span aria-current="page" class="is-current">Calculadora de Celsius a Fahrenheit</span></li></ol>
+</nav>
+</div>
+</div>
+<section class="hero">
+<div class="container">
+<div class="hero-text">
+<h1>Calculadora de Celsius a Fahrenheit</h1>
+<p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p>
+</div>
+</div>
+</section>
+<main class="main-content">
+<div class="container content-grid">
+<div>
+<section class="calculator-card" data-calculator="celsius-to-fahrenheit.html" id="calculator">
+<h2>Calculadora de Celsius a Fahrenheit</h2>
+<p>Introduce los valores necesarios para obtener el resultado al instante.</p>
+<div class="form-grid">
+<div class="field">
+<label for="feet">Celsius</label>
+<input id="feet" placeholder="Ejemplo: 25" step="any" type="number"/>
+</div>
+<div class="field">
+<label for="decimals">Decimales</label>
+<select id="decimals">
+<option value="2">2 decimales</option>
+<option selected="" value="3">3 decimales</option>
+<option value="4">4 decimales</option>
+</select>
+</div>
+</div>
+<div class="button-row">
+<button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
+<button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button>
+</div>
+<div class="result-box">
+<span class="result-label">Resultado</span>
+<div class="result-value" id="result">Introduce un valor para empezar</div>
+</div>
+</section>
+<section class="section-card" id="formula">
+<h2>Fórmula</h2>
+<div class="formula-box">
+<strong>grados fahrenheit = (celsios × 9 ÷ 5) + 32</strong>
+</div>
+<p>Ejemplo: 25°C = 77.000°F</p>
+</section>
+<section class="section-card" id="examples">
+<h2>Ejemplos resueltos</h2>
+<div class="example-box">
+<p><strong>0°C</strong> = 32.000°F</p>
+<p><strong>25°C</strong> = 77.000°F</p>
+<p><strong>100°C</strong> = 212.000°F</p>
+</div>
+</section>
+<section class="section-card" id="guide"><h2>Cuándo utilizar este conversor de grados Celsius a Fahrenheit</h2><p>Celsius se usa ampliamente para el clima, recetas y configuraciones de electrodomésticos en muchos países, mientras que Fahrenheit sigue siendo común en otros. Este conversor le ayuda a interpretar las temperaturas rápidamente sin tener que adivinar.</p><ul class="content-list"><li>Convierte pronósticos meteorológicos cuando viaje o lea informes meteorológicos internacionales.</li><li>Cambie las temperaturas de la receta y del horno de Celsius a Fahrenheit.</li><li>Usa la tabla de referencia rápida para la sala común, la cocina y las temperaturas exteriores.</li></ul></section><section class="section-card" id="quick-reference"><h2>Referencia rápida de Celsius a Fahrenheit</h2><div class="table-wrap"><table class="quickref-table"><thead><tr><th>Celsius</th><th>Fahrenheit</th></tr></thead><tbody><tr><td>0 °C</td><td>32 °F</td></tr><tr><td>20 °C</td><td>68 °F</td></tr><tr><td>37 °C</td><td>98.6 °F</td></tr><tr><td>200 °C</td><td>392 °F</td></tr></tbody></table></div></section><section class="section-card" id="faq"><h2>Preguntas frecuentes sobre celsius a Fahrenheit</h2><div class="faq-list"><h3>¿Cuál es la fórmula de Celsius a Fahrenheit?</h3><p>La fórmula es Fahrenheit = Celsius × 9/5 + 32. La calculadora hace esto instantáneamente para cualquier temperatura.</p><h3>¿Es 0 °C el punto de congelación del agua?</h3><p>Sí. 0 °C equivale a 32 °F, que es el punto de congelación del agua a presión estándar.</p><h3>¿Esto es útil para cocinar y hornos?</h3><p>Sí. Es útil cuando las recetas están escritas en grados Celsius pero su horno o electrodoméstico usa Fahrenheit.</p></div></section><section class="section-card" id="related">
+<h2>Calculadoras relacionadas</h2>
+<div class="related-links">
+<a href="/es/unit-conversion">Calculadoras de conversión de unidades</a>
+<a href="/es/fahrenheit-to-celsius">Calculadora de Fahrenheit a Celsius</a>
+<a href="/es/km-to-miles">Calculadora de km a millas</a>
+<a href="/es/miles-to-km">Calculadora de millas a km</a>
+</div>
+</section>
+</div>
+<aside class="sidebar">
+<div class="sidebar-card">
+<h3>En esta página</h3>
+<ol class="toc">
+<li><a href="#calculator">Calculadora</a></li>
+<li><a href="#formula">Fórmula</a></li>
+<li><a href="#examples">Ejemplos</a></li>
+<li><a href="#guide">Cuándo usarlo</a></li><li><a href="#quick-reference">Referencia rápida</a></li><li><a href="#faq">Preguntas frecuentes</a></li><li><a href="#related">Calculadoras relacionadas</a></li>
+</ol>
+</div>
+<div class="sidebar-card">
+<h3>Área publicitaria</h3>
+<div class="help-box"><strong>Helpful next steps</strong><p>Use the calculator result as a guide, then review the formula and related calculators for context.</p></div>
+</div>
+</aside>
+</div>
+</main>
+<footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/es/about">Acerca de</a><a href="/es/contact">Contacto</a><a href="/es/privacy-policy">Política de privacidad</a><a href="/es/terms">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
+<script src="../script.js"></script>
+<div class="consent-banner" hidden="" id="consentBanner">
+<div class="consent-banner__inner container">
+<div class="consent-banner__copy">
+<strong>Opciones de privacidad y anuncios</strong>
+<p>CalculatorWorks puede usar cookies y tecnologías similares para funciones esenciales del sitio y publicidad. Puedes aceptar las cookies relacionadas con anuncios, rechazarlas o revisar primero la política de privacidad.</p>
+</div>
+<div class="consent-banner__actions">
+<a class="consent-banner__link" href="/es/privacy-policy">Política de privacidad</a>
+<button class="calc-btn calc-btn-secondary" id="consentReject" type="button">Rechazar</button>
+<button class="calc-btn calc-btn-primary" id="consentAccept" type="button">Aceptar</button>
+</div>
+</div>
+</div>
 </body>
 </html>

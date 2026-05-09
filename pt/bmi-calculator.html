@@ -1,32 +1,21 @@
 <!DOCTYPE html>
+
 <html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Calculadora de IMC | CalculatorWorks</title>
-  <meta name="description" content="Use a calculadora de imc gratuita com fórmula, exemplos e ferramentas relacionadas.">
-
-  <meta property="og:locale" content="pt_PT">
-  
-  <link rel="stylesheet" href="../style.css">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="icon" href="/logo.png" type="image/png">
-  <link rel="canonical" href="https://calculatorworks.io/pt/bmi-calculator">
-  <link rel="alternate" hreflang="en" href="https://calculatorworks.io/bmi-calculator">
-  <link rel="alternate" hreflang="es" href="https://calculatorworks.io/es/bmi-calculator">
-  <link rel="alternate" hreflang="pt" href="https://calculatorworks.io/pt/bmi-calculator">
-  <link rel="alternate" hreflang="x-default" href="https://calculatorworks.io/bmi-calculator">
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  <script type="application/ld+json">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Calculadora de IMC | CalculatorWorks</title>
+<meta content="Use a calculadora de imc gratuita com fórmula, exemplos e ferramentas relacionadas." name="description"/>
+<meta content="pt_PT" property="og:locale"/>
+<link href="../style.css" rel="stylesheet"/>
+<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="/logo.png" rel="icon" type="image/png"/>
+<link href="https://calculatorworks.io/pt/bmi-calculator" rel="canonical"/>
+<link href="https://calculatorworks.io/bmi-calculator" hreflang="en" rel="alternate"/>
+<link href="https://calculatorworks.io/es/bmi-calculator" hreflang="es" rel="alternate"/>
+<link href="https://calculatorworks.io/pt/bmi-calculator" hreflang="pt" rel="alternate"/>
+<link href="https://calculatorworks.io/bmi-calculator" hreflang="x-default" rel="alternate"/>
+<script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -51,9 +40,7 @@
   ]
 }
   </script>
-
-
-  <script>
+<script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   (function () {
@@ -76,167 +63,140 @@
     }
   })();
   </script>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448" crossorigin="anonymous"></script>
+<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448"></script>
 </head>
 <body>
-
-    <header class="site-header">
-    <div class="container header-inner">
-      <a href="/pt/" class="logo-wrap">
-        <img src="../logo.png" alt="Logótipo da CalculatorWorks" width="1200" height="404" decoding="async">
-      </a>
-      <nav class="main-nav">
-        <a href="/pt/">Início</a>
-        <a href="/pt/finance">Finanças</a>
-        <a href="/pt/percentage">Percentagens</a>
-        <a href="/pt/everyday">Uso diário</a>
-        <a href="/pt/calculators">Todas as calculadoras</a>
-      </nav>
-      <div class="language-switcher" aria-label="Seletor de idioma"><a href="/bmi-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/bmi-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/bmi-calculator" lang="es">Espanhol</a></div>
-    </div>
-  </header>
-    <div class="breadcrumb-wrap">
-    <div class="container">
-      <nav class="breadcrumb-nav" aria-label="Navegação estrutural">
-        <ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/everyday">Uso diário</a></li><li><span class="is-current" aria-current="page">Calculadora de IMC</span></li></ol>
-      </nav>
-    </div>
-  </div>
-
-
-  <section class="hero">
-    <div class="container">
-      <div class="hero-text">
-        <h1>Calculadora de IMC</h1>
-        <p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p>
-      </div>
-    </div>
-  </section>
-
-  <main class="main-content">
-    <div class="container content-grid">
-      <div>
-        <section class="calculator-card" id="calculator" data-calculator="bmi-calculator.html">
-          <h2>Calculadora de IMC</h2>
-          <p>Introduza os valores necessários para obter o resultado imediatamente.</p>
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="feet">Peso (kg)</label>
-              <input type="number" id="feet" placeholder="Exemplo: 70" step="any" min="0">
-            </div>
-
-            <div class="field">
-              <label for="inches">Altura (cm)</label>
-              <input type="number" id="inches" placeholder="Exemplo: 175" step="any" min="0">
-            </div>
-
-            <div class="field">
-              <label for="decimals">Casas decimais</label>
-              <select id="decimals">
-                <option value="1">1 casa decimal</option>
-                <option value="2" selected>2 casas decimais</option>
-                <option value="3">3 casas decimais</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="button-row">
-            <button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
-            <button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button>
-          </div>
-
-          <div class="result-box">
-            <span class="result-label">Resultado</span>
-            <div class="result-value" id="result">Introduza um valor para começar</div>
-          </div>
-        </section>
-
-        <section class="section-card" id="formula">
-          <h2>Fórmula</h2>
-          <div class="formula-box">
-            <strong>IMC = peso (kg) &divide; altura (m)&sup2;</strong>
-          </div>
-          <p>Exemplo: 70 kg &divide; 1.75&sup2; = 22.86</p>
-        </section>
-
-        <section class="section-card" id="ranges">
-          <h2>Categorias de IMC</h2>
-          <div class="example-box">
-            <p><strong>Abaixo de 18,5</strong> &mdash; Abaixo do peso</p>
-            <p><strong>18,5 &ndash; 24,9</strong> &mdash; Peso normal</p>
-            <p><strong>25,0 &ndash; 29,9</strong> &mdash; Excesso de peso</p>
-            <p><strong>30,0 ou mais</strong> &mdash; Obesidade</p>
-          </div>
-        </section>
-
-        <section class="section-card" id="examples">
-          <h2>Exemplos resolvidos</h2>
-          <div class="example-box">
-            <p><strong>60 kg, 165 cm</strong> &rarr; IMC = 22.04 (Peso normal)</p>
-            <p><strong>85 kg, 180 cm</strong> &rarr; IMC = 26.23 (Excesso de peso)</p>
-            <p><strong>50 kg, 160 cm</strong> &rarr; IMC = 19.53 (Peso normal)</p>
-          </div>
-        </section>
-
-        <section class="section-card" id="ad-planning">
-          <h2>Guia da calculadora e anúncios</h2>
-          <p>A calculadora, a fórmula, os exemplos e as ligações relacionadas ficam à frente de qualquer publicidade futura para proteger a experiência de utilização.</p>
-        </section>
-
-        <section class="section-card" id="related">
-          <h2>Calculadoras relacionadas</h2>
-          <div class="related-links">
-            <a href="/pt/everyday">Calculadoras de uso diário</a>
-            <a href="/pt/average-calculator">Calculadora de média</a>
-            <a href="/pt/age-calculator">Calculadora de idade</a>
-            <a href="/pt/kg-to-lb">Conversor de kg para lb</a>
-            <a href="/pt/cm-to-inches">Conversor de cm para polegadas</a>
-          </div>
-        </section>
-      </div>
-
-      <aside class="sidebar">
-        <div class="sidebar-card">
-          <h3>Nesta página</h3>
-          <ol class="toc">
-            <li><a href="#calculator">Calculadora</a></li>
-            <li><a href="#formula">Fórmula</a></li>
-            <li><a href="#ranges">Categorias de peso</a></li>
-            <li><a href="#examples">Exemplos</a></li>
-            <li><a href="#related">Calculadoras relacionadas</a></li>
-          </ol>
-        </div>
-
-        <div class="sidebar-card">
-          <h3>Área publicitária</h3>
-          <div class="ad-box ad-box-sidebar">
-            <span class="ad-slot-label">Espaço publicitário futuro</span>
-            <strong>Reservado para um anúncio relevante</strong>
-            <p>Este marcador mantém o layout estável para que qualquer anúncio futuro não desloque o conteúdo.</p>
-            <p>Só será usado um número limitado de espaços publicitários.</p>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-    <footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
-
-  <script src="../script.js"></script>
-
-<div class="consent-banner" id="consentBanner" hidden>
-    <div class="consent-banner__inner container">
-      <div class="consent-banner__copy">
-        <strong>Opções de privacidade e anúncios</strong>
-        <p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
-      </div>
-      <div class="consent-banner__actions">
-        <a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
-        <button type="button" class="calc-btn calc-btn-secondary" id="consentReject">Rejeitar</button>
-        <button type="button" class="calc-btn calc-btn-primary" id="consentAccept">Aceitar</button>
-      </div>
-    </div>
-  </div>
+<header class="site-header">
+<div class="container header-inner">
+<a class="logo-wrap" href="/pt/">
+<img alt="Logótipo da CalculatorWorks" decoding="async" height="404" src="../logo.png" width="1200"/>
+</a>
+<nav class="main-nav">
+<a href="/pt/">Início</a>
+<a href="/pt/finance">Finanças</a>
+<a href="/pt/percentage">Percentagens</a>
+<a href="/pt/everyday">Uso diário</a>
+<a href="/pt/calculators">Todas as calculadoras</a>
+</nav>
+<div aria-label="Seletor de idioma" class="language-switcher"><a href="/bmi-calculator" lang="en">Inglês</a> <span>|</span> <a href="/pt/bmi-calculator" lang="pt">Português</a> <span>|</span> <a href="/es/bmi-calculator" lang="es">Espanhol</a></div>
+</div>
+</header>
+<div class="breadcrumb-wrap">
+<div class="container">
+<nav aria-label="Navegação estrutural" class="breadcrumb-nav">
+<ol class="breadcrumb-list"><li><a href="/pt/">Início</a></li><li><a href="/pt/everyday">Uso diário</a></li><li><span aria-current="page" class="is-current">Calculadora de IMC</span></li></ol>
+</nav>
+</div>
+</div>
+<section class="hero">
+<div class="container">
+<div class="hero-text">
+<h1>Calculadora de IMC</h1>
+<p>Use esta ferramenta para calcular rapidamente com fórmulas claras, exemplos resolvidos e ligações relacionadas.</p>
+</div>
+</div>
+</section>
+<main class="main-content">
+<div class="container content-grid">
+<div>
+<section class="calculator-card" data-calculator="bmi-calculator.html" id="calculator">
+<h2>Calculadora de IMC</h2>
+<p>Introduza os valores necessários para obter o resultado imediatamente.</p>
+<div class="form-grid">
+<div class="field">
+<label for="feet">Peso (kg)</label>
+<input id="feet" min="0" placeholder="Exemplo: 70" step="any" type="number"/>
+</div>
+<div class="field">
+<label for="inches">Altura (cm)</label>
+<input id="inches" min="0" placeholder="Exemplo: 175" step="any" type="number"/>
+</div>
+<div class="field">
+<label for="decimals">Casas decimais</label>
+<select id="decimals">
+<option value="1">1 casa decimal</option>
+<option selected="" value="2">2 casas decimais</option>
+<option value="3">3 casas decimais</option>
+</select>
+</div>
+</div>
+<div class="button-row">
+<button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
+<button class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button>
+</div>
+<div class="result-box">
+<span class="result-label">Resultado</span>
+<div class="result-value" id="result">Introduza um valor para começar</div>
+</div>
+</section>
+<section class="section-card" id="formula">
+<h2>Fórmula</h2>
+<div class="formula-box">
+<strong>IMC = peso (kg) ÷ altura (m)²</strong>
+</div>
+<p>Exemplo: 70 kg ÷ 1.75² = 22.86</p>
+</section>
+<section class="section-card" id="ranges">
+<h2>Categorias de IMC</h2>
+<div class="example-box">
+<p><strong>Abaixo de 18,5</strong> — Abaixo do peso</p>
+<p><strong>18,5 – 24,9</strong> — Peso normal</p>
+<p><strong>25,0 – 29,9</strong> — Excesso de peso</p>
+<p><strong>30,0 ou mais</strong> — Obesidade</p>
+</div>
+</section>
+<section class="section-card" id="examples">
+<h2>Exemplos resolvidos</h2>
+<div class="example-box">
+<p><strong>60 kg, 165 cm</strong> → IMC = 22.04 (Peso normal)</p>
+<p><strong>85 kg, 180 cm</strong> → IMC = 26.23 (Excesso de peso)</p>
+<p><strong>50 kg, 160 cm</strong> → IMC = 19.53 (Peso normal)</p>
+</div>
+</section>
+<section class="section-card" id="bmi-practical-guidance"><h2>Using BMI as a quick screening tool</h2><p>BMI is useful for a quick height-to-weight comparison, but it does not measure body fat, muscle mass, fitness, or overall health by itself.</p><p>For the best result, use BMI as a starting point only. If the result is unexpected or important, compare it with other health information and speak with a qualified health professional.</p></section>
+<section class="section-card" id="related">
+<h2>Calculadoras relacionadas</h2>
+<div class="related-links">
+<a href="/pt/everyday">Calculadoras de uso diário</a>
+<a href="/pt/average-calculator">Calculadora de média</a>
+<a href="/pt/age-calculator">Calculadora de idade</a>
+<a href="/pt/kg-to-lb">Conversor de kg para lb</a>
+<a href="/pt/cm-to-inches">Conversor de cm para polegadas</a>
+</div>
+</section>
+</div>
+<aside class="sidebar">
+<div class="sidebar-card">
+<h3>Nesta página</h3>
+<ol class="toc">
+<li><a href="#calculator">Calculadora</a></li>
+<li><a href="#formula">Fórmula</a></li>
+<li><a href="#ranges">Categorias de peso</a></li>
+<li><a href="#examples">Exemplos</a></li>
+<li><a href="#related">Calculadoras relacionadas</a></li>
+</ol>
+</div>
+<div class="sidebar-card">
+<h3>Área publicitária</h3>
+<div class="help-box"><strong>Helpful next steps</strong><p>Use the calculator result as a guide, then review the formula and related calculators for context.</p></div>
+</div>
+</aside>
+</div>
+</main>
+<footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/pt/about">Sobre</a><a href="/pt/contact">Contacto</a><a href="/pt/privacy-policy">Política de privacidade</a><a href="/pt/terms">Termos</a></div><div class="footer-note"><p>A CalculatorWorks publica calculadoras gratuitas com páginas legais claras, detalhes de contacto visíveis e layouts centrados no utilizador. Os resultados são apenas orientativos e devem ser verificados antes de decisões importantes.</p></div></div></footer>
+<script src="../script.js"></script>
+<div class="consent-banner" hidden="" id="consentBanner">
+<div class="consent-banner__inner container">
+<div class="consent-banner__copy">
+<strong>Opções de privacidade e anúncios</strong>
+<p>A CalculatorWorks pode usar cookies e tecnologias semelhantes para funções essenciais do site e publicidade. Pode aceitar os cookies relacionados com anúncios, rejeitá-los ou consultar primeiro a política de privacidade.</p>
+</div>
+<div class="consent-banner__actions">
+<a class="consent-banner__link" href="/pt/privacy-policy">Política de privacidade</a>
+<button class="calc-btn calc-btn-secondary" id="consentReject" type="button">Rejeitar</button>
+<button class="calc-btn calc-btn-primary" id="consentAccept" type="button">Aceitar</button>
+</div>
+</div>
+</div>
 </body>
 </html>
