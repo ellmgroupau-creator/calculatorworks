@@ -1,114 +1,13 @@
 <!DOCTYPE html>
-
-<html lang="es">
+<html es="es">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Calculadora de hipoteca | CalculatorWorks</title>
-<meta content="Usa la calculadora de hipoteca gratis con fórmula, ejemplos y herramientas relacionadas." name="description"/>
-<meta content="es_ES" property="og:locale"/>
-<link href="../style.css" rel="stylesheet"/>
-<link href="/favicon.svg" rel="icon" type="image/svg+xml"/>
-<link href="/logo.png" rel="icon" type="image/png"/>
-<link href="https://calculatorworks.io/es/mortgage-calculator" rel="canonical"/>
-<link href="https://calculatorworks.io/mortgage-calculator" hreflang="en" rel="alternate"/>
-<link href="https://calculatorworks.io/es/mortgage-calculator" hreflang="es" rel="alternate"/>
-<link href="https://calculatorworks.io/pt/mortgage-calculator" hreflang="pt" rel="alternate"/>
-<link href="https://calculatorworks.io/mortgage-calculator" hreflang="x-default" rel="alternate"/>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Inicio",
-      "item": "https://calculatorworks.io/es/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Finanzas",
-      "item": "https://calculatorworks.io/es/finance"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Calculadora de hipoteca"
-    }
-  ]
-}
-  </script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  (function () {
-    var storedConsent = null;
-    try { storedConsent = localStorage.getItem('cw-consent-choice'); } catch (e) {}
-    var consentGranted = storedConsent === 'accepted';
-    gtag('consent', 'default', {
-      ad_storage: consentGranted ? 'granted' : 'denied',
-      ad_user_data: consentGranted ? 'granted' : 'denied',
-      ad_personalization: consentGranted ? 'granted' : 'denied',
-      analytics_storage: 'denied',
-      functionality_storage: 'granted',
-      security_storage: 'granted',
-      wait_for_update: 500
-    });
-    window.adsbygoogle = window.adsbygoogle || [];
-    if (!consentGranted) {
-      window.adsbygoogle.pauseAdRequests = 1;
-      window.adsbygoogle.requestNonPersonalizedAds = 1;
-    }
-  })();
-  </script>
-<script async="" crossorigin="anonymous" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2464432500978448"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de hipoteca | CalculadoraWorks</title>
+  <meta name="description" content="Estimate monthly mortgage repayments from loan amount, interest rate, and loan term.">
+  <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<header class="site-header">
-<div class="container header-inner">
-<a class="logo-wrap" href="/es/">
-<img alt="Logotipo de CalculatorWorks" decoding="async" height="404" src="../logo.png" width="1200"/>
-</a>
-<nav class="main-nav">
-<a href="/es/">Inicio</a>
-<a href="/es/finance">Finanzas</a>
-<a href="/es/percentage">Porcentajes</a>
-<a href="/es/everyday">Uso diario</a>
-<a href="/es/calculators">Todas las calculadoras</a>
-</nav>
-<div aria-label="Selector de idioma" class="language-switcher"><a href="/mortgage-calculator" lang="en">Inglés</a> <span>|</span> <a href="/es/mortgage-calculator" lang="es">Español</a> <span>|</span> <a href="/pt/mortgage-calculator" lang="pt">Português</a></div>
-</div>
-</header>
-<div class="breadcrumb-wrap">
-<div class="container">
-<nav aria-label="Ruta de navegación" class="breadcrumb-nav">
-<ol class="breadcrumb-list"><li><a href="/es/">Inicio</a></li><li><a href="/es/finance">Finanzas</a></li><li><span aria-current="page" class="is-current">Calculadora de hipoteca</span></li></ol>
-</nav>
-</div>
-</div>
-<section class="hero"><div class="container"><div class="hero-text"><h1>Calculadora de hipoteca</h1><p>Usa esta herramienta para calcular rápidamente con fórmulas claras, ejemplos resueltos y enlaces relacionados.</p></div></div></section>
-<main class="main-content"><div class="container content-grid"><div>
-<section class="calculator-card" data-calculator="mortgage-calculator.html" id="calculator"><h2>Calculadora de hipoteca</h2><p>Introduce los valores necesarios para obtener el resultado al instante.</p><div class="form-grid"><div class="field"><label for="feet">Importe de la hipoteca</label><input id="feet" min="0" placeholder="Ejemplo: 500000" step="any" type="number"/></div><div class="field"><label for="inches">Tasa de interés anual (%)</label><input id="inches" min="0" placeholder="Ejemplo: 6.2" step="any" type="number"/></div><div class="field"><label for="decimals">Plazo de la hipoteca (años)</label><select id="decimals"><option value="10">10 años</option><option value="15">15 años</option><option value="20">20 años</option><option value="25">25 años</option><option selected="" value="30">30 años</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduce un valor para empezar</div></div></section>
-<section class="section-card" id="formula"><h2>Fórmula</h2><div class="formula-box"><strong>cuota mensual = P × r × (1 + r)^n ÷ ((1 + r)^n - 1)</strong><br/><strong>pago total = cuota mensual × n</strong><br/><strong>interés total = pago total - principal</strong></div><p>Ejemplo: una hipoteca de 500.000 $ al 6,2% durante 30 años tiene una cuota mensual estimada de unos 3.062,34 $.</p></section>
-<section class="section-card" id="examples"><h2>Ejemplos resueltos</h2><div class="example-box"><p><strong>350.000 $ al 5,8% durante 25 años</strong> = unos 2.212,46 $ al mes</p><p><strong>500.000 $ al 6,2% durante 30 años</strong> = unos 3.062,34 $ al mes</p><p><strong>650.000 $ al 6% durante 30 años</strong> = unos 3.897,08 $ al mes</p></div></section>
-<section class="section-card" id="guide"><h2>Cómo ayudan las estimaciones hipotecarias</h2><p>Las estimaciones hipotecarias son útiles para fijar un presupuesto de compra realista, comparar escenarios de cuotas fijas y entender cómo los intereses afectan al total pagado con el tiempo. Probar distintos importes y tasas puede ayudarte a ver si una propiedad sigue encajando en tu presupuesto antes de solicitar el préstamo.</p><div class="related-links"><a href="/es/loan-repayment-calculator">Comparar con la calculadora de préstamo</a><a href="/es/savings-calculator">Calcular el crecimiento del ahorro inicial</a><a href="/es/finance">Ver calculadoras de finanzas</a></div></section><section class="section-card" id="faq"><h2>Preguntas frecuentes sobre la calculadora de hipoteca</h2><div class="faq-list"><h3>¿Qué afecta más a las cuotas hipotecarias?</h3><p>Los factores principales son el importe del préstamo, la tasa de interés y el plazo de la hipoteca. Incluso un pequeño cambio en la tasa puede alterar de forma apreciable la cuota mensual y el interés total.</p><h3>¿Esta calculadora incluye impuestos o seguros?</h3><p>No. Esta calculadora se centra solo en estimaciones de capital e intereses, así que úsala como guía de planificación y no como una oferta formal del prestamista.</p><h3>¿Debería comparar una hipoteca con mis objetivos de ahorro?</h3><p>Sí. Muchos compradores comparan las cuotas probables de la hipoteca con el crecimiento previsto del ahorro inicial usando la <a href="/es/savings-calculator">Calculadora de ahorro</a>.</p></div></section><section class="section-card" id="related"><h2>Calculadoras relacionadas</h2><div class="related-links"><a href="/es/loan-repayment-calculator">Calculadora de pago de préstamo</a><a href="/es/savings-calculator">Calculadora de ahorro</a><a href="/es/finance">Calculadoras de finanzas</a><a href="/es/salary-calculator">Calculadora de salario</a><a href="/es/calculators">Todas las calculadoras</a></div></section>
-</div><aside class="sidebar"><div class="sidebar-card"><h3>En esta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#examples">Ejemplos</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Área publicitaria</h3><div class="help-box"><strong>Helpful next steps</strong><p>Use the calculator result as a guide, then review the formula and related calculators for context.</p></div></div></aside></div></main>
-<footer class="site-footer"><div class="container"><strong>CalculatorWorks</strong><div class="footer-links"><a href="/es/about">Acerca de</a><a href="/es/contact">Contacto</a><a href="/es/privacy-policy">Política de privacidad</a><a href="/es/terms">Términos</a></div><div class="footer-note"><p>CalculatorWorks publica calculadoras gratuitas con páginas legales claras, datos de contacto visibles y diseños centrados en el usuario. Los resultados son orientativos y conviene verificarlos antes de tomar decisiones importantes.</p></div></div></footer>
-<script src="../script.js"></script>
-<div class="consent-banner" hidden="" id="consentBanner">
-<div class="consent-banner__inner container">
-<div class="consent-banner__copy">
-<strong>Opciones de privacidad y anuncios</strong>
-<p>CalculatorWorks puede usar cookies y tecnologías similares para funciones esenciales del sitio y publicidad. Puedes aceptar las cookies relacionadas con anuncios, rechazarlas o revisar primero la política de privacidad.</p>
-</div>
-<div class="consent-banner__actions">
-<a class="consent-banner__link" href="/es/privacy-policy">Política de privacidad</a>
-<button class="calc-btn calc-btn-secondary" id="consentReject" type="button">Rechazar</button>
-<button class="calc-btn calc-btn-primary" id="consentAccept" type="button">Aceptar</button>
-</div>
-</div>
-</div>
-</body>
-</html>
+<header class="site-header"><div class="container header-inner"><a href="index.html" class="logo-wrap"><img src="../logo.png" alt="CalculadoraWorks logo"></a><nav class="main-nav"><a href="index.html">Inicio</a><a href="unit-conversion.html">Conversión de unidades</a><a href="finance.html">Finanzas</a><a href="percentage.html">Porcentajes</a><a href="everyday.html">Uso diario</a><a href="all-calculators.html">Todas las calculadoras</a></nav></div></header>
+<section class="hero"><div class="container hero-grid"><div class="hero-text"><p class="eyebrow">Finanzas calculator</p><h1>Calculadora de hipoteca</h1><p>Estimate monthly mortgage repayments from loan amount, interest rate, and loan term.</p><div class="hero-buttons"><a href="#calculator" class="btn btn-primary">Usar calculadora</a><a href="finance.html" class="btn btn-secondary">Calculadoras financieras</a></div></div><div class="hero-card trust-card"><h2>Planning estimate</h2><p>Use this tool to compare scenarios quickly, then check the final numbers against your lender, bank, adviser, or official documents before making a decision.</p></div></div></section>
+<main class="main-content"><div class="container content-grid"><div><section class="calculator-card" id="calculator" data-calculator="mortgage-calculator"><h2>Calculadora de hipoteca</h2><p>Estimate monthly mortgage repayments from loan amount, interest rate, and loan term.</p><div class="form-grid"><div class="field"><label for="loan">Loan amount</label><input type="number" id="loan" placeholder="Example: 500000" step="any"></div><div class="field"><label for="rate">Annual interest rate (%)</label><input type="number" id="rate" placeholder="Example: 6.5" step="any"></div><div class="field"><label for="years">Loan term (years)</label><input type="number" id="years" placeholder="Example: 30" step="any"></div><div class="field"><label for="decimals">Decimales</label><select id="decimals"><option value="0">0 decimales</option><option value="2" selected>2 decimales</option><option value="3">3 decimales</option><option value="4">4 decimales</option></select></div></div><div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button></div><div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduce valores para comenzar</div></div></section><section class="section-card" id="how-it-works"><h2>Cómo funciona esta calculadora</h2><p>The calculator uses a standard amortising loan formula. It converts the annual rate to a monthly rate, spreads payments across the full loan term, and estimates the fixed monthly principal-and-interest repayment.</p><p>Resultados are estimates only. Real outcomes can vary because of fees, repayment timing, tax rules, lender criteria, compounding methods, and your personal situation.</p></section><section class="section-card" id="examples"><h2>Cuándo es útil</h2><p>Use it to compare loan sizes, interest rates, and repayment terms before speaking with a lender or broker.</p></section><section class="section-card" id="related"><h2>Related finance calculators</h2><div class="related-links"><a href="mortgage-calculator.html">Calculadora de hipoteca</a><a href="loan-payment.html">Calculadora de pago de préstamo</a><a href="auto-loan.html">Calculadora de préstamo de auto</a><a href="rent-vs-buy.html">Calculadora alquilar vs comprar</a><a href="credit-card-payoff.html">Calculadora de pago de tarjeta de crédito</a><a href="debt-to-income.html">Calculadora de deuda sobre ingresos</a><a href="refinance-savings.html">Calculadora de ahorro por refinanciación</a><a href="down-payment.html">Calculadora de pago inicial</a><a href="compound-interest.html">Calculadora de interés compuesto</a><a href="savings-goal.html">Calculadora de meta de ahorro</a></div></section></div><aside class="sidebar"><div class="sidebar-card"><h3>En esta página</h3><ol class="toc"><li><a href="#calculator">Calculadora</a></li><li><a href="#how-it-works">Cómo funciona</a></li><li><a href="#examples">Casos de uso</a></li><li><a href="#related">Calculadoras relacionadas</a></li></ol></div><div class="sidebar-card"><h3>Anuncio</h3><div class="ad-box" aria-label="Anuncio area">Anuncio</div></div><div class="sidebar-card"><h3>Nota de confianza</h3><p>CalculadoraWorks es independiente y publica solo información general. Revisa los resultados importantes antes de confiar en ellos.</p></div></aside></div></main><footer class="site-footer"><div class="container footer-grid"><div><strong>CalculadoraWorks</strong><p>CalculadoraWorks publishes free calculator tools with clear explanations, useful related links, and practical page layouts. Resultados are for general guidance only and should be checked before important financial, legal, medical, tax, or construction decisions.</p></div><div class="footer-links"><a href="about.html">Acerca de</a><a href="contact.html">Contacto</a><a href="privacy.html">Política de privacidad</a><a href="terms.html">Términos</a></div></div></footer><script src="../script.js"></script></body></html>
