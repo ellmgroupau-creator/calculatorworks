@@ -1,144 +1,171 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://calculatorworks.io/about.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/about.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/about.html</loc></url>
   <url><loc>https://calculatorworks.io/age.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/age.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/age.html</loc></url>
   <url><loc>https://calculatorworks.io/all-calculators.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/all-calculators.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/all-calculators.html</loc></url>
   <url><loc>https://calculatorworks.io/auto-loan.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/auto-loan.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/auto-loan.html</loc></url>
   <url><loc>https://calculatorworks.io/bmi.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/bmi.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/bmi.html</loc></url>
+  <url><loc>https://calculatorworks.io/calculators.html</loc></url>
   <url><loc>https://calculatorworks.io/cm-to-inches.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/cm-to-inches.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/cm-to-inches.html</loc></url>
   <url><loc>https://calculatorworks.io/compound-interest.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/compound-interest.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/compound-interest.html</loc></url>
   <url><loc>https://calculatorworks.io/contact.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/contact.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/contact.html</loc></url>
   <url><loc>https://calculatorworks.io/contribution-margin.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/contribution-margin.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/contribution-margin.html</loc></url>
   <url><loc>https://calculatorworks.io/credit-card-payoff.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/credit-card-payoff.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/credit-card-payoff.html</loc></url>
   <url><loc>https://calculatorworks.io/credit-utilization.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/credit-utilization.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/credit-utilization.html</loc></url>
   <url><loc>https://calculatorworks.io/current-ratio.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/current-ratio.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/current-ratio.html</loc></url>
   <url><loc>https://calculatorworks.io/date-difference.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/date-difference.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/date-difference.html</loc></url>
+  <url><loc>https://calculatorworks.io/debt-avalanche.html</loc></url>
   <url><loc>https://calculatorworks.io/debt-payoff.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/debt-payoff.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/debt-payoff.html</loc></url>
+  <url><loc>https://calculatorworks.io/debt-snowball.html</loc></url>
   <url><loc>https://calculatorworks.io/debt-to-income.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/debt-to-income.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/debt-to-income.html</loc></url>
   <url><loc>https://calculatorworks.io/depreciation.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/depreciation.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/depreciation.html</loc></url>
   <url><loc>https://calculatorworks.io/discount.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/discount.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/discount.html</loc></url>
   <url><loc>https://calculatorworks.io/down-payment.html</loc></url>
-  <url><loc>https://calculatorworks.io/es/down-payment.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/down-payment.html</loc></url>
   <url><loc>https://calculatorworks.io/emergency-fund.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/about.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/age.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/all-calculators.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/auto-loan.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/bmi.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/calculators.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/cm-to-inches.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/compound-interest.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/contact.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/contribution-margin.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/credit-card-payoff.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/credit-utilization.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/current-ratio.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/date-difference.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/debt-avalanche.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/debt-payoff.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/debt-snowball.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/debt-to-income.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/depreciation.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/discount.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/down-payment.html</loc></url>
   <url><loc>https://calculatorworks.io/es/emergency-fund.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/emergency-fund.html</loc></url>
-  <url><loc>https://calculatorworks.io/everyday.html</loc></url>
   <url><loc>https://calculatorworks.io/es/everyday.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/everyday.html</loc></url>
-  <url><loc>https://calculatorworks.io/feet-to-metres.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/extra-payment-mortgage.html</loc></url>
   <url><loc>https://calculatorworks.io/es/feet-to-metres.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/feet-to-metres.html</loc></url>
-  <url><loc>https://calculatorworks.io/finance.html</loc></url>
   <url><loc>https://calculatorworks.io/es/finance.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/finance.html</loc></url>
-  <url><loc>https://calculatorworks.io/flooring.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/fire.html</loc></url>
   <url><loc>https://calculatorworks.io/es/flooring.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/flooring.html</loc></url>
-  <url><loc>https://calculatorworks.io/hourly-to-salary.html</loc></url>
   <url><loc>https://calculatorworks.io/es/hourly-to-salary.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/hourly-to-salary.html</loc></url>
-  <url><loc>https://calculatorworks.io/inches-to-cm.html</loc></url>
   <url><loc>https://calculatorworks.io/es/inches-to-cm.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/inches-to-cm.html</loc></url>
-  <url><loc>https://calculatorworks.io/</loc></url>
   <url><loc>https://calculatorworks.io/es/index.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/index.html</loc></url>
-  <url><loc>https://calculatorworks.io/loan-payment.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/investment-return.html</loc></url>
   <url><loc>https://calculatorworks.io/es/loan-payment.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/loan-payment.html</loc></url>
-  <url><loc>https://calculatorworks.io/metres-to-feet.html</loc></url>
   <url><loc>https://calculatorworks.io/es/metres-to-feet.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/metres-to-feet.html</loc></url>
-  <url><loc>https://calculatorworks.io/mortgage-calculator.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/mortgage-amortization.html</loc></url>
   <url><loc>https://calculatorworks.io/es/mortgage-calculator.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/mortgage-calculator.html</loc></url>
-  <url><loc>https://calculatorworks.io/net-worth.html</loc></url>
   <url><loc>https://calculatorworks.io/es/net-worth.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/net-worth.html</loc></url>
-  <url><loc>https://calculatorworks.io/overtime.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/offset-account-savings.html</loc></url>
   <url><loc>https://calculatorworks.io/es/overtime.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/overtime.html</loc></url>
-  <url><loc>https://calculatorworks.io/paint.html</loc></url>
   <url><loc>https://calculatorworks.io/es/paint.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/paint.html</loc></url>
-  <url><loc>https://calculatorworks.io/pay-raise.html</loc></url>
   <url><loc>https://calculatorworks.io/es/pay-raise.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/pay-raise.html</loc></url>
-  <url><loc>https://calculatorworks.io/paycheck.html</loc></url>
   <url><loc>https://calculatorworks.io/es/paycheck.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/paycheck.html</loc></url>
-  <url><loc>https://calculatorworks.io/percentage-decrease.html</loc></url>
   <url><loc>https://calculatorworks.io/es/percentage-decrease.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/percentage-decrease.html</loc></url>
-  <url><loc>https://calculatorworks.io/percentage-increase.html</loc></url>
   <url><loc>https://calculatorworks.io/es/percentage-increase.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/percentage-increase.html</loc></url>
-  <url><loc>https://calculatorworks.io/percentage.html</loc></url>
   <url><loc>https://calculatorworks.io/es/percentage.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/percentage.html</loc></url>
-  <url><loc>https://calculatorworks.io/privacy.html</loc></url>
   <url><loc>https://calculatorworks.io/es/privacy.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/privacy.html</loc></url>
-  <url><loc>https://calculatorworks.io/quick-ratio.html</loc></url>
   <url><loc>https://calculatorworks.io/es/quick-ratio.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/quick-ratio.html</loc></url>
-  <url><loc>https://calculatorworks.io/refinance-savings.html</loc></url>
   <url><loc>https://calculatorworks.io/es/refinance-savings.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/refinance-savings.html</loc></url>
-  <url><loc>https://calculatorworks.io/rent-vs-buy.html</loc></url>
   <url><loc>https://calculatorworks.io/es/rent-vs-buy.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/rent-vs-buy.html</loc></url>
-  <url><loc>https://calculatorworks.io/sales-tax.html</loc></url>
+  <url><loc>https://calculatorworks.io/es/retirement-savings.html</loc></url>
   <url><loc>https://calculatorworks.io/es/sales-tax.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/sales-tax.html</loc></url>
-  <url><loc>https://calculatorworks.io/savings-goal.html</loc></url>
   <url><loc>https://calculatorworks.io/es/savings-goal.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/savings-goal.html</loc></url>
-  <url><loc>https://calculatorworks.io/simple-interest.html</loc></url>
   <url><loc>https://calculatorworks.io/es/simple-interest.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/simple-interest.html</loc></url>
-  <url><loc>https://calculatorworks.io/terms.html</loc></url>
   <url><loc>https://calculatorworks.io/es/terms.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/terms.html</loc></url>
-  <url><loc>https://calculatorworks.io/unit-conversion.html</loc></url>
   <url><loc>https://calculatorworks.io/es/unit-conversion.html</loc></url>
-  <url><loc>https://calculatorworks.io/pt/unit-conversion.html</loc></url>
-  <url><loc>https://calculatorworks.io/weighted-average.html</loc></url>
   <url><loc>https://calculatorworks.io/es/weighted-average.html</loc></url>
+  <url><loc>https://calculatorworks.io/everyday.html</loc></url>
+  <url><loc>https://calculatorworks.io/extra-payment-mortgage.html</loc></url>
+  <url><loc>https://calculatorworks.io/feet-to-metres.html</loc></url>
+  <url><loc>https://calculatorworks.io/finance.html</loc></url>
+  <url><loc>https://calculatorworks.io/fire.html</loc></url>
+  <url><loc>https://calculatorworks.io/flooring.html</loc></url>
+  <url><loc>https://calculatorworks.io/hourly-to-salary.html</loc></url>
+  <url><loc>https://calculatorworks.io/inches-to-cm.html</loc></url>
+  <url><loc>https://calculatorworks.io/</loc></url>
+  <url><loc>https://calculatorworks.io/investment-return.html</loc></url>
+  <url><loc>https://calculatorworks.io/loan-payment.html</loc></url>
+  <url><loc>https://calculatorworks.io/metres-to-feet.html</loc></url>
+  <url><loc>https://calculatorworks.io/mortgage-amortization.html</loc></url>
+  <url><loc>https://calculatorworks.io/mortgage-calculator.html</loc></url>
+  <url><loc>https://calculatorworks.io/net-worth.html</loc></url>
+  <url><loc>https://calculatorworks.io/offset-account-savings.html</loc></url>
+  <url><loc>https://calculatorworks.io/overtime.html</loc></url>
+  <url><loc>https://calculatorworks.io/paint.html</loc></url>
+  <url><loc>https://calculatorworks.io/pay-raise.html</loc></url>
+  <url><loc>https://calculatorworks.io/paycheck.html</loc></url>
+  <url><loc>https://calculatorworks.io/percentage-decrease.html</loc></url>
+  <url><loc>https://calculatorworks.io/percentage-increase.html</loc></url>
+  <url><loc>https://calculatorworks.io/percentage.html</loc></url>
+  <url><loc>https://calculatorworks.io/privacy.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/about.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/age.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/all-calculators.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/auto-loan.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/bmi.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/calculators.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/cm-to-inches.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/compound-interest.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/contact.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/contribution-margin.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/credit-card-payoff.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/credit-utilization.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/current-ratio.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/date-difference.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/debt-avalanche.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/debt-payoff.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/debt-snowball.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/debt-to-income.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/depreciation.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/discount.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/down-payment.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/emergency-fund.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/everyday.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/extra-payment-mortgage.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/feet-to-metres.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/finance.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/fire.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/flooring.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/hourly-to-salary.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/inches-to-cm.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/index.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/investment-return.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/loan-payment.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/metres-to-feet.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/mortgage-amortization.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/mortgage-calculator.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/net-worth.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/offset-account-savings.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/overtime.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/paint.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/pay-raise.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/paycheck.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/percentage-decrease.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/percentage-increase.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/percentage.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/privacy.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/quick-ratio.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/refinance-savings.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/rent-vs-buy.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/retirement-savings.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/sales-tax.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/savings-goal.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/simple-interest.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/terms.html</loc></url>
+  <url><loc>https://calculatorworks.io/pt/unit-conversion.html</loc></url>
   <url><loc>https://calculatorworks.io/pt/weighted-average.html</loc></url>
+  <url><loc>https://calculatorworks.io/quick-ratio.html</loc></url>
+  <url><loc>https://calculatorworks.io/refinance-savings.html</loc></url>
+  <url><loc>https://calculatorworks.io/rent-vs-buy.html</loc></url>
+  <url><loc>https://calculatorworks.io/retirement-savings.html</loc></url>
+  <url><loc>https://calculatorworks.io/sales-tax.html</loc></url>
+  <url><loc>https://calculatorworks.io/savings-goal.html</loc></url>
+  <url><loc>https://calculatorworks.io/simple-interest.html</loc></url>
+  <url><loc>https://calculatorworks.io/terms.html</loc></url>
+  <url><loc>https://calculatorworks.io/unit-conversion.html</loc></url>
+  <url><loc>https://calculatorworks.io/weighted-average.html</loc></url>
 </urlset>
