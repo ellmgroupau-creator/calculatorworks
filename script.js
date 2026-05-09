@@ -1065,6 +1065,32 @@ const calculatorConfigs = {
   'weighted-average-calculator.html': {
     calculate: function () { var rv=feetInput.value, rw=inchesInput?inchesInput.value:''; if(!rv||!rw){resultOutput.textContent='Please enter values and matching weights';return;} var v=rv.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}); var w=rw.split(',').map(function(x){return parseFloat(x.trim());}).filter(function(x){return !isNaN(x);}); if(!v.length||v.length!==w.length){resultOutput.textContent='Values and weights must contain the same number of valid entries';return;} var t=0, tw=0; for(var i=0;i<v.length;i++){ if(w[i]<=0){resultOutput.textContent='Weights must be positive numbers';return;} t+=v[i]*w[i]; tw+=w[i]; } resultOutput.textContent='Weighted average = '+(t/tw).toFixed(2); }
   }
+,
+  'mortgage-amortization-calculator.html': {
+    calculate: function () { var p=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, years=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(p)||isNaN(rate)||isNaN(years)||p<=0||rate<0||years<=0){resultOutput.textContent='Please enter valid loan, rate, and term values';return;} var r=rate/100/12,n=years*12,mp=r===0?p/n:p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1); var firstInterest=p*r, firstPrincipal=mp-firstInterest, total=mp*n; resultOutput.textContent='Monthly repayment = '+mp.toFixed(2)+', total interest = '+(total-p).toFixed(2)+', first-month interest = '+firstInterest.toFixed(2)+', first-month principal = '+firstPrincipal.toFixed(2); }
+  },
+  'extra-payment-mortgage-calculator.html': {
+    calculate: function () { var p=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, extra=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(p)||isNaN(rate)||isNaN(extra)||p<=0||rate<0||extra<0){resultOutput.textContent='Please enter valid mortgage and extra payment values';return;} var years=30,r=rate/100/12,n=years*12,base=r===0?p/n:p*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1); var payment=base+extra,b=p,months=0,totalPaid=0; while(b>0&&months<1200){var interest=b*r; var principal=payment-interest; if(principal<=0){resultOutput.textContent='Payment is too low to reduce the balance';return;} if(principal>b){totalPaid+=b+interest;b=0;} else {b-=principal;totalPaid+=payment;} months++;} var baseTotal=base*n; resultOutput.textContent='Base monthly repayment = '+base.toFixed(2)+', payoff with extra payment = '+months+' months, estimated interest saved = '+Math.max(0,(baseTotal-p)-(totalPaid-p)).toFixed(2); }
+  },
+  'debt-snowball-calculator.html': {
+    calculate: function () { var b=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, payment=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(b)||isNaN(rate)||isNaN(payment)||b<=0||rate<0||payment<=0){resultOutput.textContent='Please enter valid balance, interest rate, and payment values';return;} var r=rate/100/12,months=0,totalInterest=0; while(b>0&&months<1200){var interest=b*r; totalInterest+=interest; b=b+interest-payment; if(b>=0&&payment<=interest){resultOutput.textContent='Monthly payment must be higher than monthly interest';return;} months++;} resultOutput.textContent='Estimated payoff time = '+months+' months, estimated interest = '+totalInterest.toFixed(2); }
+  },
+  'debt-avalanche-calculator.html': {
+    calculate: function () { var b=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, payment=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(b)||isNaN(rate)||isNaN(payment)||b<=0||rate<0||payment<=0){resultOutput.textContent='Please enter valid balance, interest rate, and payment values';return;} var r=rate/100/12,months=0,totalInterest=0; while(b>0&&months<1200){var interest=b*r; totalInterest+=interest; b=b+interest-payment; if(b>=0&&payment<=interest){resultOutput.textContent='Monthly payment must be higher than monthly interest';return;} months++;} resultOutput.textContent='Estimated payoff time = '+months+' months, estimated interest = '+totalInterest.toFixed(2); }
+  },
+  'investment-return-calculator.html': {
+    calculate: function () { var start=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, years=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(start)||isNaN(rate)||isNaN(years)||start<0||rate<0||years<0){resultOutput.textContent='Please enter valid investment values';return;} var fv=start*Math.pow(1+rate/100,years); resultOutput.textContent='Estimated future value = '+fv.toFixed(2)+', estimated growth = '+(fv-start).toFixed(2); }
+  },
+  'retirement-savings-calculator.html': {
+    calculate: function () { var current=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, years=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(current)||isNaN(rate)||isNaN(years)||current<0||rate<0||years<0){resultOutput.textContent='Please enter valid retirement savings values';return;} var fv=current*Math.pow(1+rate/100,years); resultOutput.textContent='Estimated retirement balance = '+fv.toFixed(2)+', estimated growth = '+(fv-current).toFixed(2); }
+  },
+  'fire-calculator.html': {
+    calculate: function () { var expenses=parseFloat(feetInput.value), wr=inchesInput?parseFloat(inchesInput.value):NaN, current=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(expenses)||isNaN(wr)||isNaN(current)||expenses<=0||wr<=0||current<0){resultOutput.textContent='Please enter valid FIRE planning values';return;} var target=expenses/(wr/100), gap=Math.max(0,target-current); resultOutput.textContent='Estimated FI target = '+target.toFixed(2)+', remaining gap = '+gap.toFixed(2)+', current progress = '+((current/target)*100).toFixed(2)+'%'; }
+  },
+  'offset-account-calculator.html': {
+    calculate: function () { var offset=parseFloat(feetInput.value), rate=inchesInput?parseFloat(inchesInput.value):NaN, years=decimalsSelect?parseFloat(decimalsSelect.value):NaN; if(isNaN(offset)||isNaN(rate)||isNaN(years)||offset<0||rate<0||years<0){resultOutput.textContent='Please enter valid offset balance, rate, and time values';return;} var annual=offset*(rate/100); resultOutput.textContent='Estimated annual interest saving = '+annual.toFixed(2)+', estimated saving over '+years+' years = '+(annual*years).toFixed(2); }
+  }
+
 
 };
 
