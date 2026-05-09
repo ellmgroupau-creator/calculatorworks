@@ -6,9 +6,9 @@ const decimalsSelect = $('decimals');
 const resultOutput = $('result');
 const calculateBtn = $('calculateBtn');
 const resetBtn = $('resetBtn');
-const pathParts = window.location.pathname.split('/');
-const lastPart = pathParts[pathParts.length - 1];
-const currentPage = lastPart && lastPart.includes('.html') ? lastPart : 'index.html';
+const pathParts = window.location.pathname.split('/').filter(Boolean);
+const lastPart = pathParts[pathParts.length - 1] || '';
+const currentPage = lastPart ? (lastPart.includes('.html') ? lastPart : lastPart + '.html') : 'index.html';
 function n(id){const el=$(id); if(!el) return NaN; return parseFloat(el.value);} function d(){return decimalsSelect?parseInt(decimalsSelect.value,10):2;} function money(v){return '$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});} function pct(v){return Number(v).toFixed(d())+'%';} function out(s){if(resultOutput) resultOutput.textContent=s;} function monthsToText(m){if(!isFinite(m)||m<0) return 'Not payable with these inputs'; const y=Math.floor(m/12), mo=Math.ceil(m%12); return (y?y+' years ':'')+(mo?mo+' months':'');}
 const calculatorConfigs={
 'feet-to-metres.html':()=>{const dec=d(), f=n('feet'), i=parseFloat((inchesInput&&inchesInput.value)||'0'); if(isNaN(f)&&isNaN(i)) return out('Please enter feet and/or inches'); const sf=isNaN(f)?0:f, si=isNaN(i)?0:i; const total=sf+(si/12); out(sf+"'"+si+'" = '+(total*0.3048).toFixed(dec)+' m');},
