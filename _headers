@@ -1,0 +1,33 @@
+# Force extensionless hub aliases to be served as HTML
+/finance-calculators
+  Content-Type: text/html; charset=utf-8
+/health-calculators
+  Content-Type: text/html; charset=utf-8
+/business-calculators
+  Content-Type: text/html; charset=utf-8
+/construction-calculators
+  Content-Type: text/html; charset=utf-8
+/unit-conversion-calculators
+  Content-Type: text/html; charset=utf-8
+/percentage-calculators
+  Content-Type: text/html; charset=utf-8
+/math-calculators
+  Content-Type: text/html; charset=utf-8
+/household-calculators
+  Content-Type: text/html; charset=utf-8
+/everyday-calculators
+  Content-Type: text/html; charset=utf-8
+/date-time-calculators
+  Content-Type: text/html; charset=utf-8
+/date-and-time-calculators
+  Content-Type: text/html; charset=utf-8
+/date-calculators
+  Content-Type: text/html; charset=utf-8
+/es/style.css
+  Content-Type: text/css; charset=utf-8
+/pt/style.css
+  Content-Type: text/css; charset=utf-8
+/es/script.js
+  Content-Type: application/javascript; charset=utf-8
+/pt/script.js
+  Content-Type: application/javascript; charset=utf-8
