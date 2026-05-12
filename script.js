@@ -379,3 +379,454 @@ buildSearchUI();
 addAuthorityBlocks();
 
 })();
+
+
+/* ===== CalculatorWorks Elite Calculator Layer ===== */
+
+(function(){
+
+function money2(v){
+if(!isFinite(v)) return '$0.00';
+return '$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function num(id){
+const el=document.getElementById(id);
+if(!el) return NaN;
+return parseFloat(el.value);
+}
+
+function safeYears(){
+const years=num('years');
+if(!isNaN(years)) return years;
+const dec=document.getElementById('decimals');
+if(dec && !isNaN(parseFloat(dec.value))) return parseFloat(dec.value);
+return NaN;
+}
+
+function payment(principal, apr, years){
+const months=years*12;
+const r=apr/100/12;
+if(months<=0) return NaN;
+return r===0 ? principal/months : principal*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);
+}
+
+function amortize(principal, apr, years, extra){
+const months=Math.round(years*12);
+const r=apr/100/12;
+const base=payment(principal, apr, years);
+const pay=base+(extra||0);
+let balance=principal;
+let totalInterest=0;
+let rows=[];
+let annual=[];
+let yearInterest=0;
+let yearPrincipal=0;
+let count=0;
+
+for(let m=1;m<=months && balance>0 && m<1200;m++){
+const interest=balance*r;
+const principalPaid=Math.min(balance, pay-interest);
+if(principalPaid<=0 && r>0) break;
+balance=Math.max(0,balance-principalPaid);
+totalInterest+=interest;
+yearInterest+=interest;
+yearPrincipal+=principalPaid;
+count=m;
+
+if(m<=24 || m%12===0 || balance===0){
+rows.push({
+month:m,
+payment:interest+principalPaid,
+principal:principalPaid,
+interest:interest,
+balance:balance
+});
+}
+
+if(m%12===0 || balance===0){
+annual.push({
+year:Math.ceil(m/12),
+principal:yearPrincipal,
+interest:yearInterest,
+balance:balance
+});
+yearInterest=0;
+yearPrincipal=0;
+}
+}
+return {base, pay, totalInterest, totalPaid:principal+totalInterest, rows, annual, months:count};
+}
+
+function lineSvg(points, label){
+if(!points || points.length<2) return '';
+const w=640, h=220, pad=28;
+const max=Math.max(...points.map(p=>p.value),1);
+const min=Math.min(...points.map(p=>p.value),0);
+const span=Math.max(max-min,1);
+const coords=points.map((p,i)=>{
+const x=pad+(i/(points.length-1))*(w-pad*2);
+const y=h-pad-((p.value-min)/span)*(h-pad*2);
+return [x,y];
+});
+const poly=coords.map(p=>p.join(',')).join(' ');
+const area=coords.map(p=>p.join(',')).join(' ')+' '+(w-pad)+','+(h-pad)+' '+pad+','+(h-pad);
+return `
+<svg class="cw-svg-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">
+<defs>
+<linearGradient id="cwLineFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#2563eb" stop-opacity=".22"></stop>
+<stop offset="100%" stop-color="#2563eb" stop-opacity=".02"></stop>
+</linearGradient>
+</defs>
+<line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="#cbd5e1" stroke-width="1"></line>
+<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h-pad}" stroke="#cbd5e1" stroke-width="1"></line>
+<polygon points="${area}" fill="url(#cwLineFill)"></polygon>
+<polyline points="${poly}" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+<text x="${pad}" y="18" fill="#475569" font-size="13">${label}</text>
+<text x="${pad}" y="${h-8}" fill="#64748b" font-size="12">Start</text>
+<text x="${w-pad-42}" y="${h-8}" fill="#64748b" font-size="12">End</text>
+</svg>`;
+}
+
+function barSplit(labelA, valA, labelB, valB){
+const total=Math.max(valA+valB,1);
+const pct=Math.max(0,Math.min(100,(valA/total)*100));
+return `
+<div class="cw-guidance-card">
+<h4>Cost breakdown</h4>
+<p><strong>${labelA}:</strong> ${money2(valA)}</p>
+<div class="cw-progress"><span style="width:${pct}%"></span></div>
+<p style="margin-top:10px"><strong>${labelB}:</strong> ${money2(valB)}</p>
+</div>`;
+}
+
+function ensurePanel(){
+const card=document.querySelector('.calculator-card');
+if(!card) return null;
+let panel=document.getElementById('cwInsightPanel');
+if(!panel){
+panel=document.createElement('section');
+panel.id='cwInsightPanel';
+panel.className='cw-insight-panel';
+card.insertAdjacentElement('afterend',panel);
+}
+return panel;
+}
+
+function rowsTable(headers, rows){
+return `<div class="cw-table-wrap"><table class="cw-data-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+}
+
+function currentKey(){
+const path=window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+const normalized=path.includes('.html') ? path : path + '.html';
+const card=document.querySelector('.calculator-card');
+const data=card ? (card.dataset.calculator || '') : '';
+return (data || normalized).replace(/^\//,'');
+}
+
+function renderLoanInsights(){
+const key=currentKey();
+if(!/(mortgage|loan|amortization)/.test(key)) return false;
+
+const principal = !isNaN(num('loan')) ? num('loan') : (!isNaN(num('feet')) ? num('feet') : NaN);
+const apr = !isNaN(num('rate')) ? num('rate') : (!isNaN(num('inches')) ? num('inches') : NaN);
+const years = safeYears();
+
+if([principal,apr,years].some(isNaN) || principal<=0 || years<=0) return false;
+
+const extra = !isNaN(num('extra')) ? num('extra') : 0;
+const a=amortize(principal,apr,years,extra);
+if(!isFinite(a.base)) return false;
+
+const points=a.annual.map(r=>({label:r.year,value:r.balance}));
+const tableRows=a.annual.slice(0,30).map(r=>`<tr><td>Year ${r.year}</td><td>${money2(r.principal)}</td><td>${money2(r.interest)}</td><td>${money2(r.balance)}</td></tr>`);
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Repayment intelligence</h3>
+<p>Dominant calculator pages do more than show one answer. This section turns the result into a repayment timeline, cost breakdown, and decision-ready summary.</p>
+</div>
+<span class="cw-badge">Enhanced result</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>Monthly payment</span><strong>${money2(a.pay)}</strong></div>
+<div class="cw-metric"><span>Total interest</span><strong>${money2(a.totalInterest)}</strong></div>
+<div class="cw-metric"><span>Total paid</span><strong>${money2(a.totalPaid)}</strong></div>
+<div class="cw-metric"><span>Payoff time</span><strong>${Math.ceil(a.months/12)} years</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-chart-card">
+<h4>Balance over time</h4>
+${lineSvg(points.length?points:[{value:principal},{value:0}], 'Estimated remaining balance')}
+</div>
+${barSplit('Original loan', principal, 'Interest cost', a.totalInterest)}
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Annual repayment summary</h4>
+${rowsTable(['Period','Principal','Interest','Balance'], tableRows)}
+</div>
+<div class="cw-guidance-card">
+<h4>How to use this result</h4>
+<ul class="cw-guidance-list">
+<li>Compare a shorter loan term against the monthly payment increase.</li>
+<li>Test a higher interest rate to understand downside risk.</li>
+<li>Use extra-payment calculators to estimate time and interest saved.</li>
+<li>Check lender fees, taxes, insurance, and local rules before relying on the estimate.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderGrowthInsights(){
+const key=currentKey();
+if(!/(compound|savings|investment|retirement)/.test(key)) return false;
+
+const principal = !isNaN(num('principal')) ? num('principal') : (!isNaN(num('feet')) ? num('feet') : NaN);
+const apr = !isNaN(num('rate')) ? num('rate') : (!isNaN(num('inches')) ? num('inches') : NaN);
+const years = safeYears();
+const contribution = !isNaN(num('contribution')) ? num('contribution') : 0;
+
+if([principal,apr,years].some(isNaN) || years<=0) return false;
+
+let balance=principal;
+let totalContrib=principal;
+let annual=[];
+const monthlyRate=apr/100/12;
+const months=Math.round(years*12);
+
+for(let m=1;m<=months;m++){
+balance=balance*(1+monthlyRate)+contribution;
+totalContrib+=contribution;
+if(m%12===0 || m===months){
+annual.push({year:Math.ceil(m/12), balance, contributed:totalContrib, growth:balance-totalContrib});
+}
+}
+
+const tableRows=annual.slice(0,40).map(r=>`<tr><td>Year ${r.year}</td><td>${money2(r.contributed)}</td><td>${money2(Math.max(0,r.growth))}</td><td>${money2(r.balance)}</td></tr>`);
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Growth projection</h3>
+<p>This adds a year-by-year growth view so the calculator works more like a planning tool than a single-output widget.</p>
+</div>
+<span class="cw-badge">Projection view</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>Future value</span><strong>${money2(balance)}</strong></div>
+<div class="cw-metric"><span>Total contributed</span><strong>${money2(totalContrib)}</strong></div>
+<div class="cw-metric"><span>Estimated growth</span><strong>${money2(balance-totalContrib)}</strong></div>
+<div class="cw-metric"><span>Time horizon</span><strong>${years} years</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-chart-card">
+<h4>Projected balance</h4>
+${lineSvg(annual.map(r=>({value:r.balance})), 'Estimated balance over time')}
+</div>
+${barSplit('Contributions', totalContrib, 'Growth', Math.max(0,balance-totalContrib))}
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Year-by-year projection</h4>
+${rowsTable(['Period','Contributed','Growth','Balance'], tableRows)}
+</div>
+<div class="cw-guidance-card">
+<h4>Planning interpretation</h4>
+<ul class="cw-guidance-list">
+<li>Small rate changes compound into large long-term differences.</li>
+<li>Regular contributions often matter as much as the starting amount.</li>
+<li>Compare this result with inflation to estimate purchasing power.</li>
+<li>Real investment returns can vary and may include fees, tax, and market risk.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderSalaryInsights(){
+const key=currentKey();
+if(!/(salary|paycheck|hourly|wage|pay-raise|overtime)/.test(key)) return false;
+
+let annual = !isNaN(num('salary')) ? num('salary') : NaN;
+const hourly = !isNaN(num('rate')) ? num('rate') : NaN;
+const hours = !isNaN(num('hours')) ? num('hours') : 40;
+const weeks = !isNaN(num('weeks')) ? num('weeks') : 52;
+
+if(isNaN(annual) && !isNaN(hourly)) annual=hourly*hours*weeks;
+if(isNaN(annual) || annual<=0) return false;
+
+const monthly=annual/12, fortnightly=annual/26, weekly=annual/52, daily=annual/260, hourlyEq=annual/(hours*weeks || 2080);
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Pay breakdown</h3>
+<p>Salary and wage calculators become more useful when they translate one figure into practical weekly, monthly, annual, and hourly views.</p>
+</div>
+<span class="cw-badge">Pay intelligence</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>Annual</span><strong>${money2(annual)}</strong></div>
+<div class="cw-metric"><span>Monthly</span><strong>${money2(monthly)}</strong></div>
+<div class="cw-metric"><span>Weekly</span><strong>${money2(weekly)}</strong></div>
+<div class="cw-metric"><span>Hourly equivalent</span><strong>${money2(hourlyEq)}</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Common pay periods</h4>
+${rowsTable(['Pay period','Estimated amount'],[
+`<tr><td>Annual</td><td>${money2(annual)}</td></tr>`,
+`<tr><td>Monthly</td><td>${money2(monthly)}</td></tr>`,
+`<tr><td>Fortnightly</td><td>${money2(fortnightly)}</td></tr>`,
+`<tr><td>Weekly</td><td>${money2(weekly)}</td></tr>`,
+`<tr><td>Daily</td><td>${money2(daily)}</td></tr>`,
+`<tr><td>Hourly</td><td>${money2(hourlyEq)}</td></tr>`
+])}
+</div>
+<div class="cw-guidance-card">
+<h4>Use this to compare offers</h4>
+<ul class="cw-guidance-list">
+<li>Compare annual salary with hourly or contract alternatives.</li>
+<li>Account for unpaid leave, overtime, benefits, and deductions.</li>
+<li>Use paycheck and tax calculators for take-home estimates.</li>
+<li>Check local employment, tax, and superannuation rules.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderBmiInsights(){
+const key=currentKey();
+if(!/(bmi|body-mass)/.test(key)) return false;
+
+const weight=num('weight');
+const height=num('height')/100;
+if([weight,height].some(isNaN) || weight<=0 || height<=0) return false;
+
+const bmi=weight/(height*height);
+let category='Healthy weight';
+if(bmi<18.5) category='Underweight';
+else if(bmi<25) category='Healthy weight';
+else if(bmi<30) category='Overweight';
+else category='Obesity range';
+
+const pct=Math.max(0,Math.min(100,((bmi-12)/(42-12))*100));
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>BMI interpretation</h3>
+<p>This section adds context to the number so the tool is easier to understand and more useful for general screening.</p>
+</div>
+<span class="cw-badge">Health context</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>BMI</span><strong>${bmi.toFixed(1)}</strong></div>
+<div class="cw-metric"><span>Category</span><strong>${category}</strong></div>
+<div class="cw-metric"><span>Height</span><strong>${(height*100).toFixed(0)} cm</strong></div>
+<div class="cw-metric"><span>Weight</span><strong>${weight.toFixed(1)} kg</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-guidance-card">
+<h4>BMI scale position</h4>
+<div class="cw-progress"><span style="width:${pct}%"></span></div>
+<p style="color:var(--muted);font-size:14px">BMI is a broad screening estimate and does not account for body composition, age, sex, pregnancy, ethnicity, or athletic build.</p>
+</div>
+<div class="cw-guidance-card">
+<h4>Important note</h4>
+<ul class="cw-guidance-list">
+<li>Use BMI as a general indicator only.</li>
+<li>Do not use it as a diagnosis.</li>
+<li>Speak with a qualified health professional for personal guidance.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderPercentageInsights(){
+const key=currentKey();
+if(!/(percentage|discount|increase|decrease)/.test(key)) return false;
+const panel=ensurePanel();
+if(!panel) return false;
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Percentage shortcuts</h3>
+<p>Use these common percentage relationships to check your result and understand what the number means.</p>
+</div>
+<span class="cw-badge">Quick reference</span>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Common percentage operations</h4>
+${rowsTable(['Question','Formula'],[
+'<tr><td>What is X% of Y?</td><td>Y × X ÷ 100</td></tr>',
+'<tr><td>What percent is A of B?</td><td>A ÷ B × 100</td></tr>',
+'<tr><td>Percentage increase</td><td>(New − Old) ÷ Old × 100</td></tr>',
+'<tr><td>Percentage decrease</td><td>(Old − New) ÷ Old × 100</td></tr>',
+'<tr><td>Discount price</td><td>Price × (1 − discount ÷ 100)</td></tr>'
+])}
+</div>
+<div class="cw-guidance-card">
+<h4>Best uses</h4>
+<ul class="cw-guidance-list">
+<li>Shopping discounts and sale prices.</li>
+<li>Salary increases and business growth.</li>
+<li>Margin, markup, and comparison calculations.</li>
+<li>Checking whether a percentage change is relative or absolute.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderEnhancedInsights(){
+if(renderLoanInsights()) return;
+if(renderGrowthInsights()) return;
+if(renderSalaryInsights()) return;
+if(renderBmiInsights()) return;
+if(renderPercentageInsights()) return;
+}
+
+function attachEnhancement(){
+const btn=document.getElementById('calculateBtn');
+if(btn){
+btn.addEventListener('click', function(){setTimeout(renderEnhancedInsights, 20);});
+}
+document.querySelectorAll('input,select').forEach(el=>{
+el.addEventListener('keydown', function(e){
+if(e.key==='Enter') setTimeout(renderEnhancedInsights, 30);
+});
+});
+}
+
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded', attachEnhancement);
+}else{
+attachEnhancement();
+}
+
+})();
