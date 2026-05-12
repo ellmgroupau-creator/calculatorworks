@@ -830,3 +830,79 @@ attachEnhancement();
 }
 
 })();
+
+
+/* ===== CalculatorWorks Flagship Authority Upgrade ===== */
+
+(function(){
+
+function byId(id){ return document.getElementById(id); }
+function val(id){ const el=byId(id); return el ? parseFloat(el.value) : NaN; }
+function fmtMoney(n){ return isFinite(n) ? '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) : '$0.00'; }
+
+function addShareState(){
+const card=document.querySelector('.calculator-card');
+if(!card || document.getElementById('cwShareState')) return;
+
+const controls=document.createElement('div');
+controls.id='cwShareState';
+controls.style.marginTop='16px';
+controls.innerHTML='<button type="button" class="btn secondary" id="cwCopyLinkBtn">Copy result link</button>';
+
+const result=document.getElementById('result');
+if(result && result.parentNode){
+result.parentNode.appendChild(controls);
+}
+
+const copyBtn=document.getElementById('cwCopyLinkBtn');
+if(!copyBtn) return;
+
+copyBtn.addEventListener('click',function(){
+const params=new URLSearchParams();
+document.querySelectorAll('input,select').forEach(el=>{
+if(el.id && el.value) params.set(el.id, el.value);
+});
+const url=window.location.origin+window.location.pathname+(params.toString()?'?'+params.toString():'');
+navigator.clipboard && navigator.clipboard.writeText(url).then(()=>{
+copyBtn.textContent='Copied';
+setTimeout(()=>copyBtn.textContent='Copy result link',1400);
+}).catch(()=>{
+copyBtn.textContent='Copy unavailable';
+setTimeout(()=>copyBtn.textContent='Copy result link',1400);
+});
+});
+}
+
+function restoreInputsFromUrl(){
+const params=new URLSearchParams(window.location.search);
+if(!params.toString()) return;
+params.forEach((value,key)=>{
+const el=byId(key);
+if(el && 'value' in el) el.value=value;
+});
+}
+
+function addScenarioHint(){
+const key=(location.pathname.split('/').pop()||'').toLowerCase();
+if(!/(mortgage|loan|compound|savings|salary|debt|credit-card|bmi|percentage)/.test(key)) return;
+const card=document.querySelector('.calculator-card');
+if(!card || document.querySelector('.cw-scenario-hint')) return;
+const hint=document.createElement('div');
+hint.className='cw-authority-note cw-scenario-hint';
+hint.innerHTML='<strong>Dominance tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';
+card.appendChild(hint);
+}
+
+restoreInputsFromUrl();
+
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded',function(){
+addShareState();
+addScenarioHint();
+});
+}else{
+addShareState();
+addScenarioHint();
+}
+
+})();
