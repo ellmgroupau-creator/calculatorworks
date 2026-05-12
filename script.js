@@ -231,3 +231,151 @@ Object.assign(calculatorConfigs,{
 
 if(calculateBtn&&resetBtn){const keyBase=calculatorKey.replace(/\.html$/,''); const pageBase=currentPage.replace(/\.html$/,''); const candidates=[currentPage, calculatorKey, calculatorKey+'.html', keyBase, keyBase+'.html', pageBase, pageBase+'.html', currentPage.replace('-calculator.html','.html'), pageBase.replace('-calculator','')+'.html']; const fn=candidates.map(k=>calculatorConfigs[k]).find(Boolean); if(fn){calculateBtn.addEventListener('click',fn); resetBtn.addEventListener('click',resetCalculator); document.querySelectorAll('input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')fn();}));}}
 const mainCalcScreen=$('mainCalcScreen'); const mainCalcKeys=document.querySelectorAll('.calc-key'); if(mainCalcScreen&&mainCalcKeys.length){let expr=''; const display=()=>mainCalcScreen.textContent=(expr||'0').replace(/\*/g,'×').replace(/\//g,'÷').replace(/-/g,'−'); mainCalcKeys.forEach(btn=>btn.addEventListener('click',()=>{const v=btn.dataset.value,a=btn.dataset.action; if(a==='clear'){expr='';display();return;} if(a==='backspace'){expr=expr.slice(0,-1);display();return;} if(a==='equals'){try{const r=Function('"use strict";return ('+expr.replace(/%/g,'/100')+')')(); expr=isFinite(r)?Number(r.toFixed(10)).toString():''; mainCalcScreen.textContent=expr||'Error';}catch{expr='';mainCalcScreen.textContent='Error';} return;} if(v){expr+=v;display();}}));}
+
+
+/* ===== CalculatorWorks Dominance Upgrade ===== */
+
+(function(){
+
+const calculatorLinks = Array.from(document.querySelectorAll('a[href$=".html"]'))
+.filter(link => link.textContent.trim().length > 2);
+
+const uniqueMap = new Map();
+
+calculatorLinks.forEach(link=>{
+const href = link.getAttribute('href');
+if(!href || href.startsWith('#')) return;
+
+const title = link.textContent.trim();
+
+if(!uniqueMap.has(href)){
+uniqueMap.set(href,{
+href,
+title
+});
+}
+});
+
+const calculators = Array.from(uniqueMap.values());
+
+function buildSearchUI(){
+
+if(document.querySelector('.search-trigger')) return;
+
+const nav = document.querySelector('.main-nav');
+
+if(!nav) return;
+
+const trigger = document.createElement('button');
+trigger.className = 'search-trigger';
+trigger.innerHTML = '🔎 Search Calculators';
+
+nav.appendChild(trigger);
+
+const overlay = document.createElement('div');
+overlay.className = 'global-search-overlay';
+
+overlay.innerHTML = `
+<div class="global-search-panel">
+<div class="global-search-top">
+<input type="text" id="globalCalculatorSearch" placeholder="Search calculators...">
+</div>
+<div class="search-results"></div>
+</div>
+`;
+
+document.body.appendChild(overlay);
+
+const input = overlay.querySelector('#globalCalculatorSearch');
+const results = overlay.querySelector('.search-results');
+
+function renderResults(query=''){
+
+const q = query.toLowerCase().trim();
+
+const filtered = calculators
+.filter(item => item.title.toLowerCase().includes(q))
+.slice(0,60);
+
+results.innerHTML = filtered.map(item=>`
+<a class="search-result-item" href="${item.href}">
+<strong>${item.title}</strong>
+<span>${item.href.replace('.html','').replace(/-/g,' ')}</span>
+</a>
+`).join('');
+
+if(!filtered.length){
+results.innerHTML = '<div class="search-result-item"><strong>No calculators found</strong><span>Try another keyword.</span></div>';
+}
+}
+
+trigger.addEventListener('click', ()=>{
+overlay.classList.add('active');
+input.focus();
+renderResults();
+});
+
+overlay.addEventListener('click', (e)=>{
+if(e.target === overlay){
+overlay.classList.remove('active');
+}
+});
+
+document.addEventListener('keydown', (e)=>{
+if(e.key === 'Escape'){
+overlay.classList.remove('active');
+}
+});
+
+input.addEventListener('input', ()=>{
+renderResults(input.value);
+});
+
+}
+
+function addAuthorityBlocks(){
+
+const article = document.querySelector('.calculator-content, .content-section, main');
+
+if(!article) return;
+
+if(document.querySelector('.authority-highlight')) return;
+
+const block = document.createElement('section');
+block.className = 'authority-highlight';
+
+block.innerHTML = `
+<h2>Why Use CalculatorWorks?</h2>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+<h3>Fast Calculations</h3>
+<p>Get instant, accurate results for finance, salary, mortgage, health, construction and everyday calculations.</p>
+</div>
+
+<div class="feature-card">
+<h3>Free Online Tools</h3>
+<p>All calculators are free to use with no sign-up required and work across desktop, tablet and mobile devices.</p>
+</div>
+
+<div class="feature-card">
+<h3>Built for Accuracy</h3>
+<p>CalculatorWorks tools are designed to provide clear formulas, worked examples and reliable calculation logic.</p>
+</div>
+
+</div>
+`;
+
+const related = document.querySelector('.related-calculators');
+
+if(related && related.parentNode){
+related.parentNode.insertBefore(block, related);
+}
+
+}
+
+buildSearchUI();
+addAuthorityBlocks();
+
+})();
