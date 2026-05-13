@@ -2939,3 +2939,44 @@ if(document.readyState==='loading'){
 }
 
 })();
+
+
+/* ===== CalculatorWorks Duplicate Search Fix ===== */
+
+(function(){
+'use strict';
+
+function dedupeSearchButtons(){
+  const triggers = Array.prototype.slice.call(document.querySelectorAll('[data-cw-search-trigger], .search-trigger'));
+  if(triggers.length <= 1) return;
+
+  let primary = triggers.find(function(btn){
+    return btn.hasAttribute('data-cw-search-trigger');
+  }) || triggers[0];
+
+  triggers.forEach(function(btn){
+    if(btn !== primary){
+      btn.remove();
+    }
+  });
+
+  primary.classList.add('search-trigger');
+  primary.setAttribute('data-cw-search-trigger','true');
+  primary.textContent = primary.textContent && primary.textContent.trim() ? primary.textContent.trim() : 'Search';
+}
+
+function run(){
+  dedupeSearchButtons();
+  setTimeout(dedupeSearchButtons,100);
+  setTimeout(dedupeSearchButtons,500);
+  setTimeout(dedupeSearchButtons,1200);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded',run);
+}else{
+  run();
+}
+
+})();
+

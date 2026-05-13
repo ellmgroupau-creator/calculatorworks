@@ -2129,3 +2129,414 @@ th{
   }
 }
 
+
+/* ===== CalculatorWorks Premium Refinement Layer ===== */
+
+/*
+  High-end refinement layer:
+  - calmer palette
+  - sharper typography hierarchy
+  - more deliberate spacing
+  - premium calculator panels
+  - reduced visual noise
+  - single search button presentation
+*/
+
+:root{
+  --cw-premium-navy:#0b1220;
+  --cw-premium-ink:#111827;
+  --cw-premium-muted:#5b6678;
+  --cw-premium-line:#dfe7f1;
+  --cw-premium-line-soft:#edf2f7;
+  --cw-premium-blue:#2457d6;
+  --cw-premium-blue-dark:#1e40af;
+  --cw-premium-teal:#0f766e;
+  --cw-premium-bg:#f4f7fb;
+  --cw-premium-card:#ffffff;
+  --cw-premium-glow:0 24px 70px rgba(15,23,42,.09);
+  --cw-premium-card-shadow:0 14px 36px rgba(15,23,42,.065);
+}
+
+body{
+  background:
+    linear-gradient(180deg,#f8fbff 0%,#f3f6fb 46%,#f6f8fb 100%) !important;
+  color:var(--cw-premium-ink) !important;
+}
+
+/* Header should feel like a product, not a template */
+.site-header{
+  background:rgba(255,255,255,.96) !important;
+  border-bottom:1px solid rgba(223,231,241,.95) !important;
+  box-shadow:0 6px 24px rgba(15,23,42,.045) !important;
+}
+
+.header-inner{
+  min-height:76px !important;
+}
+
+.logo-wrap,
+.site-logo{
+  display:flex;
+  align-items:center;
+}
+
+.logo-wrap img,
+.site-logo img{
+  max-height:50px !important;
+  filter:drop-shadow(0 2px 4px rgba(15,23,42,.06));
+}
+
+.main-nav{
+  gap:8px !important;
+}
+
+.main-nav a{
+  color:#334155 !important;
+  font-weight:800 !important;
+  letter-spacing:-.01em;
+}
+
+.main-nav a:hover{
+  background:#eef5ff !important;
+  color:var(--cw-premium-blue-dark) !important;
+}
+
+/* Search button: exactly one visible, premium-styled */
+.search-trigger,
+[data-cw-search-trigger]{
+  background:#0f172a !important;
+  color:#ffffff !important;
+  border:1px solid #0f172a !important;
+  border-radius:999px !important;
+  padding:10px 15px !important;
+  font-weight:900 !important;
+  box-shadow:0 10px 24px rgba(15,23,42,.16) !important;
+}
+
+.search-trigger:hover,
+[data-cw-search-trigger]:hover{
+  background:#1e293b !important;
+  color:#fff !important;
+}
+
+/* Hide duplicate visible search controls while keeping the primary trigger */
+.search-trigger + .search-trigger,
+[data-cw-search-trigger] + [data-cw-search-trigger],
+.main-nav .search-trigger:not(:first-of-type){
+  display:none !important;
+}
+
+/* Premium page rhythm */
+main{
+  padding-top:28px !important;
+}
+
+.container{
+  max-width:1160px !important;
+}
+
+/* High-end hero */
+.hero{
+  border-radius:34px !important;
+  border:1px solid rgba(207,216,228,.9) !important;
+  background:
+    radial-gradient(circle at 88% 18%, rgba(36,87,214,.13), transparent 18rem),
+    linear-gradient(135deg,#ffffff 0%,#f7fbff 50%,#eef5ff 100%) !important;
+  box-shadow:var(--cw-premium-glow) !important;
+  padding:clamp(42px,6vw,72px) !important;
+  margin:28px 0 34px !important;
+}
+
+.hero:before{
+  opacity:.65;
+}
+
+.hero h1{
+  color:var(--cw-premium-navy) !important;
+  font-size:clamp(38px,5.4vw,64px) !important;
+  line-height:.99 !important;
+  letter-spacing:-.065em !important;
+  max-width:900px;
+}
+
+.hero p,
+.hero .lead{
+  color:var(--cw-premium-muted) !important;
+  font-size:clamp(17px,2vw,20px) !important;
+  line-height:1.78 !important;
+  max-width:790px;
+}
+
+/* Calculator panel */
+.calculator-card{
+  border-radius:32px !important;
+  border:1px solid rgba(207,216,228,.95) !important;
+  box-shadow:var(--cw-premium-glow) !important;
+  background:
+    linear-gradient(180deg,#ffffff 0%,#ffffff 75%,#fbfdff 100%) !important;
+  padding:clamp(30px,4vw,46px) !important;
+  margin:30px 0 !important;
+}
+
+.calculator-card h1,
+.calculator-card h2{
+  color:var(--cw-premium-navy) !important;
+  letter-spacing:-.05em !important;
+}
+
+/* Inputs should look expensive */
+label{
+  color:#1f2937 !important;
+  font-weight:900 !important;
+  font-size:14px !important;
+}
+
+input,
+select,
+textarea{
+  background:#fbfdff !important;
+  border:1px solid #cfd9e6 !important;
+  border-radius:16px !important;
+  padding:14px 15px !important;
+  font-size:16px !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  background:#ffffff !important;
+  border-color:var(--cw-premium-blue) !important;
+  box-shadow:0 0 0 4px rgba(36,87,214,.13) !important;
+}
+
+/* Buttons with restrained premium feel */
+#calculateBtn,
+.btn.primary,
+button.primary,
+.primary-btn{
+  background:linear-gradient(135deg,#2457d6 0%,#1e40af 100%) !important;
+  color:#ffffff !important;
+  border:1px solid #1e40af !important;
+  border-radius:16px !important;
+  box-shadow:0 14px 30px rgba(36,87,214,.24) !important;
+  letter-spacing:-.01em;
+}
+
+#calculateBtn:hover,
+.btn.primary:hover,
+button.primary:hover,
+.primary-btn:hover{
+  box-shadow:0 18px 38px rgba(36,87,214,.30) !important;
+}
+
+#resetBtn,
+.btn.secondary,
+button.secondary,
+.secondary-btn{
+  border-radius:16px !important;
+  background:#ffffff !important;
+  border:1px solid #d5deea !important;
+  color:#334155 !important;
+}
+
+/* Results panel */
+#result,
+.result,
+.result-box,
+.calculator-result{
+  background:
+    linear-gradient(135deg,#f8fbff 0%,#ffffff 100%) !important;
+  border:1px solid #cfe0ff !important;
+  border-radius:22px !important;
+  box-shadow:0 12px 30px rgba(36,87,214,.10) !important;
+  font-weight:750;
+}
+
+/* All cards: consistent and premium */
+.content-card,
+.info-card,
+.formula-card,
+.example-card,
+.faq-section,
+.related-calculators,
+.cw-ai-engine,
+.cw-viz-engine,
+.cw-insight-panel,
+.cw-smart-related,
+.cw-context-tools,
+.cw-popular-scenarios,
+.cw-quick-compare,
+.cw-dominance-section,
+.cw-flagship-upgrade,
+.cw-tool-lab,
+.cw-finance-cluster,
+.cw-depth-engine,
+.cw-methodology,
+.cw-retention-hub,
+.cw-consistency-block,
+.cw-scenario-library,
+.cw-report-layer{
+  border-radius:28px !important;
+  border:1px solid var(--cw-premium-line) !important;
+  background:#ffffff !important;
+  box-shadow:var(--cw-premium-card-shadow) !important;
+}
+
+.content-card,
+.info-card,
+.formula-card,
+.example-card,
+.faq-section,
+.related-calculators,
+.cw-smart-related,
+.cw-dominance-section,
+.cw-flagship-upgrade,
+.cw-tool-lab,
+.cw-finance-cluster,
+.cw-depth-engine,
+.cw-methodology,
+.cw-retention-hub,
+.cw-consistency-block,
+.cw-scenario-library,
+.cw-report-layer{
+  padding:clamp(24px,3vw,32px) !important;
+}
+
+.content-card h2,
+.info-card h2,
+.formula-card h2,
+.example-card h2,
+.faq-section h2,
+.related-calculators h2,
+.cw-smart-related h2,
+.cw-ai-head h2,
+.cw-viz-head h2{
+  color:var(--cw-premium-navy) !important;
+  letter-spacing:-.045em !important;
+}
+
+/* Refine advanced panels */
+.cw-ai-head,
+.cw-viz-head,
+.cw-insight-header{
+  background:
+    linear-gradient(135deg,#f8fbff 0%,#ffffff 100%) !important;
+  padding:28px 30px !important;
+}
+
+.cw-ai-card,
+.cw-viz-card,
+.cw-chart-card,
+.cw-table-card,
+.cw-guidance-card,
+.cw-metric,
+.cw-output-card,
+.cw-assumption-card,
+.cw-dominance-card,
+.cw-feature-pill,
+.cw-finance-card,
+.cw-depth-card,
+.cw-methodology-card,
+.cw-retention-card,
+.cw-consistency-card{
+  border-radius:20px !important;
+  border:1px solid var(--cw-premium-line-soft) !important;
+  background:#ffffff !important;
+}
+
+/* Make links feel polished */
+.related-calculators a,
+.cw-smart-related-grid a,
+.cw-cluster-links a,
+.cw-engine-link,
+.cw-scenario-card,
+.cw-scenario-btn,
+.cw-finance-links a,
+.cw-collection-links a,
+.cw-consistency-links a{
+  border-radius:18px !important;
+  border:1px solid #dce7f5 !important;
+  color:var(--cw-premium-blue-dark) !important;
+  box-shadow:0 6px 16px rgba(15,23,42,.045) !important;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.related-calculators a:hover,
+.cw-smart-related-grid a:hover,
+.cw-cluster-links a:hover,
+.cw-engine-link:hover,
+.cw-scenario-card:hover,
+.cw-scenario-btn:hover,
+.cw-finance-links a:hover,
+.cw-collection-links a:hover,
+.cw-consistency-links a:hover{
+  transform:translateY(-3px);
+  border-color:#bcd2ff !important;
+  box-shadow:0 16px 34px rgba(36,87,214,.14) !important;
+}
+
+/* Reduce amateur stacked feel by making older add-on sections quieter */
+.cw-dominance-section,
+.cw-flagship-upgrade,
+.cw-tool-lab,
+.cw-finance-cluster,
+.cw-depth-engine,
+.cw-methodology,
+.cw-retention-hub,
+.cw-consistency-block,
+.cw-scenario-library,
+.cw-report-layer{
+  margin:26px 0 !important;
+}
+
+/* Tables */
+table{
+  border:1px solid var(--cw-premium-line-soft);
+}
+
+th{
+  background:#f6f9fd !important;
+  color:#263244 !important;
+}
+
+/* Footer */
+.site-footer{
+  background:
+    radial-gradient(circle at top left, rgba(36,87,214,.18), transparent 22rem),
+    #0b1220 !important;
+}
+
+/* Mobile refinement */
+@media (max-width:760px){
+  .hero{
+    border-radius:26px !important;
+    padding:32px 22px !important;
+  }
+
+  .hero h1{
+    font-size:clamp(34px,10vw,46px) !important;
+  }
+
+  .calculator-card{
+    border-radius:24px !important;
+    padding:24px 20px !important;
+  }
+
+  .content-card,
+  .info-card,
+  .formula-card,
+  .example-card,
+  .faq-section,
+  .related-calculators,
+  .cw-ai-engine,
+  .cw-viz-engine{
+    border-radius:22px !important;
+  }
+
+  .main-nav a,
+  .search-trigger,
+  [data-cw-search-trigger]{
+    padding:9px 12px !important;
+  }
+}
+
