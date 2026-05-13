@@ -1405,3 +1405,69 @@ font-size:14px;
 line-height:1.55;
 color:#1e3a8a;
 }
+
+/* ===== CalculatorWorks Finance Authority Expansion ===== */
+
+.cw-finance-cluster{
+margin:32px 0;
+padding:28px;
+border:1px solid #dbeafe;
+border-radius:28px;
+background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);
+box-shadow:0 16px 42px rgba(15,23,42,.08);
+}
+
+.cw-finance-cluster h2{
+margin-top:0;
+}
+
+.cw-finance-cluster p{
+line-height:1.7;
+color:#64748b;
+}
+
+.cw-finance-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+gap:14px;
+margin-top:18px;
+}
+
+.cw-finance-card{
+background:#fff;
+border:1px solid #dbeafe;
+border-radius:18px;
+padding:18px;
+}
+
+.cw-finance-card strong{
+display:block;
+font-size:17px;
+margin-bottom:8px;
+color:#0f172a;
+}
+
+.cw-finance-card span{
+display:block;
+font-size:14px;
+line-height:1.55;
+color:#64748b;
+}
+
+.cw-finance-links{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+margin-top:18px;
+}
+
+.cw-finance-links a{
+display:block;
+padding:14px;
+background:#fff;
+border:1px solid #dbeafe;
+border-radius:16px;
+text-decoration:none;
+font-weight:850;
+color:#1d4ed8;
+}

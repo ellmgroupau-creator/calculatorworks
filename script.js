@@ -2464,3 +2464,57 @@ if(document.readyState === 'loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Finance Authority Expansion ===== */
+
+(function(){
+'use strict';
+
+function addFinanceAuthority(){
+  if(document.querySelector('.cw-finance-cluster')) return;
+
+  const page=(location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+  if(!/mortgage|loan|salary|debt|retirement|compound|savings|refinance|investment/.test(page)) return;
+
+  let title='Finance planning toolkit';
+  let intro='Use related finance calculators to compare borrowing, saving, investing and repayment scenarios from multiple angles.';
+  let cards=[
+    ['Compare scenarios','Changing rate, term, payment or contribution assumptions can materially change long-term outcomes.'],
+    ['Check total cost','Monthly payment alone is not enough for major financial decisions.'],
+    ['Use related tools','Mortgage, debt, savings and salary calculators often work best together.']
+  ];
+
+  const section=document.createElement('section');
+  section.className='cw-finance-cluster';
+  section.innerHTML=
+    '<h2>'+title+'</h2><p>'+intro+'</p>'+
+    '<div class="cw-finance-grid">'+
+    cards.map(function(c){
+      return '<div class="cw-finance-card"><strong>'+c[0]+'</strong><span>'+c[1]+'</span></div>';
+    }).join('')+
+    '</div>'+
+    '<div class="cw-finance-links">'+
+      '<a href="/mortgage-calculator">Mortgage</a>'+
+      '<a href="/refinance-calculator">Refinance</a>'+
+      '<a href="/debt-payoff-calculator">Debt Payoff</a>'+
+      '<a href="/compound-interest-calculator">Compound Interest</a>'+
+      '<a href="/retirement-savings-calculator">Retirement Savings</a>'+
+      '<a href="/salary-calculator">Salary</a>'+
+    '</div>';
+
+  const target=document.querySelector('.cw-ai-engine') ||
+               document.querySelector('.cw-viz-engine') ||
+               document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend',section);
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',addFinanceAuthority);
+}else{
+  addFinanceAuthority();
+}
+
+})();
