@@ -1286,3 +1286,59 @@ grid-template-columns:1fr;
 display:block;
 }
 }
+
+/* ===== CalculatorWorks Authority + Performance Engine ===== */
+
+.cw-authority-strip{
+margin:24px 0;
+padding:18px 20px;
+border:1px solid #dbeafe;
+border-radius:18px;
+background:linear-gradient(180deg,#ffffff 0%,#f8fbff 100%);
+font-size:14px;
+line-height:1.65;
+color:#475569;
+}
+
+.cw-authority-strip strong{
+color:#1d4ed8;
+}
+
+.cw-trending-tools{
+margin:30px 0;
+padding:24px;
+border:1px solid #dbeafe;
+border-radius:24px;
+background:#f8fbff;
+}
+
+.cw-trending-tools h2{
+margin-top:0;
+}
+
+.cw-trending-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(210px,1fr));
+gap:12px;
+margin-top:16px;
+}
+
+.cw-trending-grid a{
+display:block;
+padding:14px;
+border-radius:16px;
+background:#fff;
+border:1px solid #dbeafe;
+text-decoration:none;
+font-weight:850;
+color:#1d4ed8;
+}
+
+.cw-trending-grid span{
+display:block;
+margin-top:5px;
+font-size:13px;
+font-weight:600;
+color:#64748b;
+line-height:1.4;
+}

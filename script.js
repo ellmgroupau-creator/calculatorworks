@@ -2272,3 +2272,94 @@ if(document.readyState === 'loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Authority + Performance Engine ===== */
+
+(function(){
+'use strict';
+
+function addTrendingTools(){
+  if(document.querySelector('.cw-trending-tools')) return;
+
+  const page = (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+
+  const groups = {
+    finance: [
+      ['/mortgage-calculator','Mortgage calculator'],
+      ['/compound-interest-calculator','Compound interest'],
+      ['/salary-calculator','Salary calculator'],
+      ['/debt-payoff-calculator','Debt payoff'],
+      ['/credit-card-payoff-calculator','Credit card payoff'],
+      ['/loan-repayment-calculator','Loan repayment']
+    ],
+    conversion: [
+      ['/feet-to-metres','Feet to metres'],
+      ['/metres-to-feet','Metres to feet'],
+      ['/cm-to-inches','CM to inches'],
+      ['/inches-to-cm','Inches to CM']
+    ],
+    health: [
+      ['/bmi-calculator','BMI calculator'],
+      ['/calorie-calculator','Calorie calculator'],
+      ['/tdee-calculator','TDEE calculator']
+    ]
+  };
+
+  let set = groups.finance;
+
+  if(/bmi|health|calorie|weight/.test(page)) set = groups.health;
+  if(/feet|metres|meters|inch|cm|kg|lb|mile|km|convert/.test(page)) set = groups.conversion;
+
+  const section = document.createElement('section');
+  section.className = 'cw-trending-tools';
+  section.innerHTML =
+    '<h2>Popular calculators</h2>' +
+    '<div class="cw-trending-grid">' +
+    set.map(function(item){
+      return '<a href="'+item[0]+'">'+item[1]+'<span>Related high-use calculator</span></a>';
+    }).join('') +
+    '</div>';
+
+  const main = document.querySelector('main');
+  if(main){
+    main.appendChild(section);
+  }
+}
+
+function markExternalLinks(){
+  document.querySelectorAll('a[href^="http"]').forEach(function(a){
+    if(!a.hasAttribute('rel')){
+      a.setAttribute('rel','noopener');
+    }
+  });
+}
+
+function smoothAnchorScroll(){
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const id = a.getAttribute('href');
+      if(!id || id === '#') return;
+      const target = document.querySelector(id);
+      if(target){
+        e.preventDefault();
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+}
+
+function deferNonCritical(){
+  requestAnimationFrame(function(){
+    addTrendingTools();
+    markExternalLinks();
+    smoothAnchorScroll();
+  });
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', deferNonCritical);
+}else{
+  deferNonCritical();
+}
+
+})();
