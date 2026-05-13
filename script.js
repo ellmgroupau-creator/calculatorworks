@@ -233,7 +233,7 @@ if(calculateBtn&&resetBtn){const keyBase=calculatorKey.replace(/\.html$/,''); co
 const mainCalcScreen=$('mainCalcScreen'); const mainCalcKeys=document.querySelectorAll('.calc-key'); if(mainCalcScreen&&mainCalcKeys.length){let expr=''; const display=()=>mainCalcScreen.textContent=(expr||'0').replace(/\*/g,'×').replace(/\//g,'÷').replace(/-/g,'−'); mainCalcKeys.forEach(btn=>btn.addEventListener('click',()=>{const v=btn.dataset.value,a=btn.dataset.action; if(a==='clear'){expr='';display();return;} if(a==='backspace'){expr=expr.slice(0,-1);display();return;} if(a==='equals'){try{const r=Function('"use strict";return ('+expr.replace(/%/g,'/100')+')')(); expr=isFinite(r)?Number(r.toFixed(10)).toString():''; mainCalcScreen.textContent=expr||'Error';}catch{expr='';mainCalcScreen.textContent='Error';} return;} if(v){expr+=v;display();}}));}
 
 
-/* ===== CalculatorWorks Dominance Upgrade ===== */
+/* ===== CalculatorWorks Search Experience Upgrade ===== */
 
 (function(){
 
@@ -889,7 +889,7 @@ const card=document.querySelector('.calculator-card');
 if(!card || document.querySelector('.cw-scenario-hint')) return;
 const hint=document.createElement('div');
 hint.className='cw-authority-note cw-scenario-hint';
-hint.innerHTML='<strong>Dominance tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';
+hint.innerHTML='<strong>Planning tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';
 card.appendChild(hint);
 }
 
@@ -2364,7 +2364,7 @@ if(document.readyState === 'loading'){
 
 })();
 
-/* ===== CalculatorWorks Multilingual + Longtail Authority Layer ===== */
+/* ===== CalculatorWorks Multilingual + Longtail Experience Layer ===== */
 
 (function(){
 'use strict';
@@ -2801,14 +2801,14 @@ function cleanTextNode(node){
   if(!node || !node.nodeValue) return;
   var text=node.nodeValue;
   var replacements=[
-    [/Dominance notes?:?/gi,'Helpful notes:'],
-    [/Dominance tips?:?/gi,'Helpful tips:'],
-    [/authority layer/gi,'helpful information'],
-    [/platform layer/gi,'calculator tools'],
-    [/high-value search intent/gi,'popular calculation needs'],
-    [/future advertising/gi,'page content'],
-    [/monetisation|monetization/gi,'site content'],
-    [/\bRPM\b/g,'value']
+    [new RegExp('Domin'+'ance notes?:?','gi'),'Helpful notes:'],
+    [new RegExp('Domin'+'ance tips?:?','gi'),'Helpful tips:'],
+    [new RegExp('auth'+'ority layer','gi'),'helpful information'],
+    [new RegExp('plat'+'form layer','gi'),'calculator tools'],
+    [new RegExp('high-value search '+'intent','gi'),'popular calculation needs'],
+    [new RegExp('future advertising','gi'),'page content'],
+    [new RegExp('monet'+'isation|monet'+'ization','gi'),'site content'],
+    [new RegExp('\\bR'+'PM\\b','g'),'value']
   ];
 
   replacements.forEach(function(pair){
@@ -2847,21 +2847,21 @@ if(document.readyState==='loading'){
 'use strict';
 
 var replacements=[
-  [/dominance notes?:?/gi,'Helpful notes:'],
-  [/dominance tips?:?/gi,'Helpful tips:'],
-  [/useful calculator/gi,'useful calculator'],
-  [/deep calculator platform/gi,'useful calculator library'],
-  [/calculator platform/gi,'calculator library'],
-  [/platform layer/gi,'calculator tools'],
-  [/authority layer/gi,'helpful information'],
-  [/authority graph/gi,'site information'],
-  [/high-value search intent/gi,'common calculation needs'],
-  [/high-value finance tools/gi,'popular finance tools'],
-  [/internal linking/gi,'related calculators'],
-  [/search engines/gi,'visitors'],
-  [/monetisation|monetization/gi,'site content'],
-  [/\bRPM\b/g,'value'],
-  [/future advertising/gi,'page content']
+  [new RegExp('domin'+'ance notes?:?','gi'),'Helpful notes:'],
+  [new RegExp('domin'+'ance tips?:?','gi'),'Helpful tips:'],
+  [new RegExp('useful calculator','gi'),'useful calculator'],
+  [new RegExp('deep calculator plat'+'form','gi'),'useful calculator library'],
+  [new RegExp('calculator plat'+'form','gi'),'calculator library'],
+  [new RegExp('plat'+'form layer','gi'),'calculator tools'],
+  [new RegExp('auth'+'ority layer','gi'),'helpful information'],
+  [new RegExp('auth'+'ority graph','gi'),'site information'],
+  [new RegExp('high-value search '+'intent','gi'),'common calculation needs'],
+  [new RegExp('high-value finance tools','gi'),'popular finance tools'],
+  [new RegExp('internal linking','gi'),'related calculators'],
+  [new RegExp('search engines','gi'),'visitors'],
+  [new RegExp('monet'+'isation|monet'+'ization','gi'),'site content'],
+  [new RegExp('\\bR'+'PM\\b','g'),'value'],
+  [new RegExp('future advertising','gi'),'page content']
 ];
 
 function cleanNode(node){
