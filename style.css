@@ -1672,3 +1672,170 @@ font-size:14px;
 line-height:1.6;
 color:#64748b;
 }
+
+
+/* ===== CalculatorWorks Best-Site Polish Recovery ===== */
+
+/* Remove visual clutter from previous enhancement passes while keeping calculators working. */
+.cw-dominance-section,
+.cw-flagship-upgrade,
+.cw-tool-lab,
+.cw-route-note,
+.cw-authority-strip,
+.cw-language-strip,
+.cw-engine-shell,
+.cw-finance-cluster,
+.cw-depth-engine,
+.cw-methodology,
+.cw-retention-hub,
+.cw-consistency-block,
+.cw-scenario-library,
+.cw-report-layer{
+display:none !important;
+}
+
+/* Restore a calmer, more professional calculator-first feel. */
+body{
+background:#f7f9fc;
+}
+
+main,
+.container{
+max-width:1120px;
+}
+
+.hero,
+.calculator-card,
+.content-card,
+.related-calculators,
+.faq-section,
+.cw-ai-engine,
+.cw-viz-engine,
+.cw-insight-panel,
+.cw-smart-related{
+border-radius:18px !important;
+box-shadow:0 10px 28px rgba(15,23,42,.06) !important;
+border:1px solid #e5eaf2 !important;
+}
+
+.calculator-card{
+background:#ffffff !important;
+padding:clamp(22px,3vw,34px) !important;
+margin-top:22px !important;
+}
+
+.hero{
+background:linear-gradient(135deg,#ffffff 0%,#f4f8ff 100%) !important;
+border:1px solid #e5eaf2 !important;
+padding:clamp(28px,4vw,48px) !important;
+}
+
+.hero h1,
+.calculator-card h1,
+.calculator-card h2{
+letter-spacing:-.035em;
+line-height:1.08;
+}
+
+input,
+select,
+textarea{
+border-radius:12px !important;
+border:1px solid #cfd8e3 !important;
+box-shadow:none !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+outline:none !important;
+border-color:#2563eb !important;
+box-shadow:0 0 0 3px rgba(37,99,235,.12) !important;
+}
+
+button,
+.btn,
+.button{
+border-radius:12px !important;
+font-weight:800 !important;
+box-shadow:none !important;
+}
+
+#calculateBtn,
+button.primary,
+.btn.primary{
+background:#2563eb !important;
+color:#fff !important;
+border:1px solid #2563eb !important;
+}
+
+#calculateBtn:hover,
+button.primary:hover,
+.btn.primary:hover{
+background:#1d4ed8 !important;
+}
+
+/* Keep advanced tools polished, but visually secondary to the main calculator. */
+.cw-ai-engine,
+.cw-viz-engine{
+margin:28px 0 !important;
+background:#ffffff !important;
+overflow:hidden !important;
+}
+
+.cw-ai-head,
+.cw-viz-head{
+background:#f8fafc !important;
+border-bottom:1px solid #e5eaf2 !important;
+}
+
+.cw-ai-head h2,
+.cw-viz-head h2{
+font-size:clamp(22px,2.5vw,30px) !important;
+letter-spacing:-.03em !important;
+}
+
+.cw-ai-card,
+.cw-viz-card{
+box-shadow:none !important;
+border:1px solid #e5eaf2 !important;
+background:#fff !important;
+}
+
+.cw-ai-chart,
+.cw-viz-chart{
+border-radius:14px !important;
+border:1px solid #e5eaf2 !important;
+}
+
+/* Related calculators should look like navigation, not marketing blocks. */
+.related-calculators,
+.cw-smart-related{
+background:#fff !important;
+padding:22px !important;
+margin:28px 0 !important;
+}
+
+.related-calculators a,
+.cw-smart-related a{
+text-decoration:none !important;
+}
+
+/* Mobile cleanup */
+@media (max-width:760px){
+.hero,
+.calculator-card,
+.related-calculators,
+.cw-ai-engine,
+.cw-viz-engine{
+border-radius:14px !important;
+}
+.calculator-card{
+padding:20px !important;
+}
+.cw-ai-grid,
+.cw-viz-grid{
+padding:16px !important;
+}
+}
+

@@ -2939,3 +2939,56 @@ if(document.readyState==='loading'){
 }
 
 })();
+
+
+/* ===== CalculatorWorks Best-Site Polish Recovery ===== */
+
+(function(){
+'use strict';
+
+var removeSelectors=[
+  '.cw-dominance-section',
+  '.cw-flagship-upgrade',
+  '.cw-tool-lab',
+  '.cw-route-note',
+  '.cw-authority-strip',
+  '.cw-language-strip',
+  '.cw-engine-shell',
+  '.cw-finance-cluster',
+  '.cw-depth-engine',
+  '.cw-methodology',
+  '.cw-retention-hub',
+  '.cw-consistency-block',
+  '.cw-scenario-library',
+  '.cw-report-layer'
+];
+
+function removeClutter(){
+  removeSelectors.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.remove();
+    });
+  });
+
+  ['cw-ai-engine','cw-viz-engine','cw-smart-related','cw-context-tools'].forEach(function(cls){
+    var els=document.querySelectorAll('.'+cls);
+    if(els.length>1){
+      Array.prototype.slice.call(els,1).forEach(function(el){ el.remove(); });
+    }
+  });
+}
+
+function run(){
+  removeClutter();
+  setTimeout(removeClutter,150);
+  setTimeout(removeClutter,600);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',run);
+}else{
+  run();
+}
+
+})();
+
