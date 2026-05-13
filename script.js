@@ -1880,3 +1880,395 @@ if(document.readyState === 'loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Advanced Intelligence Projection Engine ===== */
+
+(function(){
+'use strict';
+
+function money(n){
+  if(!isFinite(n)) return '$0.00';
+  return '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function number(n, places){
+  if(!isFinite(n)) return '0';
+  return Number(n).toLocaleString(undefined,{maximumFractionDigits:places === undefined ? 2 : places});
+}
+
+function page(){
+  return (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+}
+
+function read(id, fallback){
+  const el = document.getElementById(id);
+  if(!el) return fallback;
+  const v = parseFloat(el.value);
+  return isFinite(v) ? v : fallback;
+}
+
+function getPrimary(name, fallback){
+  const map = {
+    principal: ['principal','loan','balance','feet'],
+    rate: ['rate','apr','inches'],
+    years: ['years','term','decimals'],
+    payment: ['payment','monthlyPayment','decimals'],
+    contribution: ['contribution','monthly','decimals'],
+    salary: ['salary','feet'],
+    hours: ['hours','inches']
+  };
+  const ids = map[name] || [name];
+  for(var i=0;i<ids.length;i++){
+    const el=document.getElementById(ids[i]);
+    if(el){
+      const v=parseFloat(el.value);
+      if(isFinite(v)) return v;
+    }
+  }
+  return fallback;
+}
+
+function setRangeLabel(input){
+  const label = input.parentNode.querySelector('.cw-ai-range-value');
+  if(label) label.textContent = input.value;
+}
+
+function metric(label, value){
+  return '<div class="cw-ai-metric"><span>'+label+'</span><strong>'+value+'</strong></div>';
+}
+
+function table(headers, rows){
+  return '<div class="cw-ai-table-wrap"><table class="cw-ai-table"><thead><tr>'+
+    headers.map(function(h){ return '<th>'+h+'</th>'; }).join('')+
+    '</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>';
+}
+
+function lineChart(seriesA, seriesB, label){
+  const w=680,h=250,pad=32;
+  seriesA = seriesA && seriesA.length ? seriesA : [0,1];
+  seriesB = seriesB && seriesB.length ? seriesB : [];
+  const all = seriesA.concat(seriesB);
+  const max=Math.max.apply(null, all);
+  const min=Math.min.apply(null, all);
+  const span=Math.max(max-min,1);
+
+  function coords(points){
+    return points.map(function(v,i){
+      const x=pad+(i/(points.length-1 || 1))*(w-pad*2);
+      const y=h-pad-((v-min)/span)*(h-pad*2);
+      return [x,y];
+    });
+  }
+
+  function poly(points){
+    return coords(points).map(function(p){return p[0]+','+p[1];}).join(' ');
+  }
+
+  return '<svg class="cw-ai-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+
+    '<line x1="'+pad+'" y1="'+(h-pad)+'" x2="'+(w-pad)+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<line x1="'+pad+'" y1="'+pad+'" x2="'+pad+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<polyline points="'+poly(seriesA)+'" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>'+
+    (seriesB.length ? '<polyline points="'+poly(seriesB)+'" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>' : '')+
+    '<text x="'+pad+'" y="20" fill="#475569" font-size="13">'+label+'</text>'+
+    '<circle cx="'+(w-142)+'" cy="18" r="5" fill="#2563eb"></circle><text x="'+(w-132)+'" y="22" fill="#475569" font-size="12">Scenario A</text>'+
+    (seriesB.length ? '<circle cx="'+(w-58)+'" cy="18" r="5" fill="#14b8a6"></circle><text x="'+(w-48)+'" y="22" fill="#475569" font-size="12">B</text>' : '')+
+  '</svg>';
+}
+
+function monthlyPayment(principal, apr, years){
+  const n=years*12;
+  const r=apr/100/12;
+  if(n<=0 || principal<=0) return NaN;
+  if(r===0) return principal/n;
+  return principal*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+}
+
+function amort(principal, apr, years, extra){
+  const p=monthlyPayment(principal,apr,years);
+  const pay=p+(extra||0);
+  const r=apr/100/12;
+  let bal=principal,totalInterest=0,months=0,series=[],rows=[];
+  while(bal>0 && months<years*12 && months<1200){
+    const interest=bal*r;
+    const principalPaid=Math.min(bal,pay-interest);
+    if(principalPaid<=0) break;
+    bal=Math.max(0,bal-principalPaid);
+    totalInterest+=interest;
+    months++;
+    if(months%12===0 || bal===0){
+      series.push(bal);
+      rows.push('<tr><td>Year '+Math.ceil(months/12)+'</td><td>'+money(principal-bal)+'</td><td>'+money(totalInterest)+'</td><td>'+money(bal)+'</td></tr>');
+    }
+  }
+  return {payment:p,pay:pay,totalInterest:totalInterest,totalPaid:principal+totalInterest,months:months,series:series,rows:rows};
+}
+
+function growth(start, contribution, apr, years){
+  const r=apr/100/12;
+  let balance=start, contributed=start, series=[],rows=[];
+  for(let m=1;m<=years*12;m++){
+    balance=balance*(1+r)+contribution;
+    contributed+=contribution;
+    if(m%12===0 || m===years*12){
+      series.push(balance);
+      rows.push('<tr><td>Year '+Math.ceil(m/12)+'</td><td>'+money(contributed)+'</td><td>'+money(Math.max(0,balance-contributed))+'</td><td>'+money(balance)+'</td></tr>');
+    }
+  }
+  return {balance:balance,contributed:contributed,growth:balance-contributed,series:series,rows:rows};
+}
+
+function payoff(balance, apr, payment){
+  const r=apr/100/12;
+  let bal=balance, interest=0, months=0, series=[], rows=[];
+  while(bal>0 && months<720){
+    const i=bal*r;
+    const principal=Math.min(bal,payment-i);
+    if(principal<=0) break;
+    bal=Math.max(0,bal-principal);
+    interest+=i;
+    months++;
+    if(months%12===0 || bal===0){
+      series.push(bal);
+      rows.push('<tr><td>Month '+months+'</td><td>'+money(balance-bal)+'</td><td>'+money(interest)+'</td><td>'+money(bal)+'</td></tr>');
+    }
+  }
+  return {months:months,interest:interest,total:balance+interest,series:series,rows:rows,finished:bal<=0};
+}
+
+function makeShell(id, title, intro, controls){
+  return '<section class="cw-ai-engine" id="'+id+'">'+
+    '<div class="cw-ai-head"><h2>'+title+'</h2><p>'+intro+'</p></div>'+
+    '<div class="cw-ai-grid"><div class="cw-ai-card"><h3>Scenario controls</h3><div class="cw-ai-controls">'+controls+'</div><div class="cw-ai-mobile-actions"><button class="cw-ai-button" type="button" data-cw-ai-run>Update comparison</button></div></div>'+
+    '<div class="cw-ai-card"><h3>Comparison result</h3><div data-cw-ai-output></div></div></div>'+
+  '</section>';
+}
+
+function input(id,label,value){
+  return '<div class="cw-ai-control"><label for="'+id+'">'+label+'</label><input id="'+id+'" type="number" value="'+value+'"></div>';
+}
+
+function range(id,label,value,min,max,step){
+  return '<div class="cw-ai-control"><label for="'+id+'">'+label+' <span class="cw-ai-range-value">'+value+'</span></label><input id="'+id+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+value+'"></div>';
+}
+
+function button(){
+  return '<button class="cw-ai-button" type="button" data-cw-ai-run>Update comparison</button>';
+}
+
+function insert(html){
+  if(document.querySelector('.cw-ai-engine')) return null;
+  const target=document.querySelector('.cw-viz-engine') || document.querySelector('.cw-tool-lab') || document.querySelector('.calculator-card');
+  if(!target) return null;
+  const wrap=document.createElement('div');
+  wrap.innerHTML=html;
+  const node=wrap.firstElementChild;
+  target.insertAdjacentElement('afterend', node);
+  return node;
+}
+
+function bindRanges(node, render){
+  node.querySelectorAll('input[type="range"]').forEach(function(el){
+    setRangeLabel(el);
+    el.addEventListener('input', function(){
+      setRangeLabel(el);
+      render();
+    });
+  });
+  node.querySelectorAll('input[type="number"]').forEach(function(el){
+    el.addEventListener('input', render);
+  });
+  node.querySelectorAll('[data-cw-ai-run]').forEach(function(btn){
+    btn.addEventListener('click', render);
+  });
+}
+
+function financeEngine(){
+  const p=page();
+  if(!/(mortgage|loan-repayment|mortgage-amortization|loan-payment)/.test(p)) return;
+
+  const baseLoan=getPrimary('principal',500000);
+  const baseRate=getPrimary('rate',6);
+  const baseYears=getPrimary('years',30);
+
+  const node=insert(makeShell(
+    'Advanced repayment comparison',
+    'Compare two repayment scenarios side by side and see how payment, interest, payoff time and balance change.',
+    input('cwAiLoan','Loan amount',baseLoan)+
+    range('cwAiRateA','Scenario A rate (%)',baseRate,0,15,0.1)+
+    range('cwAiRateB','Scenario B rate (%)',Math.max(0,baseRate-0.5),0,15,0.1)+
+    range('cwAiYearsA','Scenario A years',baseYears,1,40,1)+
+    range('cwAiYearsB','Scenario B years',Math.max(1,baseYears-5),1,40,1)+
+    input('cwAiExtraB','Extra monthly payment in Scenario B',100)+
+    button(),
+    'cwAiFinanceEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const principal=read('cwAiLoan',baseLoan);
+    const a=amort(principal,read('cwAiRateA',baseRate),read('cwAiYearsA',baseYears),0);
+    const b=amort(principal,read('cwAiRateB',baseRate),read('cwAiYearsB',baseYears),read('cwAiExtraB',0));
+    const interestSaved=a.totalInterest-b.totalInterest;
+    const monthsSaved=a.months-b.months;
+    const output=node.querySelector('[data-cw-ai-output]');
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Monthly payment',money(a.pay))+metric('Interest',money(a.totalInterest))+metric('Payoff',Math.ceil(a.months/12)+' yrs')+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Monthly payment',money(b.pay))+metric('Interest',money(b.totalInterest))+metric('Payoff',Math.ceil(b.months/12)+' yrs')+
+      '</div></div></div>'+
+      lineChart(a.series,b.series,'Balance comparison over time')+
+      '<div class="cw-ai-insight '+(interestSaved>0?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B '+(interestSaved>0?'saves about '+money(interestSaved):'costs about '+money(Math.abs(interestSaved))+' more')+' in interest and '+(monthsSaved>0?'pays off about '+monthsSaved+' months faster.':'does not shorten the payoff time compared with Scenario A.')+'</div>'+
+      table(['Period','Principal repaid','Interest paid','Balance'], b.rows.slice(0,35));
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function growthEngine(){
+  const p=page();
+  if(!/(compound-interest|savings|retirement-savings|investment-return)/.test(p)) return;
+
+  const start=getPrimary('principal',10000);
+  const rate=getPrimary('rate',7);
+  const years=getPrimary('years',20);
+  const contribution=getPrimary('contribution',250);
+
+  const node=insert(makeShell(
+    'Advanced growth comparison',
+    'Compare contribution and rate scenarios to see how long-term growth changes over time.',
+    input('cwAiStart','Starting amount',start)+
+    range('cwAiContribA','Scenario A monthly contribution',contribution,0,5000,50)+
+    range('cwAiContribB','Scenario B monthly contribution',contribution+100,0,5000,50)+
+    range('cwAiGrowthA','Scenario A return (%)',rate,0,15,0.1)+
+    range('cwAiGrowthB','Scenario B return (%)',rate+1,0,15,0.1)+
+    range('cwAiGrowthYears','Years',years,1,50,1)+
+    button(),
+    'cwAiGrowthEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const startVal=read('cwAiStart',start);
+    const yearsVal=read('cwAiGrowthYears',years);
+    const a=growth(startVal,read('cwAiContribA',contribution),read('cwAiGrowthA',rate),yearsVal);
+    const b=growth(startVal,read('cwAiContribB',contribution+100),read('cwAiGrowthB',rate+1),yearsVal);
+    const diff=b.balance-a.balance;
+    const output=node.querySelector('[data-cw-ai-output]');
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Future value',money(a.balance))+metric('Contributed',money(a.contributed))+metric('Growth',money(a.growth))+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Future value',money(b.balance))+metric('Contributed',money(b.contributed))+metric('Growth',money(b.growth))+
+      '</div></div></div>'+
+      lineChart(a.series,b.series,'Growth comparison over time')+
+      '<div class="cw-ai-insight '+(diff>=0?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B finishes about '+money(Math.abs(diff))+' '+(diff>=0?'higher':'lower')+' than Scenario A over '+yearsVal+' years.</div>'+
+      table(['Period','Contributed','Growth','Balance'], b.rows.slice(0,45));
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function debtEngine(){
+  const p=page();
+  if(!/(debt-payoff|credit-card-payoff|debt-avalanche|debt-snowball)/.test(p)) return;
+
+  const balance=getPrimary('principal',10000);
+  const rate=getPrimary('rate',18);
+  const paymentVal=getPrimary('payment',300);
+
+  const node=insert(makeShell(
+    'Advanced payoff comparison',
+    'Compare payment scenarios to see how monthly payment changes payoff time and total interest.',
+    input('cwAiDebt','Debt balance',balance)+
+    range('cwAiDebtRate','APR (%)',rate,0,40,0.1)+
+    range('cwAiPayA','Scenario A monthly payment',paymentVal,50,5000,25)+
+    range('cwAiPayB','Scenario B monthly payment',paymentVal+100,50,5000,25)+
+    button(),
+    'cwAiDebtEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const bal=read('cwAiDebt',balance);
+    const apr=read('cwAiDebtRate',rate);
+    const a=payoff(bal,apr,read('cwAiPayA',paymentVal));
+    const b=payoff(bal,apr,read('cwAiPayB',paymentVal+100));
+    const output=node.querySelector('[data-cw-ai-output]');
+
+    if(!a.finished || !b.finished){
+      output.innerHTML='<div class="cw-ai-insight cw-ai-warning"><strong>Payment warning:</strong> One scenario does not reduce the balance. Increase the payment and try again.</div>';
+      return;
+    }
+
+    const interestSaved=a.interest-b.interest;
+    const monthsSaved=a.months-b.months;
+
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Payoff months',a.months)+metric('Interest',money(a.interest))+metric('Total paid',money(a.total))+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Payoff months',b.months)+metric('Interest',money(b.interest))+metric('Total paid',money(b.total))+
+      '</div></div></div>'+
+      lineChart(a.series,b.series,'Debt balance comparison')+
+      '<div class="cw-ai-insight '+(interestSaved>0?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B saves about '+money(Math.max(0,interestSaved))+' in interest and pays off about '+Math.max(0,monthsSaved)+' months faster.</div>'+
+      table(['Period','Principal repaid','Interest paid','Balance'], b.rows.slice(0,45));
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function salaryEngine(){
+  const p=page();
+  if(!/(salary-calculator|salary-to-hourly|hourly-to-salary|pay-raise)/.test(p)) return;
+
+  const salary=getPrimary('salary',80000);
+  const hours=getPrimary('hours',40);
+
+  const node=insert(makeShell(
+    'Advanced pay comparison',
+    'Compare salary scenarios by annual income, weekly hours and real hourly value.',
+    input('cwAiSalaryA','Scenario A annual salary',salary)+
+    input('cwAiSalaryB','Scenario B annual salary',salary*1.1)+
+    range('cwAiHoursA','Scenario A weekly hours',hours,1,80,1)+
+    range('cwAiHoursB','Scenario B weekly hours',hours+2,1,80,1)+
+    button(),
+    'cwAiSalaryEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const aSal=read('cwAiSalaryA',salary), bSal=read('cwAiSalaryB',salary*1.1);
+    const aHours=read('cwAiHoursA',hours), bHours=read('cwAiHoursB',hours+2);
+    const aHourly=aSal/(aHours*52), bHourly=bSal/(bHours*52);
+    const output=node.querySelector('[data-cw-ai-output]');
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Annual',money(aSal))+metric('Weekly',money(aSal/52))+metric('Hourly',money(aHourly))+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Annual',money(bSal))+metric('Weekly',money(bSal/52))+metric('Hourly',money(bHourly))+
+      '</div></div></div>'+
+      '<div class="cw-ai-insight '+(bHourly>aHourly?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B has '+(bHourly>aHourly?'a higher':'a lower')+' real hourly equivalent by about '+money(Math.abs(bHourly-aHourly))+' per hour.</div>'+
+      table(['Scenario','Annual','Weekly hours','Hourly equivalent'],[
+        '<tr><td>A</td><td>'+money(aSal)+'</td><td>'+number(aHours,1)+'</td><td>'+money(aHourly)+'</td></tr>',
+        '<tr><td>B</td><td>'+money(bSal)+'</td><td>'+number(bHours,1)+'</td><td>'+money(bHourly)+'</td></tr>'
+      ]);
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function init(){
+  financeEngine();
+  growthEngine();
+  debtEngine();
+  salaryEngine();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
