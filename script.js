@@ -1459,3 +1459,424 @@ if(document.readyState === 'loading'){
 }
 
 })();
+
+
+/* ===== CalculatorWorks Formula & Button Assurance Layer ===== */
+
+(function(){
+'use strict';
+
+function $(id){ return document.getElementById(id); }
+
+function currentPageKey(){
+  const part = window.location.pathname.split('/').filter(Boolean).pop() || 'index';
+  return part.replace(/\.html$/,'') + '.html';
+}
+
+function pageBase(){
+  return currentPageKey().replace(/\.html$/,'');
+}
+
+function text(id){
+  const el = $(id);
+  return el ? String(el.value || '').trim() : '';
+}
+
+function num(id){
+  const v = parseFloat(text(id));
+  return Number.isFinite(v) ? v : NaN;
+}
+
+function decimalOr(defaultValue){
+  const el = $('decimals');
+  if(!el) return defaultValue;
+  const v = parseFloat(el.value);
+  return Number.isFinite(v) ? v : defaultValue;
+}
+
+function out(message){
+  const result = $('result');
+  if(result) result.textContent = message;
+}
+
+function money(value){
+  if(!Number.isFinite(value)) return '$0.00';
+  return '$' + Number(value).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function format(value, places){
+  const n = Number(value);
+  if(!Number.isFinite(n)) return '0';
+  return n.toFixed(Number.isFinite(places) ? places : 2);
+}
+
+function monthsToText(months){
+  if(!Number.isFinite(months) || months < 0) return 'Not payable with these inputs';
+  const rounded = Math.ceil(months);
+  const years = Math.floor(rounded / 12);
+  const rem = rounded % 12;
+  if(years && rem) return years + ' years ' + rem + ' months';
+  if(years) return years + ' years';
+  return rem + ' months';
+}
+
+function loanPayment(principal, apr, years){
+  const months = years * 12;
+  const r = apr / 100 / 12;
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years) || principal <= 0 || years <= 0) return NaN;
+  if(r === 0) return principal / months;
+  return principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+}
+
+function payoff(balance, apr, monthlyPayment){
+  const r = apr / 100 / 12;
+  if(!Number.isFinite(balance) || !Number.isFinite(apr) || !Number.isFinite(monthlyPayment) || balance <= 0 || monthlyPayment <= 0) return null;
+  if(monthlyPayment <= balance * r) return null;
+
+  let months = 0;
+  let interest = 0;
+  let bal = balance;
+
+  while(bal > 0 && months < 1200){
+    const monthInterest = bal * r;
+    const principal = Math.min(bal, monthlyPayment - monthInterest);
+    if(principal <= 0) return null;
+    bal -= principal;
+    interest += monthInterest;
+    months += 1;
+  }
+
+  return { months, interest };
+}
+
+function valuesForLoan(){
+  const loan = Number.isFinite(num('loan')) ? num('loan') : num('feet');
+  const rate = Number.isFinite(num('rate')) ? num('rate') : num('inches');
+  const years = Number.isFinite(num('years')) ? num('years') : decimalOr(NaN);
+  return { loan, rate, years };
+}
+
+function correctedMortgage(){
+  const v = valuesForLoan();
+  const p = loanPayment(v.loan, v.rate, v.years);
+  if(!Number.isFinite(p)) return out('Enter loan amount, rate, and term.');
+  const months = v.years * 12;
+  out('Estimated monthly payment: ' + money(p) + ' • Total interest: ' + money(p * months - v.loan) + ' • Total paid: ' + money(p * months));
+}
+
+function correctedLoanRepayment(){
+  const v = valuesForLoan();
+  const p = loanPayment(v.loan, v.rate, v.years);
+  if(!Number.isFinite(p)) return out('Enter loan amount, annual interest rate, and loan term.');
+  const months = v.years * 12;
+  out('Monthly payment: ' + money(p) + ' • Total interest: ' + money(p * months - v.loan) + ' • Total paid: ' + money(p * months));
+}
+
+function correctedCompound(){
+  const principal = Number.isFinite(num('principal')) ? num('principal') : num('feet');
+  const apr = Number.isFinite(num('rate')) ? num('rate') : num('inches');
+  const years = Number.isFinite(num('years')) ? num('years') : decimalOr(NaN);
+  const contribution = Number.isFinite(num('contribution')) ? num('contribution') : 0;
+
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years) || years < 0) {
+    return out('Enter principal, annual interest rate, and years.');
+  }
+
+  const months = Math.round(years * 12);
+  const r = apr / 100 / 12;
+  let balance = principal;
+  let contributed = principal;
+
+  for(let i = 0; i < months; i++){
+    balance = balance * (1 + r) + contribution;
+    contributed += contribution;
+  }
+
+  out('Estimated future value: ' + money(balance) + ' • Contributions: ' + money(contributed) + ' • Estimated growth: ' + money(balance - contributed));
+}
+
+function correctedSavings(){
+  const principal = num('feet');
+  const apr = num('inches');
+  const years = decimalOr(NaN);
+
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years) || years < 0) {
+    return out('Enter starting amount, annual interest rate, and term.');
+  }
+
+  const balance = principal * Math.pow(1 + apr / 100, years);
+  out('Estimated savings: ' + money(balance) + ' • Estimated interest: ' + money(balance - principal));
+}
+
+function correctedSavingsGoal(){
+  const goal = num('feet');
+  const current = num('inches');
+  const monthly = decimalOr(NaN);
+  if(!Number.isFinite(goal) || !Number.isFinite(current) || !Number.isFinite(monthly) || monthly <= 0) {
+    return out('Enter goal, current savings, and monthly contribution.');
+  }
+  const remaining = goal - current;
+  if(remaining <= 0) return out('Goal already reached.');
+  out('Time to goal: ' + monthsToText(Math.ceil(remaining / monthly)) + ' • Remaining amount: ' + money(remaining));
+}
+
+function correctedCreditDebt(){
+  const balance = Number.isFinite(num('balance')) ? num('balance') : num('feet');
+  const apr = Number.isFinite(num('rate')) ? num('rate') : num('inches');
+  const payment = Number.isFinite(num('payment')) ? num('payment') : decimalOr(NaN);
+  const result = payoff(balance, apr, payment);
+  if(!result) return out('Enter a payment greater than the monthly interest.');
+  out('Estimated payoff: ' + monthsToText(result.months) + ' • Estimated interest: ' + money(result.interest) + ' • Estimated total paid: ' + money(balance + result.interest));
+}
+
+function correctedBMI(){
+  const weight = Number.isFinite(num('weight')) ? num('weight') : num('feet');
+  const heightCm = Number.isFinite(num('height')) ? num('height') : num('inches');
+  const places = decimalOr(1);
+  if(!Number.isFinite(weight) || !Number.isFinite(heightCm) || weight <= 0 || heightCm <= 0) {
+    return out('Enter weight and height.');
+  }
+  const heightM = heightCm / 100;
+  const bmi = weight / (heightM * heightM);
+  let category = 'Healthy weight range';
+  if(bmi < 18.5) category = 'Underweight range';
+  else if(bmi >= 30) category = 'Obesity range';
+  else if(bmi >= 25) category = 'Overweight range';
+  out('BMI: ' + bmi.toFixed(places) + ' • ' + category);
+}
+
+function correctedSalary(){
+  const salary = Number.isFinite(num('salary')) ? num('salary') : num('feet');
+  const hours = Number.isFinite(num('hours')) ? num('hours') : num('inches');
+  const weeks = Number.isFinite(num('weeks')) ? num('weeks') : 52;
+  if(!Number.isFinite(salary) || !Number.isFinite(hours) || !Number.isFinite(weeks) || salary <= 0 || hours <= 0 || weeks <= 0) {
+    return out('Enter annual salary and weekly hours.');
+  }
+  const hourly = salary / (hours * weeks);
+  out('Hourly equivalent: ' + money(hourly) + ' • Weekly: ' + money(salary / weeks) + ' • Monthly: ' + money(salary / 12));
+}
+
+function correctedPercentage(){
+  const percentage = num('feet');
+  const number = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(percentage) || !Number.isFinite(number)) return out('Enter percentage and number.');
+  out(percentage + '% of ' + number + ' = ' + format((percentage / 100) * number, places));
+}
+
+function correctedPercentChange(){
+  const oldValue = num('feet');
+  const newValue = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(oldValue) || !Number.isFinite(newValue) || oldValue === 0) return out('Enter original and new values.');
+  out('Percent change: ' + format(((newValue - oldValue) / oldValue) * 100, places) + '%');
+}
+
+function correctedPercentageIncrease(){
+  const original = num('feet');
+  const increase = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(original) || !Number.isFinite(increase)) return out('Enter value and increase percentage.');
+  out('Result: ' + format(original * (1 + increase / 100), places) + ' • Increase: ' + format(original * increase / 100, places));
+}
+
+function correctedPercentageDecrease(){
+  const original = num('feet');
+  const decrease = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(original) || !Number.isFinite(decrease)) return out('Enter value and decrease percentage.');
+  out('Result: ' + format(original * (1 - decrease / 100), places) + ' • Decrease: ' + format(original * decrease / 100, places));
+}
+
+function correctedDiscount(){
+  const price = num('feet');
+  const discount = num('inches');
+  if(!Number.isFinite(price) || !Number.isFinite(discount)) return out('Enter price and discount.');
+  out('Sale price: ' + money(price * (1 - discount / 100)) + ' • You save: ' + money(price * discount / 100));
+}
+
+function correctedMargin(){
+  const revenue = num('feet');
+  const cost = num('inches');
+  if(!Number.isFinite(revenue) || !Number.isFinite(cost) || revenue <= 0) return out('Enter revenue and cost.');
+  const profit = revenue - cost;
+  out('Profit: ' + money(profit) + ' • Margin: ' + ((profit / revenue) * 100).toFixed(2) + '%');
+}
+
+function correctedMarkup(){
+  const cost = num('feet');
+  const markup = num('inches');
+  if(!Number.isFinite(cost) || !Number.isFinite(markup)) return out('Enter cost and markup.');
+  out('Selling price: ' + money(cost * (1 + markup / 100)) + ' • Markup amount: ' + money(cost * markup / 100));
+}
+
+function correctedSimpleInterest(){
+  const principal = num('feet');
+  const apr = num('inches');
+  const years = decimalOr(NaN);
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years)) return out('Enter principal, rate, and years.');
+  const interest = principal * apr / 100 * years;
+  out('Simple interest: ' + money(interest) + ' • Total: ' + money(principal + interest));
+}
+
+function correctedDownPayment(){
+  const price = num('feet');
+  const pct = num('inches');
+  if(!Number.isFinite(price) || !Number.isFinite(pct) || price <= 0 || pct < 0) return out('Enter price and down payment percentage.');
+  const down = pct > 100 ? pct : price * pct / 100;
+  if(down > price) return out('Down payment cannot be greater than the purchase price.');
+  out('Down payment: ' + money(down) + ' • Remaining loan: ' + money(price - down) + ' • Down payment percentage: ' + ((down / price) * 100).toFixed(2) + '%');
+}
+
+function correctedConversions(){
+  const key = pageBase();
+  const value = num('feet');
+  const places = decimalOr(2);
+  if(!Number.isFinite(value)) return out('Please enter a valid number.');
+
+  const map = {
+    'feet-to-metres': [0.3048, ' ft', ' m'],
+    'metres-to-feet': [3.280839895, ' m', ' ft'],
+    'cm-to-inches': [1/2.54, ' cm', ' inches'],
+    'inches-to-cm': [2.54, ' inches', ' cm'],
+    'kg-to-lb': [2.2046226218, ' kg', ' lb'],
+    'lb-to-kg': [1/2.2046226218, ' lb', ' kg'],
+    'km-to-miles': [0.6213711922, ' km', ' miles'],
+    'miles-to-km': [1.609344, ' miles', ' km'],
+    'celsius-to-fahrenheit': null,
+    'fahrenheit-to-celsius': null
+  };
+
+  if(key === 'celsius-to-fahrenheit') return out(value + ' °C = ' + format((value * 9 / 5) + 32, places) + ' °F');
+  if(key === 'fahrenheit-to-celsius') return out(value + ' °F = ' + format((value - 32) * 5 / 9, places) + ' °C');
+
+  if(map[key]){
+    out(value + map[key][1] + ' = ' + format(value * map[key][0], places) + map[key][2]);
+  }
+}
+
+const fixedCalculators = {
+  'mortgage-calculator': correctedMortgage,
+  'loan-payment': correctedMortgage,
+  'loan-repayment-calculator': correctedLoanRepayment,
+  'mortgage-amortization-calculator': correctedLoanRepayment,
+  'mortgage-interest-calculator': correctedLoanRepayment,
+  'compound-interest-calculator': correctedCompound,
+  'compound-interest': correctedCompound,
+  'savings-calculator': correctedSavings,
+  'savings-goal-calculator': correctedSavingsGoal,
+  'credit-card-payoff-calculator': correctedCreditDebt,
+  'debt-payoff-calculator': correctedCreditDebt,
+  'debt-avalanche-calculator': correctedCreditDebt,
+  'debt-snowball-calculator': correctedCreditDebt,
+  'bmi-calculator': correctedBMI,
+  'bmi': correctedBMI,
+  'salary-calculator': correctedSalary,
+  'salary-to-hourly-calculator': correctedSalary,
+  'percentage-calculator': correctedPercentage,
+  'percent-change-calculator': correctedPercentChange,
+  'percentage-increase-calculator': correctedPercentageIncrease,
+  'percentage-decrease-calculator': correctedPercentageDecrease,
+  'discount-calculator': correctedDiscount,
+  'margin-calculator': correctedMargin,
+  'markup-calculator': correctedMarkup,
+  'simple-interest-calculator': correctedSimpleInterest,
+  'down-payment-calculator': correctedDownPayment,
+  'feet-to-metres': correctedConversions,
+  'metres-to-feet': correctedConversions,
+  'cm-to-inches': correctedConversions,
+  'inches-to-cm': correctedConversions,
+  'kg-to-lb': correctedConversions,
+  'lb-to-kg': correctedConversions,
+  'km-to-miles': correctedConversions,
+  'miles-to-km': correctedConversions,
+  'celsius-to-fahrenheit': correctedConversions,
+  'fahrenheit-to-celsius': correctedConversions
+};
+
+function correctedCalculate(){
+  const key = pageBase();
+  const fn = fixedCalculators[key];
+  if(fn) fn();
+}
+
+function repairScenarioPayload(payload){
+  if(!$('principal') && $('feet') && payload.principal !== undefined) payload.feet = payload.principal;
+  if(!$('rate') && $('inches') && payload.rate !== undefined) payload.inches = payload.rate;
+  if(!$('years') && $('decimals') && payload.years !== undefined) payload.decimals = payload.years;
+  if(!$('loan') && $('feet') && payload.loan !== undefined) payload.feet = payload.loan;
+  if(!$('payment') && $('decimals') && payload.payment !== undefined) payload.decimals = payload.payment;
+  return payload;
+}
+
+function applyScenarioFixes(){
+  document.querySelectorAll('[data-cw-scenario]').forEach(function(btn){
+    if(btn.dataset.cwFormulaScenarioFixed) return;
+    btn.dataset.cwFormulaScenarioFixed = 'true';
+
+    btn.addEventListener('click', function(){
+      let payload = {};
+      try { payload = JSON.parse(btn.getAttribute('data-cw-scenario') || '{}'); } catch(e) { payload = {}; }
+      payload = repairScenarioPayload(payload);
+
+      Object.keys(payload).forEach(function(key){
+        const input = $(key);
+        if(input) input.value = payload[key];
+      });
+
+      setTimeout(correctedCalculate, 0);
+    });
+  });
+}
+
+function repairReset(){
+  const reset = $('resetBtn');
+  if(!reset || reset.dataset.cwFormulaResetFixed) return;
+  reset.dataset.cwFormulaResetFixed = 'true';
+
+  reset.addEventListener('click', function(){
+    setTimeout(function(){
+      const decimals = $('decimals');
+      if(decimals && decimals.tagName && decimals.tagName.toLowerCase() === 'select'){
+        const optionValues = Array.from(decimals.options || []).map(function(o){ return o.value; });
+        if(optionValues.includes('2')) decimals.value = '2';
+        else if(optionValues.includes('10')) decimals.value = '10';
+        else if(decimals.options && decimals.options.length) decimals.value = decimals.options[0].value;
+      }
+      out('Enter values to begin');
+    }, 0);
+  });
+}
+
+function repairButtons(){
+  const calculate = $('calculateBtn');
+  if(calculate && !calculate.dataset.cwFormulaFixed){
+    calculate.dataset.cwFormulaFixed = 'true';
+    calculate.setAttribute('type', 'button');
+    calculate.addEventListener('click', function(){
+      setTimeout(correctedCalculate, 0);
+    });
+  }
+
+  const reset = $('resetBtn');
+  if(reset) reset.setAttribute('type', 'button');
+
+  document.querySelectorAll('input, select').forEach(function(input){
+    if(input.dataset.cwFormulaEnterFixed) return;
+    input.dataset.cwFormulaEnterFixed = 'true';
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') setTimeout(correctedCalculate, 0);
+    });
+  });
+
+  repairReset();
+  applyScenarioFixes();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', repairButtons);
+}else{
+  repairButtons();
+}
+
+})();

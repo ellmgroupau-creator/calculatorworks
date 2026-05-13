@@ -1026,3 +1026,13 @@ padding:18px;
 padding:22px;
 }
 }
+
+
+/* ===== CalculatorWorks Formula & Button Assurance Layer ===== */
+
+.cw-calculator-note{
+font-size:13px;
+color:var(--muted);
+line-height:1.5;
+margin-top:10px;
+}
