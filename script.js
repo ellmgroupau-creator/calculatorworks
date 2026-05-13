@@ -2791,3 +2791,52 @@ if(document.readyState==='loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Global Quality Synchronization ===== */
+
+(function(){
+'use strict';
+
+function cleanTextNode(node){
+  if(!node || !node.nodeValue) return;
+  var text=node.nodeValue;
+  var replacements=[
+    [/Dominance notes?:?/gi,'Helpful notes:'],
+    [/Dominance tips?:?/gi,'Helpful tips:'],
+    [/authority layer/gi,'helpful information'],
+    [/platform layer/gi,'calculator tools'],
+    [/high-value search intent/gi,'popular calculation needs'],
+    [/future advertising/gi,'page content'],
+    [/monetisation|monetization/gi,'site content'],
+    [/\bRPM\b/g,'value']
+  ];
+
+  replacements.forEach(function(pair){
+    text=text.replace(pair[0],pair[1]);
+  });
+
+  node.nodeValue=text;
+}
+
+function walk(node){
+  if(!node) return;
+  if(node.nodeType===3){
+    cleanTextNode(node);
+    return;
+  }
+  if(node.nodeType===1 && !/^(SCRIPT|STYLE|NOSCRIPT)$/i.test(node.tagName)){
+    Array.prototype.slice.call(node.childNodes).forEach(walk);
+  }
+}
+
+function cleanVisibleCopy(){
+  walk(document.body);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',cleanVisibleCopy);
+}else{
+  cleanVisibleCopy();
+}
+
+})();
