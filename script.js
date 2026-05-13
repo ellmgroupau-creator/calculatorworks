@@ -233,7 +233,7 @@ if(calculateBtn&&resetBtn){const keyBase=calculatorKey.replace(/\.html$/,''); co
 const mainCalcScreen=$('mainCalcScreen'); const mainCalcKeys=document.querySelectorAll('.calc-key'); if(mainCalcScreen&&mainCalcKeys.length){let expr=''; const display=()=>mainCalcScreen.textContent=(expr||'0').replace(/\*/g,'×').replace(/\//g,'÷').replace(/-/g,'−'); mainCalcKeys.forEach(btn=>btn.addEventListener('click',()=>{const v=btn.dataset.value,a=btn.dataset.action; if(a==='clear'){expr='';display();return;} if(a==='backspace'){expr=expr.slice(0,-1);display();return;} if(a==='equals'){try{const r=Function('"use strict";return ('+expr.replace(/%/g,'/100')+')')(); expr=isFinite(r)?Number(r.toFixed(10)).toString():''; mainCalcScreen.textContent=expr||'Error';}catch{expr='';mainCalcScreen.textContent='Error';} return;} if(v){expr+=v;display();}}));}
 
 
-/* ===== CalculatorWorks Search Experience Upgrade ===== */
+/* ===== CalculatorWorks Dominance Upgrade ===== */
 
 (function(){
 
@@ -889,7 +889,7 @@ const card=document.querySelector('.calculator-card');
 if(!card || document.querySelector('.cw-scenario-hint')) return;
 const hint=document.createElement('div');
 hint.className='cw-authority-note cw-scenario-hint';
-hint.innerHTML='<strong>Planning tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';
+hint.innerHTML='<strong>Dominance tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';
 card.appendChild(hint);
 }
 
@@ -2364,7 +2364,7 @@ if(document.readyState === 'loading'){
 
 })();
 
-/* ===== CalculatorWorks Multilingual + Longtail Experience Layer ===== */
+/* ===== CalculatorWorks Multilingual + Longtail Authority Layer ===== */
 
 (function(){
 'use strict';
@@ -2792,93 +2792,18 @@ if(document.readyState==='loading'){
 
 })();
 
-/* ===== CalculatorWorks Global Quality Synchronization ===== */
+/* ===== CalculatorWorks Public Copy Polish Guard ===== */
 
 (function(){
 'use strict';
-
-function cleanTextNode(node){
-  if(!node || !node.nodeValue) return;
-  var text=node.nodeValue;
-  var replacements=[
-    [new RegExp('Domin'+'ance notes?:?','gi'),'Helpful notes:'],
-    [new RegExp('Domin'+'ance tips?:?','gi'),'Helpful tips:'],
-    [new RegExp('auth'+'ority layer','gi'),'helpful information'],
-    [new RegExp('plat'+'form layer','gi'),'calculator tools'],
-    [new RegExp('high-value search '+'intent','gi'),'popular calculation needs'],
-    [new RegExp('future advertising','gi'),'page content'],
-    [new RegExp('monet'+'isation|monet'+'ization','gi'),'site content'],
-    [new RegExp('\\bR'+'PM\\b','g'),'value']
-  ];
-
-  replacements.forEach(function(pair){
-    text=text.replace(pair[0],pair[1]);
-  });
-
-  node.nodeValue=text;
-}
-
-function walk(node){
-  if(!node) return;
-  if(node.nodeType===3){
-    cleanTextNode(node);
-    return;
-  }
-  if(node.nodeType===1 && !/^(SCRIPT|STYLE|NOSCRIPT)$/i.test(node.tagName)){
-    Array.prototype.slice.call(node.childNodes).forEach(walk);
-  }
-}
-
-function cleanVisibleCopy(){
-  walk(document.body);
-}
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',cleanVisibleCopy);
-}else{
-  cleanVisibleCopy();
-}
-
-})();
-
-/* ===== CalculatorWorks Public Copy Cleanup Guard ===== */
-
-(function(){
-'use strict';
-
-var replacements=[
-  [new RegExp('domin'+'ance notes?:?','gi'),'Helpful notes:'],
-  [new RegExp('domin'+'ance tips?:?','gi'),'Helpful tips:'],
-  [new RegExp('useful calculator','gi'),'useful calculator'],
-  [new RegExp('deep calculator plat'+'form','gi'),'useful calculator library'],
-  [new RegExp('calculator plat'+'form','gi'),'calculator library'],
-  [new RegExp('plat'+'form layer','gi'),'calculator tools'],
-  [new RegExp('auth'+'ority layer','gi'),'helpful information'],
-  [new RegExp('auth'+'ority graph','gi'),'site information'],
-  [new RegExp('high-value search '+'intent','gi'),'common calculation needs'],
-  [new RegExp('high-value finance tools','gi'),'popular finance tools'],
-  [new RegExp('internal linking','gi'),'related calculators'],
-  [new RegExp('search engines','gi'),'visitors'],
-  [new RegExp('monet'+'isation|monet'+'ization','gi'),'site content'],
-  [new RegExp('\\bR'+'PM\\b','g'),'value'],
-  [new RegExp('future advertising','gi'),'page content']
-];
-
-function cleanNode(node){
-  if(!node) return;
-  if(node.nodeType===3){
-    var text=node.nodeValue;
-    replacements.forEach(function(pair){ text=text.replace(pair[0],pair[1]); });
-    node.nodeValue=text;
-    return;
-  }
-  if(node.nodeType===1 && !/^(SCRIPT|STYLE|NOSCRIPT)$/i.test(node.tagName)){
-    Array.prototype.slice.call(node.childNodes).forEach(cleanNode);
-  }
-}
 
 function run(){
-  cleanNode(document.body);
+  if(!document.body) return;
+  document.querySelectorAll('.cw-ai-note-static strong, .cw-viz-note-static strong').forEach(function(label){
+    var text=(label.textContent || '').trim().toLowerCase();
+    if(text === 'comparison tool:') label.textContent='Compare scenarios:';
+    if(text === 'new:') label.textContent='Visual guide:';
+  });
 }
 
 if(document.readyState==='loading'){
@@ -2888,7 +2813,6 @@ if(document.readyState==='loading'){
 }
 
 })();
-
 
 /* ===== CalculatorWorks Safe Consistency Propagation ===== */
 
