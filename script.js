@@ -1100,3 +1100,80 @@ if (document.readyState === 'loading') {
 
 })();
 
+
+/* ===== CalculatorWorks Interactive Intelligence Layer ===== */
+
+(function(){
+
+function applyStickyResults(){
+document.querySelectorAll('.result-box,.result,.calculator-result').forEach(function(el){
+if(!el.classList.contains('cw-sticky-result')){
+el.classList.add('cw-sticky-result');
+}
+});
+}
+
+function addScenarioButtons(){
+document.querySelectorAll('[data-cw-scenario]').forEach(function(btn){
+btn.addEventListener('click', function(e){
+e.preventDefault();
+
+const payload = JSON.parse(btn.getAttribute('data-cw-scenario'));
+Object.keys(payload).forEach(function(key){
+const input = document.getElementById(key);
+if(input){
+input.value = payload[key];
+}
+});
+
+const calc = document.getElementById('calculateBtn');
+if(calc){
+calc.click();
+}
+});
+});
+}
+
+function addShareableState(){
+const btn = document.getElementById('calculateBtn');
+if(!btn) return;
+
+btn.addEventListener('click', function(){
+const params = new URLSearchParams();
+
+document.querySelectorAll('input,select').forEach(function(el){
+if(el.id && el.value){
+params.set(el.id, el.value);
+}
+});
+
+const newUrl = window.location.pathname + '?' + params.toString();
+window.history.replaceState({}, '', newUrl);
+});
+}
+
+function restoreState(){
+const params = new URLSearchParams(window.location.search);
+params.forEach(function(value,key){
+const el = document.getElementById(key);
+if(el){
+el.value = value;
+}
+});
+}
+
+if(document.readyState === 'loading'){
+document.addEventListener('DOMContentLoaded', function(){
+restoreState();
+applyStickyResults();
+addScenarioButtons();
+addShareableState();
+});
+}else{
+restoreState();
+applyStickyResults();
+addScenarioButtons();
+addShareableState();
+}
+
+})();
