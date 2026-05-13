@@ -578,5 +578,109 @@ padding:10px;
 @media (max-width:900px){.cw-tool-lab-grid{grid-template-columns:1fr;padding:18px;}.cw-tool-lab-header{padding:22px;}}
 
 
-/* ===== CalculatorWorks URL Consistency Cleanup ===== */
-.cw-route-note{margin:18px 0;padding:14px 16px;border:1px solid #dbeafe;border-radius:16px;background:#f8fbff;color:#334155;font-size:14px;line-height:1.55}.cw-route-note strong{color:#1d4ed8}
+/* ===== CalculatorWorks Search Reliability Fix ===== */
+
+.search-trigger{
+appearance:none;
+-webkit-appearance:none;
+border:1px solid var(--line);
+background:#fff;
+color:var(--ink);
+font:inherit;
+font-weight:800;
+cursor:pointer;
+}
+
+.global-search-overlay{
+position:fixed;
+inset:0;
+z-index:99999;
+background:rgba(15,23,42,.72);
+display:none;
+align-items:flex-start;
+justify-content:center;
+padding:80px 20px 24px;
+}
+
+.global-search-overlay.active{
+display:flex;
+}
+
+.global-search-panel{
+width:min(920px,100%);
+max-height:calc(100vh - 120px);
+background:#fff;
+border-radius:22px;
+overflow:hidden;
+box-shadow:0 24px 70px rgba(0,0,0,.28);
+}
+
+.global-search-top{
+padding:18px;
+border-bottom:1px solid var(--line);
+}
+
+#globalCalculatorSearch{
+width:100%;
+box-sizing:border-box;
+padding:18px 20px;
+font-size:18px;
+border:2px solid var(--line);
+border-radius:14px;
+outline:none;
+}
+
+#globalCalculatorSearch:focus{
+border-color:var(--brand);
+}
+
+.search-results{
+max-height:calc(100vh - 230px);
+overflow:auto;
+padding:10px;
+}
+
+.search-result-item{
+display:block;
+padding:14px 16px;
+border-radius:14px;
+text-decoration:none;
+color:var(--ink);
+transition:.15s ease;
+border:1px solid transparent;
+}
+
+.search-result-item:hover,
+.search-result-item:focus{
+background:#f8fbff;
+border-color:#dbeafe;
+transform:translateY(-1px);
+outline:none;
+}
+
+.search-result-item strong{
+display:block;
+font-size:16px;
+margin-bottom:4px;
+}
+
+.search-result-item span{
+display:block;
+font-size:14px;
+color:var(--muted);
+line-height:1.45;
+}
+
+@media (max-width:760px){
+.global-search-overlay{
+padding:58px 12px 16px;
+}
+.global-search-panel{
+border-radius:18px;
+}
+#globalCalculatorSearch{
+font-size:16px;
+padding:15px 16px;
+}
+}
+
