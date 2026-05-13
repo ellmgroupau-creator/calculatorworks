@@ -2518,3 +2518,157 @@ if(document.readyState==='loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Report + Export Layer ===== */
+
+(function(){
+'use strict';
+
+function money(v){
+  if(!isFinite(v)) return '$0.00';
+  return '$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function page(){
+  return (location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+}
+
+function read(id){
+  const el=document.getElementById(id);
+  if(!el) return NaN;
+  const v=parseFloat(el.value);
+  return Number.isFinite(v)?v:NaN;
+}
+
+function createLayer(){
+  if(document.querySelector('.cw-report-layer')) return null;
+
+  const layer=document.createElement('section');
+  layer.className='cw-report-layer';
+
+  layer.innerHTML=
+    '<h2>Report & export tools</h2>'+
+    '<p>Save, print or share calculator scenarios for later comparison and planning.</p>'+
+    '<div class="cw-report-actions">'+
+      '<button type="button" class="cw-report-btn" data-cw-print>Print summary</button>'+
+      '<button type="button" class="cw-report-btn" data-cw-copy>Copy share link</button>'+
+      '<button type="button" class="cw-report-btn" data-cw-summary>Generate summary</button>'+
+    '</div>'+
+    '<div class="cw-report-summary" data-cw-summary-box style="display:none"></div>';
+
+  const target=document.querySelector('.cw-ai-engine') ||
+               document.querySelector('.cw-viz-engine') ||
+               document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend',layer);
+  }
+
+  return layer;
+}
+
+function monthlyPayment(principal,apr,years){
+  const n=years*12;
+  const r=apr/100/12;
+  if(n<=0||principal<=0) return NaN;
+  if(r===0) return principal/n;
+  return principal*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+}
+
+function buildFinanceSummary(){
+  const loan=read('loan');
+  const rate=read('rate');
+  const years=read('years');
+
+  if(Number.isFinite(loan)&&Number.isFinite(rate)&&Number.isFinite(years)){
+    const pay=monthlyPayment(loan,rate,years);
+    const total=pay*years*12;
+    return [
+      'Estimated monthly payment: '+money(pay),
+      'Estimated total interest: '+money(total-loan),
+      'Estimated total paid: '+money(total),
+      'Loan term used: '+years+' years'
+    ];
+  }
+
+  const principal=read('principal');
+  if(Number.isFinite(principal)&&Number.isFinite(rate)&&Number.isFinite(years)){
+    let balance=principal;
+    const r=rate/100/12;
+    for(let i=0;i<years*12;i++){
+      balance*=1+r;
+    }
+    return [
+      'Estimated future value: '+money(balance),
+      'Starting amount: '+money(principal),
+      'Annual return used: '+rate+'%',
+      'Projection length: '+years+' years'
+    ];
+  }
+
+  const salary=read('salary');
+  const hours=read('hours');
+
+  if(Number.isFinite(salary)&&Number.isFinite(hours)&&hours>0){
+    return [
+      'Annual salary: '+money(salary),
+      'Estimated hourly equivalent: '+money(salary/(hours*52)),
+      'Estimated weekly pay: '+money(salary/52),
+      'Weekly hours used: '+hours
+    ];
+  }
+
+  return [
+    'Calculator scenario saved.',
+    'Use the copy link button to return to this scenario later.'
+  ];
+}
+
+function initLayer(){
+  const layer=createLayer();
+  if(!layer) return;
+
+  const printBtn=layer.querySelector('[data-cw-print]');
+  const copyBtn=layer.querySelector('[data-cw-copy]');
+  const summaryBtn=layer.querySelector('[data-cw-summary]');
+  const box=layer.querySelector('[data-cw-summary-box]');
+
+  printBtn.addEventListener('click',function(){
+    window.print();
+  });
+
+  copyBtn.addEventListener('click',function(){
+    const params=new URLSearchParams();
+
+    document.querySelectorAll('input,select').forEach(function(el){
+      if(el.id&&el.value){
+        params.set(el.id,el.value);
+      }
+    });
+
+    const url=window.location.origin+window.location.pathname.replace(/\.html$/,'')+(params.toString()?'?'+params.toString():'');
+
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(url).then(function(){
+        copyBtn.textContent='Copied';
+        setTimeout(function(){
+          copyBtn.textContent='Copy share link';
+        },1400);
+      });
+    }
+  });
+
+  summaryBtn.addEventListener('click',function(){
+    const items=buildFinanceSummary();
+    box.style.display='block';
+    box.innerHTML='<ul>'+items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';
+  });
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initLayer);
+}else{
+  initLayer();
+}
+
+})();
