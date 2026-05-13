@@ -2363,3 +2363,104 @@ if(document.readyState === 'loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Multilingual + Longtail Authority Layer ===== */
+
+(function(){
+'use strict';
+
+function page(){
+  return (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+}
+
+function addScenarioLibrary(){
+  if(document.querySelector('.cw-scenario-library')) return;
+
+  const p = page();
+  let html = '';
+
+  if(/mortgage|loan/.test(p)){
+    html = `
+    <section class="cw-scenario-library">
+      <h2>Popular repayment scenarios</h2>
+      <p>Explore common borrowing situations to understand how rates, loan terms and extra repayments can affect long-term cost.</p>
+      <div class="cw-scenario-cards">
+        <a class="cw-scenario-card" href="/mortgage-calculator?loan=300000&rate=6&years=30">300k mortgage<span>30 years at 6%</span></a>
+        <a class="cw-scenario-card" href="/mortgage-calculator?loan=500000&rate=5.5&years=25">500k mortgage<span>25 years at 5.5%</span></a>
+        <a class="cw-scenario-card" href="/loan-repayment-calculator?loan=25000&rate=8&years=5">25k personal loan<span>5 years at 8%</span></a>
+      </div>
+    </section>`;
+  }
+
+  if(/compound-interest|savings|retirement/.test(p)){
+    html = `
+    <section class="cw-scenario-library">
+      <h2>Popular savings and growth examples</h2>
+      <p>Compare long-term contribution and compounding examples using realistic savings and investment scenarios.</p>
+      <div class="cw-scenario-cards">
+        <a class="cw-scenario-card" href="/compound-interest-calculator?principal=10000&rate=7&years=20">10k growth example<span>20 years at 7%</span></a>
+        <a class="cw-scenario-card" href="/savings-calculator?feet=5000&inches=5&decimals=10">Savings growth<span>5% annual growth over 10 years</span></a>
+        <a class="cw-scenario-card" href="/retirement-savings-calculator?principal=50000&rate=8&years=30">Retirement projection<span>30 year growth scenario</span></a>
+      </div>
+    </section>`;
+  }
+
+  if(/salary|paycheck|pay-raise/.test(p)){
+    html = `
+    <section class="cw-scenario-library">
+      <h2>Popular income comparisons</h2>
+      <p>Compare annual salary, hourly value and pay-raise examples.</p>
+      <div class="cw-scenario-cards">
+        <a class="cw-scenario-card" href="/salary-calculator?salary=80000&hours=40">80k salary<span>40 hour work week</span></a>
+        <a class="cw-scenario-card" href="/pay-raise-calculator?feet=70000&inches=10">10% pay raise<span>70k salary example</span></a>
+        <a class="cw-scenario-card" href="/salary-to-hourly-calculator?salary=95000&hours=45">Salary to hourly<span>95k annual salary</span></a>
+      </div>
+    </section>`;
+  }
+
+  if(!html) return;
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const node = wrap.firstElementChild;
+
+  const target = document.querySelector('.cw-ai-engine') ||
+                 document.querySelector('.cw-viz-engine') ||
+                 document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend', node);
+  }
+}
+
+function addLanguageNotice(){
+  if(document.querySelector('.cw-language-strip')) return;
+
+  const html = `
+    <div class="cw-language-strip">
+      CalculatorWorks calculators are being expanded across multiple languages so users can access finance, conversion, health and percentage tools more easily.
+    </div>
+  `;
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+
+  const target = document.querySelector('.hero') || document.querySelector('main');
+
+  if(target){
+    target.insertAdjacentElement('afterend', wrap.firstElementChild);
+  }
+}
+
+function init(){
+  addScenarioLibrary();
+  addLanguageNotice();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
