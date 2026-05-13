@@ -1674,16 +1674,253 @@ color:#64748b;
 }
 
 
-/* ===== CalculatorWorks Best-Site Polish Recovery ===== */
+/* ===== CalculatorWorks Premium Visual Upgrade ===== */
 
-/* Remove visual clutter from previous enhancement passes while keeping calculators working. */
+:root{
+  --cw-bg-page:#f5f8fc;
+  --cw-surface:#ffffff;
+  --cw-soft:#f8fbff;
+  --cw-ink:#0f172a;
+  --cw-muted:#526174;
+  --cw-line:#e3eaf3;
+  --cw-line-strong:#d4deeb;
+  --cw-brand:#2563eb;
+  --cw-brand-dark:#1d4ed8;
+  --cw-brand-soft:#eff6ff;
+  --cw-accent:#14b8a6;
+  --cw-radius-lg:26px;
+  --cw-radius-md:18px;
+  --cw-shadow-soft:0 16px 42px rgba(15,23,42,.075);
+  --cw-shadow-card:0 10px 28px rgba(15,23,42,.055);
+}
+
+body{
+  background:
+    radial-gradient(circle at 0% 0%, rgba(37,99,235,.09), transparent 30rem),
+    radial-gradient(circle at 100% 0%, rgba(20,184,166,.08), transparent 26rem),
+    var(--cw-bg-page) !important;
+  color:var(--cw-ink);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+
+.container{
+  max-width:1140px !important;
+}
+
+.site-header{
+  background:rgba(255,255,255,.94) !important;
+  border-bottom:1px solid rgba(226,232,240,.92) !important;
+  box-shadow:0 4px 18px rgba(15,23,42,.035) !important;
+  backdrop-filter:blur(12px);
+}
+
+.header-inner{
+  min-height:72px;
+}
+
+.logo-wrap img,
+.site-logo img{
+  max-height:48px;
+  width:auto;
+}
+
+.main-nav a,
+.search-trigger{
+  border-radius:999px !important;
+  padding:9px 13px !important;
+  transition:background .16s ease,color .16s ease,transform .16s ease;
+}
+
+.main-nav a:hover,
+.search-trigger:hover{
+  background:var(--cw-brand-soft) !important;
+  color:var(--cw-brand-dark) !important;
+  transform:translateY(-1px);
+}
+
+main{
+  padding-top:22px;
+}
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#ffffff 0%,#f6faff 54%,#eef6ff 100%) !important;
+  border:1px solid var(--cw-line) !important;
+  border-radius:30px !important;
+  box-shadow:var(--cw-shadow-soft) !important;
+  padding:clamp(32px,5vw,58px) !important;
+  margin:24px 0 28px !important;
+}
+
+.hero:before{
+  content:"";
+  position:absolute;
+  right:-80px;
+  bottom:-120px;
+  width:280px;
+  height:280px;
+  border-radius:999px;
+  background:rgba(37,99,235,.075);
+  pointer-events:none;
+}
+
+.hero h1{
+  font-size:clamp(34px,5vw,58px) !important;
+  line-height:1.02 !important;
+  letter-spacing:-.055em !important;
+  color:var(--cw-ink) !important;
+  max-width:860px;
+}
+
+.hero p,
+.hero .lead{
+  color:var(--cw-muted) !important;
+  font-size:clamp(16px,2vw,19px) !important;
+  line-height:1.72 !important;
+  max-width:770px;
+}
+
+.calculator-card{
+  background:#fff !important;
+  border:1px solid var(--cw-line) !important;
+  border-radius:28px !important;
+  box-shadow:var(--cw-shadow-soft) !important;
+  padding:clamp(24px,4vw,38px) !important;
+  margin:26px 0 !important;
+  overflow:hidden;
+}
+
+.calculator-card h1,
+.calculator-card h2,
+.content-card h2,
+.info-card h2,
+.formula-card h2,
+.example-card h2,
+.faq-section h2,
+.related-calculators h2{
+  letter-spacing:-.04em !important;
+  line-height:1.08 !important;
+  color:var(--cw-ink) !important;
+}
+
+.calculator-card p,
+.content-card p,
+.info-card p,
+.formula-card p,
+.example-card p,
+.faq-section p{
+  color:var(--cw-muted) !important;
+  line-height:1.7 !important;
+}
+
+.input-group,
+.form-group,
+.calculator-inputs > div{
+  margin-bottom:16px;
+}
+
+label{
+  font-weight:800 !important;
+  color:#263244 !important;
+  margin-bottom:7px !important;
+}
+
+input,
+select,
+textarea{
+  background:#fff !important;
+  border:1px solid var(--cw-line-strong) !important;
+  border-radius:14px !important;
+  padding:13px 14px !important;
+  color:var(--cw-ink) !important;
+  box-shadow:0 1px 0 rgba(15,23,42,.02) !important;
+  transition:border-color .16s ease, box-shadow .16s ease, background .16s ease;
+}
+
+input:hover,
+select:hover,
+textarea:hover{
+  border-color:#b8c7db !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+  outline:none !important;
+  border-color:var(--cw-brand) !important;
+  box-shadow:0 0 0 4px rgba(37,99,235,.12) !important;
+}
+
+button,
+.btn,
+.button{
+  border-radius:14px !important;
+  font-weight:850 !important;
+  transition:transform .16s ease, box-shadow .16s ease, background .16s ease, border-color .16s ease;
+}
+
+button:hover,
+.btn:hover,
+.button:hover{
+  transform:translateY(-1px);
+}
+
+#calculateBtn,
+.btn.primary,
+button.primary,
+.primary-btn{
+  background:linear-gradient(135deg,var(--cw-brand) 0%,var(--cw-brand-dark) 100%) !important;
+  border:1px solid var(--cw-brand-dark) !important;
+  color:#fff !important;
+  box-shadow:0 10px 22px rgba(37,99,235,.22) !important;
+}
+
+#calculateBtn:hover,
+.btn.primary:hover,
+button.primary:hover,
+.primary-btn:hover{
+  box-shadow:0 14px 28px rgba(37,99,235,.28) !important;
+}
+
+#resetBtn,
+.btn.secondary,
+button.secondary,
+.secondary-btn{
+  background:#fff !important;
+  border:1px solid var(--cw-line-strong) !important;
+  color:#334155 !important;
+}
+
+#result,
+.result,
+.result-box,
+.calculator-result{
+  background:linear-gradient(180deg,#f8fbff 0%,#fff 100%) !important;
+  border:1px solid #dbeafe !important;
+  border-radius:20px !important;
+  padding:18px 20px !important;
+  color:var(--cw-ink) !important;
+  box-shadow:0 8px 22px rgba(37,99,235,.07) !important;
+}
+
+.content-card,
+.info-card,
+.formula-card,
+.example-card,
+.faq-section,
+.related-calculators,
+.cw-ai-engine,
+.cw-viz-engine,
+.cw-insight-panel,
+.cw-smart-related,
+.cw-context-tools,
+.cw-popular-scenarios,
+.cw-quick-compare,
 .cw-dominance-section,
 .cw-flagship-upgrade,
 .cw-tool-lab,
-.cw-route-note,
-.cw-authority-strip,
-.cw-language-strip,
-.cw-engine-shell,
 .cw-finance-cluster,
 .cw-depth-engine,
 .cw-methodology,
@@ -1691,151 +1928,204 @@ color:#64748b;
 .cw-consistency-block,
 .cw-scenario-library,
 .cw-report-layer{
-display:none !important;
+  background:#fff !important;
+  border:1px solid var(--cw-line) !important;
+  border-radius:24px !important;
+  box-shadow:var(--cw-shadow-card) !important;
+  overflow:hidden;
 }
 
-/* Restore a calmer, more professional calculator-first feel. */
-body{
-background:#f7f9fc;
-}
-
-main,
-.container{
-max-width:1120px;
-}
-
-.hero,
-.calculator-card,
 .content-card,
-.related-calculators,
+.info-card,
+.formula-card,
+.example-card,
 .faq-section,
+.related-calculators,
+.cw-smart-related,
+.cw-dominance-section,
+.cw-flagship-upgrade,
+.cw-tool-lab,
+.cw-finance-cluster,
+.cw-depth-engine,
+.cw-methodology,
+.cw-retention-hub,
+.cw-consistency-block,
+.cw-scenario-library,
+.cw-report-layer{
+  padding:24px !important;
+  margin:28px 0 !important;
+}
+
 .cw-ai-engine,
 .cw-viz-engine,
-.cw-insight-panel,
-.cw-smart-related{
-border-radius:18px !important;
-box-shadow:0 10px 28px rgba(15,23,42,.06) !important;
-border:1px solid #e5eaf2 !important;
-}
-
-.calculator-card{
-background:#ffffff !important;
-padding:clamp(22px,3vw,34px) !important;
-margin-top:22px !important;
-}
-
-.hero{
-background:linear-gradient(135deg,#ffffff 0%,#f4f8ff 100%) !important;
-border:1px solid #e5eaf2 !important;
-padding:clamp(28px,4vw,48px) !important;
-}
-
-.hero h1,
-.calculator-card h1,
-.calculator-card h2{
-letter-spacing:-.035em;
-line-height:1.08;
-}
-
-input,
-select,
-textarea{
-border-radius:12px !important;
-border:1px solid #cfd8e3 !important;
-box-shadow:none !important;
-}
-
-input:focus,
-select:focus,
-textarea:focus{
-outline:none !important;
-border-color:#2563eb !important;
-box-shadow:0 0 0 3px rgba(37,99,235,.12) !important;
-}
-
-button,
-.btn,
-.button{
-border-radius:12px !important;
-font-weight:800 !important;
-box-shadow:none !important;
-}
-
-#calculateBtn,
-button.primary,
-.btn.primary{
-background:#2563eb !important;
-color:#fff !important;
-border:1px solid #2563eb !important;
-}
-
-#calculateBtn:hover,
-button.primary:hover,
-.btn.primary:hover{
-background:#1d4ed8 !important;
-}
-
-/* Keep advanced tools polished, but visually secondary to the main calculator. */
-.cw-ai-engine,
-.cw-viz-engine{
-margin:28px 0 !important;
-background:#ffffff !important;
-overflow:hidden !important;
+.cw-insight-panel{
+  margin:30px 0 !important;
 }
 
 .cw-ai-head,
-.cw-viz-head{
-background:#f8fafc !important;
-border-bottom:1px solid #e5eaf2 !important;
-}
-
-.cw-ai-head h2,
-.cw-viz-head h2{
-font-size:clamp(22px,2.5vw,30px) !important;
-letter-spacing:-.03em !important;
+.cw-viz-head,
+.cw-insight-header{
+  background:linear-gradient(135deg,#f8fbff 0%,#fff 100%) !important;
+  border-bottom:1px solid var(--cw-line) !important;
+  padding:24px 26px !important;
 }
 
 .cw-ai-card,
-.cw-viz-card{
-box-shadow:none !important;
-border:1px solid #e5eaf2 !important;
-background:#fff !important;
+.cw-viz-card,
+.cw-chart-card,
+.cw-table-card,
+.cw-guidance-card,
+.cw-metric,
+.cw-output-card,
+.cw-assumption-card,
+.cw-dominance-card,
+.cw-feature-pill,
+.cw-finance-card,
+.cw-depth-card,
+.cw-methodology-card,
+.cw-retention-card,
+.cw-consistency-card{
+  border:1px solid var(--cw-line) !important;
+  border-radius:18px !important;
+  box-shadow:none !important;
+  background:#fff !important;
 }
 
 .cw-ai-chart,
-.cw-viz-chart{
-border-radius:14px !important;
-border:1px solid #e5eaf2 !important;
+.cw-viz-chart,
+.cw-svg-chart{
+  border-radius:16px !important;
+  border:1px solid var(--cw-line) !important;
+  background:#fff !important;
 }
 
-/* Related calculators should look like navigation, not marketing blocks. */
-.related-calculators,
-.cw-smart-related{
-background:#fff !important;
-padding:22px !important;
-margin:28px 0 !important;
+.cw-ai-insight,
+.cw-viz-note,
+.cw-mini-insight,
+.cw-authority-note,
+.cw-next-step,
+.cw-disclaimer{
+  border-radius:16px !important;
+  background:#f8fbff !important;
+  border:1px solid #dbeafe !important;
+  color:#1e3a8a !important;
 }
 
 .related-calculators a,
-.cw-smart-related a{
-text-decoration:none !important;
+.cw-smart-related-grid a,
+.cw-cluster-links a,
+.cw-engine-link,
+.cw-scenario-card,
+.cw-scenario-btn,
+.cw-finance-links a,
+.cw-collection-links a,
+.cw-consistency-links a{
+  background:#fff !important;
+  border:1px solid var(--cw-line) !important;
+  border-radius:16px !important;
+  color:var(--cw-brand-dark) !important;
+  box-shadow:0 4px 12px rgba(15,23,42,.035) !important;
+  text-decoration:none !important;
 }
 
-/* Mobile cleanup */
+.related-calculators a:hover,
+.cw-smart-related-grid a:hover,
+.cw-cluster-links a:hover,
+.cw-engine-link:hover,
+.cw-scenario-card:hover,
+.cw-scenario-btn:hover,
+.cw-finance-links a:hover,
+.cw-collection-links a:hover,
+.cw-consistency-links a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 26px rgba(37,99,235,.13) !important;
+  border-color:#bfdbfe !important;
+}
+
+table,
+.cw-data-table,
+.cw-ai-table,
+.cw-viz-table,
+.cw-tool-table,
+.cw-static-table{
+  border-radius:16px !important;
+  overflow:hidden !important;
+}
+
+th{
+  background:#f8fafc !important;
+  color:#334155 !important;
+}
+
+.global-search-panel{
+  border-radius:24px !important;
+  box-shadow:0 28px 80px rgba(15,23,42,.32) !important;
+}
+
+.search-result-item{
+  border-radius:14px !important;
+}
+
+.site-footer{
+  background:#0f172a !important;
+  color:#cbd5e1 !important;
+  border-top:0 !important;
+  margin-top:48px !important;
+}
+
+.site-footer a{
+  color:#dbeafe !important;
+}
+
 @media (max-width:760px){
-.hero,
-.calculator-card,
-.related-calculators,
-.cw-ai-engine,
-.cw-viz-engine{
-border-radius:14px !important;
-}
-.calculator-card{
-padding:20px !important;
-}
-.cw-ai-grid,
-.cw-viz-grid{
-padding:16px !important;
-}
+  body{
+    background:#f6f8fb !important;
+  }
+
+  main{
+    padding-top:12px;
+  }
+
+  .hero{
+    border-radius:22px !important;
+    padding:26px 20px !important;
+    margin:14px 0 20px !important;
+  }
+
+  .hero h1{
+    font-size:clamp(31px,10vw,42px) !important;
+  }
+
+  .calculator-card,
+  .content-card,
+  .faq-section,
+  .related-calculators,
+  .cw-ai-engine,
+  .cw-viz-engine,
+  .cw-insight-panel{
+    border-radius:20px !important;
+  }
+
+  .calculator-card{
+    padding:22px 18px !important;
+  }
+
+  .cw-ai-head,
+  .cw-viz-head,
+  .cw-insight-header{
+    padding:20px !important;
+  }
+
+  .cw-ai-grid,
+  .cw-viz-grid,
+  .cw-visual-grid{
+    padding:16px !important;
+  }
+
+  button,
+  .btn,
+  .button{
+    min-height:46px;
+  }
 }
 
