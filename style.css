@@ -576,3 +576,7 @@ padding:10px;
 .cw-action-card strong{display:block;color:var(--ink);margin-bottom:6px;font-size:15px;}
 .cw-warning-box{background:#fff7ed;border:1px solid #fed7aa;color:#7c2d12;border-radius:18px;padding:16px;font-size:14px;line-height:1.65;margin-top:16px;}
 @media (max-width:900px){.cw-tool-lab-grid{grid-template-columns:1fr;padding:18px;}.cw-tool-lab-header{padding:22px;}}
+
+
+/* ===== CalculatorWorks URL Consistency Cleanup ===== */
+.cw-route-note{margin:18px 0;padding:14px 16px;border:1px solid #dbeafe;border-radius:16px;background:#f8fbff;color:#334155;font-size:14px;line-height:1.55}.cw-route-note strong{color:#1d4ed8}
