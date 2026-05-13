@@ -1196,3 +1196,266 @@ function context(){if(document.querySelector('.cw-context-tools'))return;const c
 function init(){restoreState();remember();updateState();addCopyState();context();addSmartRelated();recent();}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
+
+/* ===== CalculatorWorks Visualization Comparison Engine ===== */
+
+(function(){
+'use strict';
+
+function money(n){
+  if(!isFinite(n)) return '$0.00';
+  return '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function read(id, fallback){
+  const el = document.getElementById(id);
+  if(!el) return fallback;
+  const v = parseFloat(el.value);
+  return isFinite(v) ? v : fallback;
+}
+
+function payment(principal, rate, years){
+  const months = years * 12;
+  const r = rate / 100 / 12;
+  if(months <= 0) return 0;
+  if(r === 0) return principal / months;
+  return principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months)-1);
+}
+
+function lineChart(points, label){
+  const w=640, h=240, pad=30;
+  if(!points || points.length < 2){
+    points = [0,1];
+  }
+  const max=Math.max.apply(null, points);
+  const min=Math.min.apply(null, points);
+  const span=Math.max(max-min, 1);
+  const coords=points.map(function(v,i){
+    const x=pad + (i/(points.length-1))*(w-pad*2);
+    const y=h-pad - ((v-min)/span)*(h-pad*2);
+    return [x,y];
+  });
+  const poly=coords.map(function(p){return p[0]+','+p[1];}).join(' ');
+  const area=poly + ' ' + (w-pad) + ',' + (h-pad) + ' ' + pad + ',' + (h-pad);
+  return '<svg class="cw-viz-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+
+    '<defs><linearGradient id="cwVizFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity=".22"></stop><stop offset="100%" stop-color="#2563eb" stop-opacity=".02"></stop></linearGradient></defs>'+
+    '<line x1="'+pad+'" y1="'+(h-pad)+'" x2="'+(w-pad)+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<line x1="'+pad+'" y1="'+pad+'" x2="'+pad+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<polygon points="'+area+'" fill="url(#cwVizFill)"></polygon>'+
+    '<polyline points="'+poly+'" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>'+
+    '<text x="'+pad+'" y="20" fill="#475569" font-size="13">'+label+'</text>'+
+  '</svg>';
+}
+
+function table(headers, rows){
+  return '<div class="cw-viz-table-wrap"><table class="cw-viz-table"><thead><tr>'+
+    headers.map(function(h){return '<th>'+h+'</th>';}).join('')+
+    '</tr></thead><tbody>'+
+    rows.join('')+
+    '</tbody></table></div>';
+}
+
+function makeShell(title, intro, controls, bodyId){
+  return '<section class="cw-viz-engine" id="'+bodyId+'">'+
+    '<div class="cw-viz-head"><h2>'+title+'</h2><p>'+intro+'</p></div>'+
+    '<div class="cw-viz-grid"><div class="cw-viz-card"><h3>Compare a scenario</h3><div class="cw-viz-controls">'+controls+'</div></div>'+
+    '<div class="cw-viz-card"><h3>Visual result</h3><div data-cw-viz-output></div></div></div>'+
+  '</section>';
+}
+
+function field(id,label,value){
+  return '<div class="cw-viz-control"><label for="'+id+'">'+label+'</label><input id="'+id+'" type="number" value="'+value+'"></div>';
+}
+
+function insertAfterCalculator(html){
+  if(document.querySelector('.cw-viz-engine')) return null;
+  const card = document.querySelector('.cw-tool-lab') || document.querySelector('.cw-popular-scenarios') || document.querySelector('.calculator-card');
+  if(!card) return null;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const node = wrap.firstElementChild;
+  card.insertAdjacentElement('afterend', node);
+  return node;
+}
+
+function currentPage(){
+  return (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+}
+
+function metric(label,value){
+  return '<div class="cw-viz-metric"><span>'+label+'</span><strong>'+value+'</strong></div>';
+}
+
+function addMortgageEngine(){
+  const page=currentPage();
+  if(!/(mortgage|loan-repayment)/.test(page)) return;
+
+  const html = makeShell(
+    'Visual repayment comparison',
+    'Compare repayment scenarios, total interest and payoff pressure without leaving the page.',
+    field('cwVizLoan','Loan amount', read('loan', read('principal', 500000)))+
+    field('cwVizRate','Interest rate (%)', read('rate', 6))+
+    field('cwVizYears','Loan term (years)', read('years', 30))+
+    field('cwVizExtra','Extra monthly payment', 0)+
+    '<button class="cw-viz-button" type="button" data-cw-run-viz>Update comparison</button>',
+    'cwMortgageViz'
+  );
+
+  const node = insertAfterCalculator(html);
+  if(!node) return;
+
+  function render(){
+    const principal=read('cwVizLoan',500000);
+    const rate=read('cwVizRate',6);
+    const years=read('cwVizYears',30);
+    const extra=read('cwVizExtra',0);
+    const base=payment(principal,rate,years);
+    const pay=base+extra;
+    const r=rate/100/12;
+    let bal=principal, totalInterest=0, yearly=[], rows=[];
+    for(let m=1;m<=years*12 && bal>0 && m<1200;m++){
+      const interest=bal*r;
+      const principalPaid=Math.min(bal,pay-interest);
+      if(principalPaid <= 0) break;
+      bal=Math.max(0,bal-principalPaid);
+      totalInterest += interest;
+      if(m%12===0 || bal===0){
+        yearly.push(bal);
+        rows.push('<tr><td>Year '+Math.ceil(m/12)+'</td><td>'+money(principal-bal)+'</td><td>'+money(totalInterest)+'</td><td>'+money(bal)+'</td></tr>');
+      }
+    }
+
+    const output=node.querySelector('[data-cw-viz-output]');
+    output.innerHTML =
+      '<div class="cw-viz-metrics">'+
+      metric('Monthly payment', money(pay))+
+      metric('Total interest', money(totalInterest))+
+      metric('Total paid', money(principal+totalInterest))+
+      metric('Payoff years', String(Math.ceil(yearly.length)))+
+      '</div>'+
+      lineChart(yearly.length ? yearly : [principal,0], 'Estimated balance over time')+
+      '<div class="cw-viz-bars"><div class="cw-viz-bar-row">Principal vs interest<div class="cw-viz-bar-track"><span style="width:'+Math.max(5, Math.min(95, (principal/(principal+totalInterest))*100))+'%"></span></div></div></div>'+
+      table(['Period','Principal repaid','Interest paid','Balance'], rows.slice(0,30))+
+      '<div class="cw-viz-note">Try changing the rate, term or extra payment to see how the repayment path changes.</div>';
+  }
+
+  node.querySelector('[data-cw-run-viz]').addEventListener('click', render);
+  render();
+}
+
+function addGrowthEngine(){
+  const page=currentPage();
+  if(!/(compound-interest|savings)/.test(page)) return;
+
+  const html = makeShell(
+    'Visual growth comparison',
+    'See how starting amount, contribution, return rate and time affect long-term growth.',
+    field('cwVizStart','Starting amount', read('principal', 10000))+
+    field('cwVizContribution','Monthly contribution', read('contribution', 250))+
+    field('cwVizGrowthRate','Annual return (%)', read('rate', 7))+
+    field('cwVizGrowthYears','Years', read('years', 20))+
+    '<button class="cw-viz-button" type="button" data-cw-run-viz>Update projection</button>',
+    'cwGrowthViz'
+  );
+
+  const node = insertAfterCalculator(html);
+  if(!node) return;
+
+  function render(){
+    const start=read('cwVizStart',10000);
+    const contribution=read('cwVizContribution',250);
+    const rate=read('cwVizGrowthRate',7)/100/12;
+    const years=read('cwVizGrowthYears',20);
+    let balance=start, contributed=start, rows=[], yearly=[];
+    for(let m=1;m<=years*12;m++){
+      balance=balance*(1+rate)+contribution;
+      contributed+=contribution;
+      if(m%12===0 || m===years*12){
+        yearly.push(balance);
+        rows.push('<tr><td>Year '+Math.ceil(m/12)+'</td><td>'+money(contributed)+'</td><td>'+money(Math.max(0,balance-contributed))+'</td><td>'+money(balance)+'</td></tr>');
+      }
+    }
+    const growth=Math.max(0,balance-contributed);
+    const output=node.querySelector('[data-cw-viz-output]');
+    output.innerHTML =
+      '<div class="cw-viz-metrics">'+
+      metric('Future value', money(balance))+
+      metric('Contributed', money(contributed))+
+      metric('Growth', money(growth))+
+      metric('Years', String(years))+
+      '</div>'+
+      lineChart(yearly, 'Estimated growth over time')+
+      '<div class="cw-viz-bars"><div class="cw-viz-bar-row">Contributions vs growth<div class="cw-viz-bar-track"><span style="width:'+Math.max(5, Math.min(95, (contributed/(balance||1))*100))+'%"></span></div></div></div>'+
+      table(['Period','Contributed','Growth','Balance'], rows.slice(0,40))+
+      '<div class="cw-viz-note">Longer time periods and regular contributions usually have the largest effect on projected growth.</div>';
+  }
+
+  node.querySelector('[data-cw-run-viz]').addEventListener('click', render);
+  render();
+}
+
+function addDebtEngine(){
+  const page=currentPage();
+  if(!/(debt-payoff|credit-card-payoff)/.test(page)) return;
+
+  const html = makeShell(
+    'Visual debt payoff comparison',
+    'Compare payment size, payoff time and estimated interest to understand how faster payments can change the result.',
+    field('cwVizDebt','Debt balance', read('balance', 10000))+
+    field('cwVizDebtRate','APR (%)', read('rate', 18))+
+    field('cwVizDebtPayment','Monthly payment', read('payment', 300))+
+    '<button class="cw-viz-button" type="button" data-cw-run-viz>Update payoff view</button>',
+    'cwDebtViz'
+  );
+
+  const node = insertAfterCalculator(html);
+  if(!node) return;
+
+  function render(){
+    let balance=read('cwVizDebt',10000);
+    const original=balance;
+    const r=read('cwVizDebtRate',18)/100/12;
+    const pay=read('cwVizDebtPayment',300);
+    let totalInterest=0, months=0, yearly=[], rows=[];
+    while(balance>0 && months<600){
+      const interest=balance*r;
+      const principal=Math.min(balance,pay-interest);
+      if(principal<=0) break;
+      balance=Math.max(0,balance-principal);
+      totalInterest+=interest;
+      months++;
+      if(months%12===0 || balance===0){
+        yearly.push(balance);
+        rows.push('<tr><td>Month '+months+'</td><td>'+money(original-balance)+'</td><td>'+money(totalInterest)+'</td><td>'+money(balance)+'</td></tr>');
+      }
+    }
+    const output=node.querySelector('[data-cw-viz-output]');
+    output.innerHTML =
+      '<div class="cw-viz-metrics">'+
+      metric('Payoff months', months < 600 ? String(months) : 'Not reducing')+
+      metric('Interest', money(totalInterest))+
+      metric('Total paid', months < 600 ? money(original+totalInterest) : 'Increase payment')+
+      metric('Monthly payment', money(pay))+
+      '</div>'+
+      lineChart(yearly.length ? yearly : [original, original], 'Estimated debt balance over time')+
+      table(['Period','Principal repaid','Interest paid','Balance'], rows.slice(0,40))+
+      '<div class="cw-viz-note">If the payment is too low to reduce the balance, increase the payment or reduce the APR and try again.</div>';
+  }
+
+  node.querySelector('[data-cw-run-viz]').addEventListener('click', render);
+  render();
+}
+
+function init(){
+  addMortgageEngine();
+  addGrowthEngine();
+  addDebtEngine();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
