@@ -1607,3 +1607,79 @@ font-weight:900;
 .cw-depth-table tr:last-child td{
 border-bottom:0;
 }
+
+/* ===== CalculatorWorks Trust + Data Authority Layer ===== */
+
+.cw-methodology{
+margin:32px 0;
+padding:28px;
+border:1px solid #dbeafe;
+border-radius:28px;
+background:linear-gradient(180deg,#fff 0%,#f8fbff 100%);
+box-shadow:0 18px 46px rgba(15,23,42,.08);
+}
+
+.cw-methodology h2,
+.cw-methodology h3{
+margin-top:0;
+}
+
+.cw-methodology p,
+.cw-methodology li{
+line-height:1.7;
+color:#64748b;
+}
+
+.cw-methodology-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:16px;
+margin-top:18px;
+}
+
+.cw-methodology-card{
+background:#fff;
+border:1px solid #dbeafe;
+border-radius:18px;
+padding:18px;
+}
+
+.cw-methodology-card strong{
+display:block;
+font-size:17px;
+margin-bottom:8px;
+color:#0f172a;
+}
+
+.cw-benchmark-table{
+width:100%;
+border-collapse:collapse;
+margin-top:18px;
+font-size:14px;
+background:#fff;
+border-radius:18px;
+overflow:hidden;
+}
+
+.cw-benchmark-table th,
+.cw-benchmark-table td{
+padding:12px 14px;
+border-bottom:1px solid #eef2f7;
+text-align:left;
+}
+
+.cw-benchmark-table th{
+background:#f8fafc;
+font-weight:900;
+}
+
+.cw-disclaimer{
+margin-top:18px;
+padding:16px;
+border-radius:18px;
+background:#fff7ed;
+border:1px solid #fed7aa;
+font-size:14px;
+line-height:1.65;
+color:#7c2d12;
+}
