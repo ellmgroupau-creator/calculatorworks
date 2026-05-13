@@ -2980,3 +2980,38 @@ if(document.readyState === 'loading'){
 
 })();
 
+
+
+/* ===== CalculatorWorks Final Search Dedupe Pass ===== */
+
+(function(){
+'use strict';
+
+function removeExtraSearchButtons(){
+  var buttons = Array.prototype.slice.call(
+    document.querySelectorAll('.search-trigger,[data-cw-search-trigger]')
+  );
+
+  if(buttons.length <= 1) return;
+
+  var keep = buttons[0];
+
+  buttons.forEach(function(btn, index){
+    if(index > 0){
+      btn.remove();
+    }
+  });
+
+  keep.textContent = 'Search';
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', removeExtraSearchButtons);
+}else{
+  removeExtraSearchButtons();
+}
+
+setTimeout(removeExtraSearchButtons, 300);
+setTimeout(removeExtraSearchButtons, 1200);
+
+})();

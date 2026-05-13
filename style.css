@@ -2540,3 +2540,38 @@ th{
   }
 }
 
+
+
+/* ===== CalculatorWorks Ultra Premium Finish ===== */
+
+.hero{
+  backdrop-filter:blur(10px);
+}
+
+.calculator-card{
+  position:relative;
+}
+
+.calculator-card:before{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.75);
+}
+
+.related-calculators a,
+.cw-smart-related-grid a{
+  min-height:72px;
+  display:flex !important;
+  align-items:center;
+}
+
+#calculateBtn{
+  letter-spacing:-0.015em;
+}
+
+.main-nav a{
+  font-size:14px;
+}
