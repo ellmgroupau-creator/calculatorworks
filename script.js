@@ -2672,3 +2672,122 @@ if(document.readyState==='loading'){
 }
 
 })();
+
+/* ===== CalculatorWorks Advanced Finance Depth Expansion ===== */
+
+(function(){
+'use strict';
+
+function addDepthSection(){
+  if(document.querySelector('.cw-depth-engine')) return;
+
+  const page=(location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+
+  let html='';
+
+  if(/mortgage|refinance/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Mortgage and refinance planning depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Rate sensitivity</strong><span>Even a 0.5% rate change can materially affect lifetime mortgage cost.</span></div>
+        <div class="cw-depth-card"><strong>Refinance break-even</strong><span>Compare refinance costs against potential monthly savings.</span></div>
+        <div class="cw-depth-card"><strong>Extra repayments</strong><span>Additional principal payments can shorten payoff time significantly.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Factor</th><th>What to compare</th></tr></thead>
+        <tbody>
+          <tr><td>Interest rate</td><td>Current rate vs refinance offer</td></tr>
+          <tr><td>Loan term</td><td>Shorter term vs lower payment</td></tr>
+          <tr><td>Fees</td><td>Refinance and establishment costs</td></tr>
+          <tr><td>Offset savings</td><td>Cash offset vs extra repayment</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(/retirement|investment|compound-interest/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Long-term growth planning depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Inflation impact</strong><span>Future purchasing power may differ from nominal account value.</span></div>
+        <div class="cw-depth-card"><strong>Contribution consistency</strong><span>Regular contributions often matter more than perfect timing.</span></div>
+        <div class="cw-depth-card"><strong>Return assumptions</strong><span>Compare conservative and optimistic return scenarios.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Projection</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Inflation-adjusted value</td><td>Helps estimate future purchasing power</td></tr>
+          <tr><td>Contribution growth</td><td>Shows long-term savings discipline impact</td></tr>
+          <tr><td>Withdrawal planning</td><td>Important for retirement sustainability</td></tr>
+          <tr><td>Return variation</td><td>Long-term averages can differ from yearly performance</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(/salary|paycheck|tax/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Income and paycheck planning depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Gross vs net</strong><span>Take-home pay can differ significantly from salary headline numbers.</span></div>
+        <div class="cw-depth-card"><strong>Overtime impact</strong><span>Longer working hours can reduce effective hourly value.</span></div>
+        <div class="cw-depth-card"><strong>Compensation mix</strong><span>Bonuses, benefits and retirement contributions affect total compensation.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Comparison</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Salary vs contractor</td><td>Benefits and tax treatment differ</td></tr>
+          <tr><td>Base pay vs overtime</td><td>Hours affect real hourly earnings</td></tr>
+          <tr><td>Current vs new role</td><td>Commute and workload affect effective compensation</td></tr>
+          <tr><td>Tax withholding</td><td>Estimated net pay may vary by region</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(/debt|credit-card/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Debt reduction strategy depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Avalanche strategy</strong><span>Prioritizes highest-interest balances to reduce total cost.</span></div>
+        <div class="cw-depth-card"><strong>Snowball strategy</strong><span>Focuses on smaller balances to build momentum.</span></div>
+        <div class="cw-depth-card"><strong>Payment discipline</strong><span>Consistency is often more important than perfect optimization.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Decision</th><th>Typical effect</th></tr></thead>
+        <tbody>
+          <tr><td>Higher monthly payment</td><td>Shorter payoff and lower interest</td></tr>
+          <tr><td>Lower APR</td><td>Lower borrowing cost</td></tr>
+          <tr><td>Balance transfers</td><td>May reduce interest temporarily</td></tr>
+          <tr><td>New debt</td><td>Can extend payoff timeline significantly</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(!html) return;
+
+  const wrap=document.createElement('div');
+  wrap.innerHTML=html;
+
+  const target=document.querySelector('.cw-report-layer') ||
+               document.querySelector('.cw-ai-engine') ||
+               document.querySelector('.cw-viz-engine') ||
+               document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend',wrap.firstElementChild);
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',addDepthSection);
+}else{
+  addDepthSection();
+}
+
+})();
