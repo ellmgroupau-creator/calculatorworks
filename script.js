@@ -548,7 +548,7 @@ panel.innerHTML=`
 <div class="cw-insight-header">
 <div>
 <h3>Repayment intelligence</h3>
-<p>Dominant calculator pages do more than show one answer. This section turns the result into a repayment timeline, cost breakdown, and decision-ready summary.</p>
+<p>useful calculator pages do more than show one answer. This section turns the result into a repayment timeline, cost breakdown, and decision-ready summary.</p>
 </div>
 <span class="cw-badge">Enhanced result</span>
 </div>
@@ -2837,6 +2837,54 @@ if(document.readyState==='loading'){
   document.addEventListener('DOMContentLoaded',cleanVisibleCopy);
 }else{
   cleanVisibleCopy();
+}
+
+})();
+
+/* ===== CalculatorWorks Public Copy Cleanup Guard ===== */
+
+(function(){
+'use strict';
+
+var replacements=[
+  [/dominance notes?:?/gi,'Helpful notes:'],
+  [/dominance tips?:?/gi,'Helpful tips:'],
+  [/useful calculator/gi,'useful calculator'],
+  [/deep calculator platform/gi,'useful calculator library'],
+  [/calculator platform/gi,'calculator library'],
+  [/platform layer/gi,'calculator tools'],
+  [/authority layer/gi,'helpful information'],
+  [/authority graph/gi,'site information'],
+  [/high-value search intent/gi,'common calculation needs'],
+  [/high-value finance tools/gi,'popular finance tools'],
+  [/internal linking/gi,'related calculators'],
+  [/search engines/gi,'visitors'],
+  [/monetisation|monetization/gi,'site content'],
+  [/\bRPM\b/g,'value'],
+  [/future advertising/gi,'page content']
+];
+
+function cleanNode(node){
+  if(!node) return;
+  if(node.nodeType===3){
+    var text=node.nodeValue;
+    replacements.forEach(function(pair){ text=text.replace(pair[0],pair[1]); });
+    node.nodeValue=text;
+    return;
+  }
+  if(node.nodeType===1 && !/^(SCRIPT|STYLE|NOSCRIPT)$/i.test(node.tagName)){
+    Array.prototype.slice.call(node.childNodes).forEach(cleanNode);
+  }
+}
+
+function run(){
+  cleanNode(document.body);
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',run);
+}else{
+  run();
 }
 
 })();
