@@ -1,1 +1,2967 @@
-// CalculatorWorks intelligence layer patch
+
+const $ = (id) => document.getElementById(id);
+const feetInput = $('feet');
+const inchesInput = $('inches');
+const decimalsSelect = $('decimals');
+const resultOutput = $('result');
+const calculateBtn = $('calculateBtn');
+const resetBtn = $('resetBtn');
+const calculatorCard = document.querySelector('.calculator-card');
+const calculatorKey = calculatorCard ? (calculatorCard.dataset.calculator || '') : '';
+const pathParts = window.location.pathname.split('/').filter(Boolean);
+const lastPart = pathParts[pathParts.length - 1] || '';
+const currentPage = lastPart ? (lastPart.includes('.html') ? lastPart : lastPart + '.html') : 'index.html';
+function n(id){const el=$(id); if(!el) return NaN; return parseFloat(el.value);} function d(){return decimalsSelect?parseInt(decimalsSelect.value,10):2;} function money(v){return '$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});} function pct(v){return Number(v).toFixed(d())+'%';} function out(s){if(resultOutput){resultOutput.textContent=s;resultOutput.classList.remove('cw-rich-result');}} function richOut(html){if(resultOutput){resultOutput.innerHTML=html;resultOutput.classList.add('cw-rich-result');}} function monthsToText(m){if(!isFinite(m)||m<0) return 'Not payable with these inputs'; if(m===0) return '0 months'; const y=Math.floor(m/12), mo=Math.ceil(m%12); return ((y?y+' years ':'')+(mo?mo+' months':'')) || '0 months';}
+function loanPayment(principal,apr,years){const months=years*12,r=apr/100/12;return r===0?principal/months:principal*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);}
+function loanMonths(principal,apr,payment){const r=apr/100/12;if(payment<=0)return NaN;if(r===0)return Math.ceil(principal/payment);if(payment<=principal*r)return NaN;return Math.ceil(-Math.log(1-r*principal/payment)/Math.log(1+r));}
+function resultCards(primary,cards,note){return '<div class="cw-result-primary">'+primary+'</div><div class="cw-result-grid">'+cards.map(c=>'<div class="cw-result-card"><span>'+c[0]+'</span><strong>'+c[1]+'</strong></div>').join('')+'</div>'+(note?'<p class="cw-result-note">'+note+'</p>':'');}
+const calculatorConfigs={
+'feet-to-metres.html':()=>{const dec=d(), f=n('feet'), i=parseFloat((inchesInput&&inchesInput.value)||'0'); if(isNaN(f)&&isNaN(i)) return out('Please enter feet and/or inches'); const sf=isNaN(f)?0:f, si=isNaN(i)?0:i; const total=sf+(si/12); out(sf+"'"+si+'" = '+(total*0.3048).toFixed(dec)+' m');},
+'metres-to-feet.html':()=>{const dec=d(), m=n('feet'); if(isNaN(m)) return out('Please enter a valid number'); const total=m*3.28084; let f=Math.floor(total), inch=(total-f)*12; inch=dec===0?Math.round(inch):parseFloat(inch.toFixed(dec)); if(inch>=12){f+=1;inch=0;} out(m+' m = '+f+"'"+inch+'"');},
+'cm-to-inches.html':()=>{const v=n('feet'); if(isNaN(v)) return out('Please enter a valid number'); out(v+' cm = '+(v/2.54).toFixed(d())+' inches');},
+'inches-to-cm.html':()=>{const v=n('feet'); if(isNaN(v)) return out('Please enter a valid number'); out(v+' inches = '+(v*2.54).toFixed(d())+' cm');},
+
+'mortgage-calculator.html':()=>{const loan=n('loan'), apr=n('rate'), years=n('years'), extra=n('extra')||0; if([loan,apr,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan amount, rate, and term.'); const months=years*12,payment=loanPayment(loan,apr,years),total=payment*months,interest=total-loan; const higher=loanPayment(loan,apr+1,years),lower=Math.max(0,loanPayment(loan,Math.max(0,apr-1),years)); const payoff=extra>0?loanMonths(loan,apr,payment+extra):months; const saved=extra>0?interest-((payment+extra)*payoff-loan):0; richOut(resultCards('Estimated monthly payment: '+money(payment),[['Total interest',money(interest)],['Total paid',money(total)],['+1% rate impact',money(higher-payment)+'/mo'],['Extra payment impact',extra>0?monthsToText(months-payoff)+' saved':'Add extra payment to compare']],extra>0?'With an extra '+money(extra)+' per month, estimated interest saved is '+money(Math.max(0,saved))+'.':'Use the rate comparison and optional extra payment to test affordability before speaking with a lender.'));},
+'loan-payment.html':()=>{const loan=n('loan'), apr=n('rate'), years=n('years'), extra=n('extra')||0; if([loan,apr,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan amount, rate, and term.'); const months=years*12,payment=loanPayment(loan,apr,years),total=payment*months,interest=total-loan; const payoff=extra>0?loanMonths(loan,apr,payment+extra):months; const saved=extra>0?interest-((payment+extra)*payoff-loan):0; richOut(resultCards('Monthly payment: '+money(payment),[['Total repayment',money(total)],['Total interest',money(interest)],['Interest share',(interest/total*100).toFixed(1)+'%'],['Extra payoff impact',extra>0?monthsToText(months-payoff)+' saved':'Add extra payment to compare']],extra>0?'With '+money(extra)+' extra each month, estimated interest saved is '+money(Math.max(0,saved))+'.':'Compare a shorter term or extra repayment to see whether the lower interest cost is worth the higher monthly commitment.'));},
+'auto-loan.html':()=>{const price=n('price'), deposit=n('deposit')||0, rate=n('rate')/100/12, years=n('years'); const loan=price-deposit; if(isNaN(price)||isNaN(rate)||isNaN(years)||loan<=0||years<=0)return out('Enter vehicle price, deposit, rate, and term.'); const months=years*12; const payment=rate===0?loan/months:loan*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1); out('Amount financed: '+money(loan)+' • Monthly payment: '+money(payment)+' • Interest: '+money(payment*months-loan));},
+'rent-vs-buy.html':()=>{const rent=n('rent'), home=n('homepayment'), owner=n('ownerextra')||0, renter=n('renterextra')||0; if(isNaN(rent)||isNaN(home))return out('Enter rent and mortgage payment.'); const rentTotal=rent+renter, buyTotal=home+owner, diff=buyTotal-rentTotal; out('Rent estimate: '+money(rentTotal)+'/mo • Buy estimate: '+money(buyTotal)+'/mo • '+(diff>0?'Buying costs '+money(diff)+' more per month':'Buying costs '+money(Math.abs(diff))+' less per month'));},
+'credit-card-payoff.html':()=>{let bal=n('balance'), rate=n('rate')/100/12, pay=n('payment'); if([bal,rate,pay].some(isNaN)||pay<=bal*rate) return out('Enter a payment greater than monthly interest.'); let m=0, interest=0; while(bal>0&&m<1200){let int=bal*rate; interest+=int; bal=bal+int-pay; m++;} out('Estimated payoff: '+monthsToText(m)+' • Estimated interest: '+money(interest));},
+'debt-payoff.html':()=>calculatorConfigs['credit-card-payoff.html'](),
+'debt-to-income.html':()=>{const debt=n('debt'), income=n('income'); if(isNaN(debt)||isNaN(income)||income<=0)return out('Enter valid debt and income.'); out('Debt-to-income ratio: '+pct(debt/income*100));},
+'net-worth.html':()=>{const a=n('assets'), l=n('liabilities'); if(isNaN(a)||isNaN(l))return out('Enter assets and liabilities.'); out('Estimated net worth: '+money(a-l));},
+'refinance-savings.html':()=>{const c=n('current'), ne=n('new'), costs=n('costs')||0; if(isNaN(c)||isNaN(ne))return out('Enter current and new payments.'); const save=c-ne; out('Monthly savings: '+money(save)+' • Break-even: '+(save>0?monthsToText(costs/save):'No monthly saving'));},
+'down-payment.html':()=>{const p=n('price'), entry=n('percent'); if(isNaN(p)||isNaN(entry)||p<=0||entry<0)return out('Enter a valid purchase price and down payment.'); const isAmount=entry>100; const dp=isAmount?entry:p*entry/100; if(dp>p)return out('Down payment cannot be greater than the purchase price.'); const per=dp/p*100; out('Down payment: '+money(dp)+' ('+per.toFixed(d())+'%) • Remaining loan: '+money(p-dp));},
+'emergency-fund.html':()=>{const e=n('expenses'), m=n('months'); if(isNaN(e)||isNaN(m))return out('Enter expenses and months.'); out('Emergency fund target: '+money(e*m));},
+'savings-goal.html':()=>{const t=n('target'), c=n('current')||0, m=n('months'), apr=n('rate')||0; if(isNaN(t)||isNaN(m)||m<=0)return out('Enter target and months.'); const remaining=t-c; if(remaining<=0)return out('Goal already reached.'); const r=apr/100/12; const needed=r===0?remaining/m:(t-c*Math.pow(1+r,m))*r/(Math.pow(1+r,m)-1); const weekly=needed*12/52; richOut(resultCards('Monthly saving needed: '+money(Math.max(0,needed)),[['Amount still needed',money(remaining)],['Weekly equivalent',money(Math.max(0,weekly))],['Timeline',monthsToText(m)],['Return assumption',apr.toFixed(2)+'% p.a.']],'Use this as a target-setting estimate. A small buffer is useful because timing, fees and actual returns can change the final result.'));},
+'compound-interest.html':()=>{let p=n('principal')||0,c=n('contribution')||0,apr=n('rate'),r=apr/100/12,years=n('years'); if(isNaN(apr)||isNaN(years)||years<=0)return out('Enter rate and years.'); let v=p; for(let i=0;i<years*12;i++){v=v*(1+r)+c;} const contributed=p+c*years*12,growth=v-contributed; let noExtra=p; for(let i=0;i<years*12;i++){noExtra=noExtra*(1+r);} richOut(resultCards('Estimated future value: '+money(v),[['Total contributed',money(contributed)],['Estimated growth',money(growth)],['Growth share',v>0?(growth/v*100).toFixed(1)+'%':'0%'],['Value without monthly contributions',money(noExtra)]],'Time and consistency usually drive the result more than a single perfect return assumption. Test conservative and optimistic return rates before relying on one path.'));},
+'simple-interest.html':()=>{const p=n('principal'), r=n('rate')/100, y=n('years'); if([p,r,y].some(isNaN))return out('Enter all values.'); out('Simple interest: '+money(p*r*y)+' • Total: '+money(p+(p*r*y)));},
+'hourly-to-salary.html':()=>{const r=n('rate'), h=n('hours'); if(isNaN(r)||isNaN(h))return out('Enter rate and hours.'); const w=r*h; out('Weekly: '+money(w)+' • Annual: '+money(w*52));},
+'pay-raise.html':()=>{const c=n('current'), r=n('raise'); if(isNaN(c)||isNaN(r))return out('Enter current pay and raise.'); out('New pay: '+money(c*(1+r/100))+' • Increase: '+money(c*r/100));},
+'overtime.html':()=>{const r=n('rate'), reg=n('regular')||0, ot=n('overtime')||0, mult=n('multiplier')||1.5; if(isNaN(r))return out('Enter hourly rate.'); out('Estimated pay: '+money((r*reg)+(r*mult*ot)));},
+'paycheck.html':()=>{const g=n('gross'), de=n('deductions')||0; if(isNaN(g))return out('Enter gross pay.'); out('Estimated take-home pay: '+money(g*(1-de/100)));},
+'sales-tax.html':()=>{const p=n('price'), t=n('tax'); if(isNaN(p)||isNaN(t))return out('Enter price and tax rate.'); out('Tax: '+money(p*t/100)+' • Total: '+money(p*(1+t/100)));},
+'credit-utilization.html':()=>{const b=n('balance'), l=n('limit'); if(isNaN(b)||isNaN(l)||l<=0)return out('Enter balance and limit.'); out('Credit utilization: '+pct(b/l*100));},
+'credit-utilization-calculator.html':()=>calculatorConfigs['credit-utilization.html'](),
+'current-ratio.html':()=>{const a=n('assets'), l=n('liabilities'); if(isNaN(a)||isNaN(l)||l<=0)return out('Enter assets and liabilities.'); out('Current ratio: '+(a/l).toFixed(d())+':1');},
+'quick-ratio.html':()=>{const c=n('cash')||0, r=n('receivables')||0, l=n('liabilities'); if(isNaN(l)||l<=0)return out('Enter liabilities.'); out('Quick ratio: '+((c+r)/l).toFixed(d())+':1');},
+'contribution-margin.html':()=>{const p=n('price'), v=n('variable'); if(isNaN(p)||isNaN(v)||p<=0)return out('Enter price and variable cost.'); const cm=p-v; out('Contribution margin: '+money(cm)+' • Margin: '+pct(cm/p*100));},
+'depreciation.html':()=>{const c=n('cost'), s=n('salvage')||0, l=n('life'); if(isNaN(c)||isNaN(l)||l<=0)return out('Enter cost and useful life.'); out('Annual depreciation: '+money((c-s)/l));},
+'percentage-increase.html':()=>{const o=n('old'), ne=n('new'); if(isNaN(o)||isNaN(ne)||o===0)return out('Enter valid values.'); out('Percentage increase: '+pct((ne-o)/o*100));},
+'percentage-decrease.html':()=>{const o=n('old'), ne=n('new'); if(isNaN(o)||isNaN(ne)||o===0)return out('Enter valid values.'); out('Percentage decrease: '+pct((o-ne)/o*100));},
+'discount.html':()=>{const p=n('price'), dis=n('discount'); if(isNaN(p)||isNaN(dis))return out('Enter price and discount.'); out('Sale price: '+money(p*(1-dis/100))+' • You save: '+money(p*dis/100));},
+'bmi.html':()=>{const w=n('weight'), h=n('height')/100; if(isNaN(w)||isNaN(h)||h<=0)return out('Enter weight and height.'); out('BMI: '+(w/(h*h)).toFixed(d()));},
+'bmi-calculator.html':()=>calculatorConfigs['bmi.html'](),
+'age.html':()=>{const v=$('date1').value; if(!v)return out('Choose a date.'); const b=new Date(v), now=new Date(); if(b>now)return out('Date of birth cannot be in the future.'); let age=now.getFullYear()-b.getFullYear(); const m=now.getMonth()-b.getMonth(); if(m<0||(m===0&&now.getDate()<b.getDate())) age--; out('Age: '+age+' years');},
+'date-difference.html':()=>{const v1=$('date1').value, v2=$('date2').value; if(!v1||!v2)return out('Choose both dates.'); const a=new Date(v1), b=new Date(v2); if(isNaN(a)||isNaN(b))return out('Choose both dates.'); out('Difference: '+Math.abs(Math.round((b-a)/86400000))+' days');},
+'paint.html':()=>{const a=n('area'), cov=n('coverage'), coats=n('coats')||1; if(isNaN(a)||isNaN(cov)||cov<=0)return out('Enter area and coverage.'); out('Paint needed: '+(a*coats/cov).toFixed(d())+' litres');},
+'flooring.html':()=>{const a=n('area'), w=n('waste')||10; if(isNaN(a))return out('Enter floor area.'); out('Flooring needed: '+(a*(1+w/100)).toFixed(d())+' m²');},
+
+'mortgage-amortization.html':()=>{const loan=n('loan'), rate=n('rate')/100/12, years=n('years'); if(isNaN(loan)||isNaN(rate)||isNaN(years)||loan<=0||years<=0)return out('Enter loan amount, rate, and term.'); const months=years*12; const payment=rate===0?loan/months:loan*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1); out('Monthly payment: '+money(payment)+' • Total repayment: '+money(payment*months)+' • Total interest: '+money(payment*months-loan));}
+,'extra-payment-mortgage.html':()=>{const loan=n('loan'), rate=n('rate')/100/12, years=n('years'), extra=n('extra')||0; if(isNaN(loan)||isNaN(rate)||isNaN(years)||loan<=0||years<=0)return out('Enter loan amount, rate, term, and optional extra payment.'); const months=years*12; const base=rate===0?loan/months:loan*rate*Math.pow(1+rate,months)/(Math.pow(1+rate,months)-1); let bal=loan,m=0,int=0,pay=base+extra; while(bal>0&&m<months){let i=bal*rate; int+=i; bal=bal+i-pay; m++;} const baseInt=base*months-loan; out('New payoff: '+monthsToText(m)+' • Interest saved: '+money(Math.max(0,baseInt-int)));}
+,'offset-account-savings.html':()=>{const loan=n('loan'), offset=n('offset')||0, rate=n('rate')/100, years=n('years'); if(isNaN(loan)||isNaN(rate)||isNaN(years)||loan<=0||years<=0)return out('Enter loan amount, offset balance, rate, and years.'); const effective=Math.max(0,Math.min(offset,loan)); out('Estimated simple interest saved: '+money(effective*rate*years));}
+,'debt-snowball.html':()=>{let bal=n('balance'), rate=n('rate')/100/12, pay=n('payment'); if([bal,rate,pay].some(isNaN)||bal<=0||pay<=bal*rate)return out('Enter a payment greater than monthly interest.'); let m=0,int=0; while(bal>0&&m<1200){let i=bal*rate; int+=i; bal=bal+i-pay; m++;} out('Estimated payoff: '+monthsToText(m)+' • Interest: '+money(int));}
+,'debt-avalanche.html':()=>calculatorConfigs['debt-snowball.html']()
+,'investment-return.html':()=>{let p=n('principal')||0,c=n('contribution')||0,r=n('rate')/100/12,years=n('years'); if(isNaN(r)||isNaN(years)||years<=0)return out('Enter rate and years.'); let v=p; for(let i=0;i<years*12;i++){v=v*(1+r)+c;} out('Estimated future value: '+money(v)+' • Contributions: '+money(p+c*years*12));}
+,'retirement-savings.html':()=>{let p=n('principal')||0,c=n('contribution')||0,apr=n('rate'),r=apr/100/12,years=n('years'); if(isNaN(apr)||isNaN(years)||years<=0)return out('Enter current savings, contribution, return and years.'); let v=p; for(let i=0;i<years*12;i++){v=v*(1+r)+c;} const contributed=p+c*years*12,growth=v-contributed,rule4=v*0.04/12; richOut(resultCards('Projected retirement balance: '+money(v),[['Total contributions',money(contributed)],['Estimated growth',money(growth)],['4% monthly guide',money(rule4)],['Planning horizon',years+' years']],'This is a planning estimate only. Compare lower return assumptions and higher contribution scenarios before relying on a retirement path.'));}
+,'fire.html':()=>{const e=n('expenses'), swr=n('rate'), cur=n('current')||0; if(isNaN(e)||isNaN(swr)||e<=0||swr<=0)return out('Enter annual expenses and withdrawal rate.'); const target=e/(swr/100); out('Estimated FIRE target: '+money(target)+' • Remaining: '+money(Math.max(0,target-cur)));}
+,
+'weighted-average.html':()=>{const vals=($('values').value||'').split(',').map(Number), ws=($('weights').value||'').split(',').map(Number); if(vals.length!==ws.length||vals.some(isNaN)||ws.some(isNaN))return out('Enter matching comma-separated values and weights.'); const sw=ws.reduce((a,b)=>a+b,0); if(sw===0)return out('Weights must add up to more than zero.'); const s=vals.reduce((a,v,i)=>a+v*ws[i],0); out('Weighted average: '+(s/sw).toFixed(4));}
+};
+
+/* Stabilisation configs for newer calculator pages that use the shared feet/inches/decimals IDs. */
+function textVal(id){const el=$(id); return el ? String(el.value || '').trim() : '';}
+function numberList(id){const raw=textVal(id); return raw.split(/[,\s]+/).map(Number).filter(v=>!isNaN(v));}
+function dt(id){const v=textVal(id); return v ? new Date(v) : null;}
+function daysBetween(a,b){return Math.round((b-a)/86400000);}
+function formatNumber(v){return Number(v).toFixed(d());}
+function simplePayoff(balance, annualRate, payment){const r=annualRate/100/12; if([balance,annualRate,payment].some(isNaN)||balance<=0||payment<=balance*r)return null; let bal=balance,m=0,int=0; while(bal>0&&m<1200){let i=bal*r; int+=i; bal=bal+i-payment; m++;} return {months:m,interest:int};}
+function loanPayment(loan, annualRate, years){const r=annualRate/100/12, months=years*12; return r===0?loan/months:loan*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);}
+Object.assign(calculatorConfigs,{
+'age-calculator.html':()=>{const birth=dt('feet'), asof=dt('inches')||new Date(); if(!birth||isNaN(birth))return out('Choose a date of birth.'); if(birth>asof)return out('Date of birth cannot be after the calculation date.'); let age=asof.getFullYear()-birth.getFullYear(); const m=asof.getMonth()-birth.getMonth(); if(m<0||(m===0&&asof.getDate()<birth.getDate()))age--; out('Age: '+age+' years');},
+'age-difference-calculator.html':()=>{const a=dt('feet'), b=dt('inches'); if(!a||!b||isNaN(a)||isNaN(b))return out('Choose both dates.'); out('Age difference: '+Math.abs(daysBetween(a,b))+' days');},
+'average-calculator.html':()=>{const v=numberList('feet'); if(!v.length)return out('Enter numbers separated by commas.'); out('Average: '+formatNumber(v.reduce((a,b)=>a+b,0)/v.length));},
+'body-surface-area-calculator.html':()=>{const w=n('feet'), h=n('inches'); if(isNaN(w)||isNaN(h)||w<=0||h<=0)return out('Enter weight and height.'); out('Estimated body surface area: '+Math.sqrt((h*w)/3600).toFixed(2)+' m²');},
+'break-even-calculator.html':()=>{const fixed=n('feet'), price=n('inches'), variable=d(); if(isNaN(fixed)||isNaN(price)||isNaN(variable)||price<=variable)return out('Enter fixed cost, price, and a variable cost below price.'); out('Break-even units: '+Math.ceil(fixed/(price-variable)).toLocaleString());},
+'business-days-calculator.html':()=>{const a=dt('feet'), b=dt('inches'); if(!a||!b||isNaN(a)||isNaN(b))return out('Choose both dates.'); let start=new Date(Math.min(a,b)), end=new Date(Math.max(a,b)), count=0; for(let x=new Date(start);x<=end;x.setDate(x.getDate()+1)){const day=x.getDay(); if(day!==0&&day!==6)count++;} out('Business days: '+count);},
+'business-profit-planner-calculator.html':()=>{const units=n('feet'), profit=n('inches'); if(isNaN(units)||isNaN(profit))return out('Enter units and profit per unit.'); out('Estimated profit: '+money(units*profit));},
+'celsius-to-fahrenheit.html':()=>{const v=n('feet'); if(isNaN(v))return out('Please enter a valid number'); out(v+' °C = '+((v*9/5)+32).toFixed(d())+' °F');},
+'fahrenheit-to-celsius.html':()=>{const v=n('feet'); if(isNaN(v))return out('Please enter a valid number'); out(v+' °F = '+((v-32)*5/9).toFixed(d())+' °C');},
+'commission-calculator.html':()=>{const sales=n('feet'), rate=n('inches'), base=d(); if(isNaN(sales)||isNaN(rate))return out('Enter sales and commission rate.'); out('Commission: '+money(sales*rate/100)+' • Total pay: '+money((sales*rate/100)+(isNaN(base)?0:base)));},
+'compound-interest-calculator.html':()=>{const p=n('feet'), r=n('inches')/100/12, years=d(); if(isNaN(p)||isNaN(r)||isNaN(years))return out('Enter principal, rate, and years.'); const months=years*12; out('Estimated future value: '+money(p*Math.pow(1+r,months)));},
+'concrete-calculator.html':()=>{const l=n('feet'), w=n('inches'), depth=d(); if(isNaN(l)||isNaN(w)||isNaN(depth))return out('Enter length, width, and depth.'); out('Concrete volume: '+(l*w*depth).toFixed(2)+' m³');},
+'contribution-margin-calculator.html':()=>{const p=n('feet'), v=n('inches'); if(isNaN(p)||isNaN(v)||p<=0)return out('Enter selling price and variable cost.'); const cm=p-v; out('Contribution margin: '+money(cm)+' • Margin: '+(cm/p*100).toFixed(2)+'%');},
+'countdown-calculator.html':()=>{const target=dt('feet'); if(!target||isNaN(target))return out('Choose a future date.'); const days=Math.ceil((target-new Date())/86400000); out(days>=0?'Countdown: '+days+' days':'That date has passed.');},
+'credit-card-payoff-calculator.html':()=>{const r=simplePayoff(n('feet'),n('inches'),d()); if(!r)return out('Enter a payment greater than monthly interest.'); out('Estimated payoff: '+monthsToText(r.months)+' • Estimated interest: '+money(r.interest));},
+'cups-to-ml-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter cups.'); out(v+' cups = '+(v*236.588).toFixed(2)+' mL');},
+'current-ratio-calculator.html':()=>{const a=n('feet'), l=n('inches'); if(isNaN(a)||isNaN(l)||l<=0)return out('Enter assets and liabilities.'); out('Current ratio: '+(a/l).toFixed(2)+':1');},
+'date-add-calculator.html':()=>{const a=dt('feet'), days=n('inches'); if(!a||isNaN(a)||isNaN(days))return out('Choose a start date and days to add.'); a.setDate(a.getDate()+days); out('Result date: '+a.toLocaleDateString());},
+'days-between-dates-calculator.html':()=>{const a=dt('feet'), b=dt('inches'); if(!a||!b||isNaN(a)||isNaN(b))return out('Choose both dates.'); out('Difference: '+Math.abs(daysBetween(a,b))+' days');},
+'debt-avalanche-calculator.html':()=>calculatorConfigs['credit-card-payoff-calculator.html'](),
+'debt-payoff-calculator.html':()=>calculatorConfigs['credit-card-payoff-calculator.html'](),
+'debt-snowball-calculator.html':()=>calculatorConfigs['credit-card-payoff-calculator.html'](),
+'debt-to-income-calculator.html':()=>{const debt=n('feet'), income=n('inches'); if(isNaN(debt)||isNaN(income)||income<=0)return out('Enter debt and income.'); out('Debt-to-income ratio: '+(debt/income*100).toFixed(2)+'%');},
+'depreciation-calculator.html':()=>{const cost=n('feet'), salvage=n('inches'), life=d(); if(isNaN(cost)||isNaN(life)||life<=0)return out('Enter cost and useful life.'); out('Annual depreciation: '+money((cost-(isNaN(salvage)?0:salvage))/life));},
+'discount-calculator.html':()=>{const price=n('feet'), disc=n('inches'); if(isNaN(price)||isNaN(disc))return out('Enter price and discount.'); out('Sale price: '+money(price*(1-disc/100))+' • You save: '+money(price*disc/100));},
+'down-payment-calculator.html':()=>{const price=n('feet'), pct=n('inches'); if(isNaN(price)||isNaN(pct))return out('Enter price and down payment percentage.'); const dp=price*pct/100; out('Down payment: '+money(dp)+' • Remaining loan: '+money(price-dp));},
+'due-date-calculator.html':()=>{const lmp=dt('feet'); if(!lmp||isNaN(lmp))return out('Choose the first day of the last period.'); lmp.setDate(lmp.getDate()+280); out('Estimated due date: '+lmp.toLocaleDateString());},
+'emergency-fund-calculator.html':()=>{const e=n('feet'), m=n('inches'); if(isNaN(e)||isNaN(m))return out('Enter expenses and months.'); out('Emergency fund target: '+money(e*m));},
+'extra-payment-mortgage-calculator.html':()=>{const loan=n('feet'), rate=n('inches'), extra=d(); if(isNaN(loan)||isNaN(rate))return out('Enter loan amount and rate.'); const years=30, base=loanPayment(loan,rate,years); let bal=loan,m=0,int=0,pay=base+(isNaN(extra)?0:extra); while(bal>0&&m<years*12){let i=bal*rate/100/12; int+=i; bal=bal+i-pay; m++;} out('New payoff: '+monthsToText(m)+' • Monthly payment used: '+money(pay));},
+'fire-calculator.html':()=>{const expenses=n('feet'), swr=n('inches'), current=d(); if(isNaN(expenses)||isNaN(swr)||swr<=0)return out('Enter expenses and withdrawal rate.'); const target=expenses/(swr/100); out('Estimated FIRE target: '+money(target)+' • Remaining: '+money(Math.max(0,target-(isNaN(current)?0:current))));},
+'flooring-calculator.html':()=>{const l=n('feet'), w=n('inches'), waste=d(); if(isNaN(l)||isNaN(w))return out('Enter room length and width.'); out('Flooring needed: '+(l*w*(1+(isNaN(waste)?10:waste)/100)).toFixed(2)+' m²');},
+'gallons-to-litres-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter gallons.'); out(v+' US gal = '+(v*3.78541).toFixed(2)+' L');},
+'gpa-calculator.html':()=>{const grades=numberList('feet'), credits=numberList('inches'); if(!grades.length)return out('Enter grades.'); if(credits.length===grades.length){const sw=credits.reduce((a,b)=>a+b,0); return out('GPA: '+(grades.reduce((a,g,i)=>a+g*credits[i],0)/sw).toFixed(d()));} out('GPA: '+(grades.reduce((a,b)=>a+b,0)/grades.length).toFixed(d()));},
+'gravel-calculator.html':()=>{const area=n('feet'), depth=n('inches'); if(isNaN(area)||isNaN(depth))return out('Enter area and depth.'); out('Gravel volume: '+(area*(depth/100)).toFixed(2)+' m³');},
+'hourly-to-salary-calculator.html':()=>{const rate=n('feet'), hours=n('inches'); if(isNaN(rate)||isNaN(hours))return out('Enter rate and hours.'); const weekly=rate*hours; out('Weekly: '+money(weekly)+' • Annual: '+money(weekly*52));},
+'hours-between-dates-calculator.html':()=>{const a=dt('feet'), b=dt('inches'); if(!a||!b||isNaN(a)||isNaN(b))return out('Choose both dates and times.'); out('Difference: '+(Math.abs(b-a)/3600000).toFixed(2)+' hours');},
+'ideal-weight-calculator.html':()=>{const h=n('feet'), adj=n('inches')||0; if(isNaN(h)||h<=0)return out('Enter height.'); const base=22*Math.pow(h/100,2); out('Estimated ideal weight: '+(base*(1+adj/100)).toFixed(1)+' kg');},
+'inflation-calculator.html':()=>{const price=n('feet'), rate=n('inches'), years=d(); if(isNaN(price)||isNaN(rate)||isNaN(years))return out('Enter price, inflation rate, and years.'); out('Future price: '+money(price*Math.pow(1+rate/100,years)));},
+'investment-return-calculator.html':()=>{const p=n('feet'), rate=n('inches'), years=d(); if(isNaN(p)||isNaN(rate)||isNaN(years))return out('Enter starting amount, return, and years.'); out('Estimated future value: '+money(p*Math.pow(1+rate/100,years)));},
+'kg-to-lb.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter kilograms.'); out(v+' kg = '+(v*2.20462).toFixed(d())+' lb');},
+'lb-to-kg.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter pounds.'); out(v+' lb = '+(v/2.20462).toFixed(d())+' kg');},
+'km-to-miles.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter kilometres.'); out(v+' km = '+(v*0.621371).toFixed(d())+' miles');},
+'miles-to-km.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter miles.'); out(v+' miles = '+(v*1.60934).toFixed(d())+' km');},
+'kph-to-mph-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter speed.'); out(v+' km/h = '+(v*0.621371).toFixed(2)+' mph');},
+'mph-to-kph-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter speed.'); out(v+' mph = '+(v*1.60934).toFixed(2)+' km/h');},
+'mulch-calculator.html':()=>{const area=n('feet'), depth=n('inches'); if(isNaN(area)||isNaN(depth))return out('Enter area and mulch depth.'); out('Mulch volume: '+(area*(depth/100)).toFixed(2)+' m³');},
+'lean-body-mass-calculator.html':()=>{const w=n('feet'), h=n('inches'); if(isNaN(w)||isNaN(h))return out('Enter weight and height.'); out('Estimated lean body mass: '+((0.407*w)+(0.267*h)-19.2).toFixed(1)+' kg');},
+'litres-per-square-metre-calculator.html':()=>{const litres=n('feet'), area=n('inches'); if(isNaN(litres)||isNaN(area)||area<=0)return out('Enter litres and area.'); out('Litres per square metre: '+(litres/area).toFixed(2)+' L/m²');},
+'litres-to-gallons-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter litres.'); out(v+' L = '+(v/3.78541).toFixed(2)+' US gal');},
+'loan-repayment-calculator.html':()=>{const loan=n('feet'), rate=n('inches'), years=d(); if(isNaN(loan)||isNaN(rate)||isNaN(years)||years<=0)return out('Enter loan amount, rate, and years.'); const payment=loanPayment(loan,rate,years); out('Monthly payment: '+money(payment)+' • Total interest: '+money(payment*years*12-loan));},
+'margin-calculator.html':()=>{const revenue=n('feet'), cost=n('inches'); if(isNaN(revenue)||isNaN(cost)||revenue<=0)return out('Enter revenue and cost.'); out('Profit: '+money(revenue-cost)+' • Margin: '+((revenue-cost)/revenue*100).toFixed(2)+'%');},
+'markup-calculator.html':()=>{const cost=n('feet'), markup=n('inches'); if(isNaN(cost)||isNaN(markup))return out('Enter cost and markup.'); out('Selling price: '+money(cost*(1+markup/100)));},
+'median-calculator.html':()=>{const v=numberList('feet').sort((a,b)=>a-b); if(!v.length)return out('Enter numbers separated by commas.'); const mid=Math.floor(v.length/2), med=v.length%2?v[mid]:(v[mid-1]+v[mid])/2; out('Median: '+med);},
+'ml-to-cups-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter mL.'); out(v+' mL = '+(v/236.588).toFixed(2)+' cups');},
+'mode-calculator.html':()=>{const v=numberList('feet'); if(!v.length)return out('Enter numbers separated by commas.'); const c={}; v.forEach(x=>c[x]=(c[x]||0)+1); const max=Math.max(...Object.values(c)); out('Mode: '+Object.keys(c).filter(k=>c[k]===max).join(', '));},
+'mortgage-amortization-calculator.html':()=>calculatorConfigs['loan-repayment-calculator.html'](),
+'net-worth-calculator.html':()=>{const a=n('feet'), l=n('inches'); if(isNaN(a)||isNaN(l))return out('Enter assets and liabilities.'); out('Estimated net worth: '+money(a-l));},
+'offset-account-calculator.html':()=>{const offset=n('feet'), rate=n('inches'), years=d(); if(isNaN(offset)||isNaN(rate)||isNaN(years))return out('Enter offset balance, rate, and years.'); out('Estimated simple interest saved: '+money(offset*rate/100*years));},
+'one-rep-max-calculator.html':()=>{const weight=n('feet'), reps=n('inches'); if(isNaN(weight)||isNaN(reps))return out('Enter weight and reps.'); out('Estimated one-rep max: '+(weight*(1+reps/30)).toFixed(1));},
+'overtime-calculator.html':()=>{const rate=n('feet'), hours=n('inches'), mult=d(); if(isNaN(rate)||isNaN(hours))return out('Enter rate and hours.'); const regular=Math.min(hours,40), overtime=Math.max(0,hours-40); out('Estimated pay: '+money(regular*rate+overtime*rate*(isNaN(mult)?1.5:mult)));},
+'ovulation-calculator.html':()=>{const start=dt('feet'), cycle=n('inches')||28; if(!start||isNaN(start))return out('Choose the first day of the last period.'); const ov=new Date(start); ov.setDate(ov.getDate()+cycle-14); out('Estimated ovulation date: '+ov.toLocaleDateString());},
+'pace-calculator.html':()=>{const dist=n('feet'), mins=n('inches'); if(isNaN(dist)||isNaN(mins)||dist<=0)return out('Enter distance and time.'); out('Pace: '+(mins/dist).toFixed(2)+' min/km');},
+'paint-calculator.html':()=>{const area=n('feet'), cov=n('inches'); if(isNaN(area)||isNaN(cov)||cov<=0)return out('Enter area and coverage.'); out('Paint needed: '+(area/cov).toFixed(2)+' litres');},
+'pay-raise-calculator.html':()=>{const salary=n('feet'), raise=n('inches'); if(isNaN(salary)||isNaN(raise))return out('Enter salary and raise.'); out('New salary: '+money(salary*(1+raise/100))+' • Increase: '+money(salary*raise/100));},
+'paycheck-calculator.html':()=>{const salary=n('feet'), periods=n('inches'), tax=d(); if(isNaN(salary)||isNaN(periods)||periods<=0)return out('Enter salary and pay periods.'); const gross=salary/periods; out('Estimated pay per period: '+money(gross*(1-(isNaN(tax)?0:tax)/100)));},
+'percent-change-calculator.html':()=>{const old=n('feet'), ne=n('inches'); if(isNaN(old)||isNaN(ne)||old===0)return out('Enter original and new values.'); out('Percent change: '+((ne-old)/old*100).toFixed(d())+'%');},
+'percentage-calculator.html':()=>{const pctv=n('feet'), num=n('inches'); if(isNaN(pctv)||isNaN(num))return out('Enter percentage and number.'); out(pctv+'% of '+num+' = '+(pctv/100*num).toFixed(d()));},
+'percentage-decrease-calculator.html':()=>{const original=n('feet'), dec=n('inches'); if(isNaN(original)||isNaN(dec))return out('Enter value and decrease.'); out('Result: '+(original*(1-dec/100)).toFixed(d()));},
+'percentage-increase-calculator.html':()=>{const original=n('feet'), inc=n('inches'); if(isNaN(original)||isNaN(inc))return out('Enter value and increase.'); out('Result: '+(original*(1+inc/100)).toFixed(d()));},
+'protein-intake-calculator.html':()=>{const w=n('feet'), target=n('inches'); if(isNaN(w)||isNaN(target))return out('Enter weight and protein target.'); out('Daily protein target: '+(w*target).toFixed(0)+' g');},
+'quick-ratio-calculator.html':()=>{const assets=n('feet'), liabilities=n('inches'); if(isNaN(assets)||isNaN(liabilities)||liabilities<=0)return out('Enter quick assets and liabilities.'); out('Quick ratio: '+(assets/liabilities).toFixed(2)+':1');},
+'ratio-calculator.html':()=>{let a=n('feet'), b=n('inches'); if(isNaN(a)||isNaN(b)||b===0)return out('Enter two numbers.'); function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){let t=y;y=x%y;x=t;}return x||1;} const g=gcd(a,b); out('Ratio: '+(a/g)+':'+(b/g));},
+'refinance-savings-calculator.html':()=>{const current=n('feet'), ne=n('inches'), months=d(); if(isNaN(current)||isNaN(ne))return out('Enter current and new payments.'); out('Monthly savings: '+money(current-ne)+' • Savings over term: '+money((current-ne)*(isNaN(months)?0:months)));},
+'retirement-savings-calculator.html':()=>{const p=n('feet'), rate=n('inches'), years=d(); if(isNaN(p)||isNaN(rate)||isNaN(years))return out('Enter savings, return, and years.'); out('Estimated retirement savings: '+money(p*Math.pow(1+rate/100,years)));},
+'roi-calculator.html':()=>{const gain=n('feet'), cost=n('inches'); if(isNaN(gain)||isNaN(cost)||cost===0)return out('Enter gain and cost.'); out('ROI: '+((gain-cost)/cost*100).toFixed(d())+'%');},
+'room-perimeter-calculator.html':()=>{const l=n('feet'), w=n('inches'); if(isNaN(l)||isNaN(w))return out('Enter length and width.'); out('Perimeter: '+(2*(l+w)).toFixed(2));},
+'salary-calculator.html':()=>{const salary=n('feet'), hours=n('inches'), precision=d(); if(isNaN(salary)||isNaN(hours)||hours<=0)return out('Enter salary and hours.'); out('Hourly equivalent: '+money(salary/(hours*52)));},
+'sales-tax-calculator.html':()=>{const price=n('feet'), tax=n('inches'); if(isNaN(price)||isNaN(tax))return out('Enter price and tax.'); out('Tax: '+money(price*tax/100)+' • Total: '+money(price*(1+tax/100)));},
+'savings-calculator.html':()=>{const p=n('feet'), rate=n('inches'), years=d(); if(isNaN(p)||isNaN(rate)||isNaN(years))return out('Enter amount, rate, and term.'); out('Estimated savings: '+money(p*Math.pow(1+rate/100,years)));},
+'savings-goal-calculator.html':()=>{const goal=n('feet'), current=n('inches'), monthly=d(); if(isNaN(goal)||isNaN(current)||isNaN(monthly)||monthly<=0)return out('Enter goal, current savings, and monthly contribution.'); out('Time to goal: '+monthsToText(Math.ceil((goal-current)/monthly)));},
+'simple-interest-calculator.html':()=>{const p=n('feet'), rate=n('inches'), years=d(); if(isNaN(p)||isNaN(rate)||isNaN(years))return out('Enter principal, rate, and years.'); out('Simple interest: '+money(p*rate/100*years)+' • Total: '+money(p+(p*rate/100*years)));},
+'slope-calculator.html':()=>{const p1=textVal('feet').split(',').map(Number), p2=textVal('inches').split(',').map(Number); if(p1.length<2||p2.length<2||p1.some(isNaN)||p2.some(isNaN)||p2[0]===p1[0])return out('Enter two points as x,y.'); out('Slope: '+((p2[1]-p1[1])/(p2[0]-p1[0])).toFixed(4));},
+'midpoint-calculator.html':()=>{const p1=textVal('feet').split(',').map(Number), p2=textVal('inches').split(',').map(Number); if(p1.length<2||p2.length<2||p1.some(isNaN)||p2.some(isNaN))return out('Enter two points as x,y.'); out('Midpoint: ('+((p1[0]+p2[0])/2)+', '+((p1[1]+p2[1])/2)+')');},
+'square-feet-to-square-metres-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter square feet.'); out(v+' sq ft = '+(v*0.092903).toFixed(2)+' m²');},
+'square-metres-to-square-feet-calculator.html':()=>{const v=n('feet'); if(isNaN(v))return out('Enter square metres.'); out(v+' m² = '+(v*10.7639).toFixed(2)+' sq ft');},
+'square-footage-calculator.html':()=>{const l=n('feet'), w=n('inches'); if(isNaN(l)||isNaN(w))return out('Enter length and width.'); out('Area: '+(l*w).toFixed(2)+' square feet');},
+'standard-deviation-calculator.html':()=>{const v=numberList('feet'); if(v.length<2)return out('Enter at least two numbers.'); const mean=v.reduce((a,b)=>a+b,0)/v.length; const variance=v.reduce((a,b)=>a+Math.pow(b-mean,2),0)/v.length; out('Standard deviation: '+Math.sqrt(variance).toFixed(4));},
+'tile-calculator.html':()=>{const area=n('feet'), length=n('inches'), width=d(); if(isNaN(area)||isNaN(length)||isNaN(width)||length<=0||width<=0)return out('Enter area and tile dimensions.'); const tileArea=(length/100)*(width/100); out('Tiles needed: '+Math.ceil(area/tileArea));},
+'time-duration-calculator.html':()=>{const a=textVal('feet'), b=textVal('inches'); if(!a||!b)return out('Enter start and end times.'); const da=new Date('1970-01-01T'+a), db=new Date('1970-01-01T'+b); let diff=(db-da)/60000; if(diff<0)diff+=1440; out('Duration: '+Math.floor(diff/60)+' hours '+Math.round(diff%60)+' minutes');},
+'tip-calculator.html':()=>{const bill=n('feet'), tip=n('inches'), people=d(); if(isNaN(bill)||isNaN(tip))return out('Enter bill and tip.'); const total=bill*(1+tip/100), split=people>0?people:1; out('Tip: '+money(bill*tip/100)+' • Total: '+money(total)+' • Per person: '+money(total/split));},
+'vat-calculator.html':()=>{const amount=n('feet'), rate=n('inches'), direction=d(); if(isNaN(amount)||isNaN(rate))return out('Enter amount and VAT rate.'); if(direction===2)return out('VAT included: '+money(amount-amount/(1+rate/100))+' • Net: '+money(amount/(1+rate/100))); out('VAT: '+money(amount*rate/100)+' • Gross: '+money(amount*(1+rate/100)));},
+'waist-to-hip-ratio-calculator.html':()=>{const waist=n('feet'), hip=n('inches'); if(isNaN(waist)||isNaN(hip)||hip<=0)return out('Enter waist and hip measurements.'); out('Waist-to-hip ratio: '+(waist/hip).toFixed(2));},
+'water-intake-calculator.html':()=>{const weight=n('feet'), active=n('inches')||0; if(isNaN(weight))return out('Enter body weight.'); out('Estimated daily water: '+((weight*35)+(active*12)).toFixed(0)+' mL');},
+'weeks-between-dates-calculator.html':()=>{const a=dt('feet'), b=dt('inches'); if(!a||!b||isNaN(a)||isNaN(b))return out('Choose both dates.'); out('Difference: '+(Math.abs(daysBetween(a,b))/7).toFixed(2)+' weeks');},
+'weighted-average-calculator.html':()=>{const vals=numberList('feet'), weights=numberList('inches'); if(!vals.length||vals.length!==weights.length)return out('Enter matching values and weights.'); const sw=weights.reduce((a,b)=>a+b,0); out('Weighted average: '+(vals.reduce((a,v,i)=>a+v*weights[i],0)/sw).toFixed(4));}
+,
+'mortgage-affordability-calculator.html':()=>{const payment=n('feet'), rate=n('rate')/100/12, years=n('years'), deposit=n('deposit')||0; if(isNaN(payment)||isNaN(rate)||isNaN(years)||payment<=0||years<=0)return out('Enter monthly budget, rate, and term.'); const months=years*12; const loan=rate===0?payment*months:payment*(Math.pow(1+rate,months)-1)/(rate*Math.pow(1+rate,months)); out('Estimated affordable loan: '+money(loan)+' • Estimated home price with down payment: '+money(loan+deposit));},
+'contractor-rate-calculator.html':()=>{const target=n('feet'), hours=n('inches'), overhead=(n('rate')||0)/100; if(isNaN(target)||isNaN(hours)||target<=0||hours<=0)return out('Enter target income and billable hours.'); const annualHours=hours*48; const hourly=target*(1+overhead)/annualHours; out('Estimated contractor rate: '+money(hourly)+'/hour • Annual billable hours: '+annualHours.toLocaleString());},
+'leave-payout-calculator.html':()=>{const rate=n('feet'), hours=n('inches'), days=n('days'); if(isNaN(rate)||isNaN(hours)||isNaN(days)||rate<0||hours<0||days<0)return out('Enter pay rate, hours per day, and leave days.'); out('Estimated gross leave payout: '+money(rate*hours*days));},
+'calorie-calculator.html':()=>{const kg=n('feet'), cm=n('inches'), age=n('age'), sex=n('sex'), activity=n('activity'); if([kg,cm,age,sex,activity].some(isNaN)||kg<=0||cm<=0||age<=0||activity<=0)return out('Enter weight, height, age, sex adjustment, and activity factor.'); const bmr=10*kg+6.25*cm-5*age+sex; out('Estimated maintenance calories: '+(bmr*activity).toFixed(0)+' kcal/day • BMR: '+bmr.toFixed(0)+' kcal/day');},
+'bmr-calculator.html':()=>{const kg=n('feet'), cm=n('inches'), age=n('age'), sex=n('sex'); if([kg,cm,age,sex].some(isNaN)||kg<=0||cm<=0||age<=0)return out('Enter weight, height, age, and sex adjustment.'); const bmr=10*kg+6.25*cm-5*age+sex; out('Estimated BMR: '+bmr.toFixed(0)+' kcal/day');},
+'roofing-calculator.html':()=>{const length=n('feet'), width=n('inches'), pitch=n('rate')||1, waste=(n('waste')||0)/100; if(isNaN(length)||isNaN(width)||length<=0||width<=0||pitch<=0)return out('Enter length, width, and pitch factor.'); const area=length*width*pitch*(1+waste); out('Estimated roof area with allowance: '+area.toFixed(d())+' square units');},
+'fence-calculator.html':()=>{const length=n('feet'), panel=n('inches'), spacing=n('spacing')||panel; if(isNaN(length)||isNaN(panel)||isNaN(spacing)||length<=0||panel<=0||spacing<=0)return out('Enter fence length, panel width, and post spacing.'); out('Estimated panels: '+Math.ceil(length/panel)+' • Estimated posts: '+(Math.ceil(length/spacing)+1));},
+'work-hours-calculator.html':()=>{const start=n('feet'), end=n('inches'), breaks=n('breaks')||0, days=n('days')||1; if(isNaN(start)||isNaN(end)||start<0||end<=start||breaks<0||days<=0)return out('Enter valid start time, end time, break, and days.'); const daily=end-start-breaks; if(daily<0)return out('Break time cannot exceed the shift length.'); out('Total work hours: '+(daily*days).toFixed(d())+' hours • Daily paid hours: '+daily.toFixed(d()));}
+
+});
+
+function resetCalculator(){document.querySelectorAll('input').forEach(i=>i.value=''); if(decimalsSelect) decimalsSelect.value='2'; out('Enter values to begin'); if(feetInput) feetInput.focus();}
+
+Object.assign(calculatorConfigs,{
+'body-fat-calculator.html':()=>{const waist=n('inches'), neck=n('rate'), height=n('years'); const sexEl=$('sex'); const sex=sexEl?sexEl.value:'male'; if([waist,neck,height].some(isNaN)||waist<=0||neck<=0||height<=0)return out('Enter waist, neck and height measurements.'); let bf; if(sex==='female'){const hip=n('feet'); bf=495/(1.29579-0.35004*Math.log10(Math.max(1,waist+hip-neck))+0.22100*Math.log10(height))-450;} else {bf=495/(1.0324-0.19077*Math.log10(Math.max(1,waist-neck))+0.15456*Math.log10(height))-450;} if(!isFinite(bf))return out('Check the measurements and try again.'); out('Estimated body fat: '+bf.toFixed(1)+'%');},
+'tdee-calculator.html':()=>{const kg=n('feet'), cm=n('inches'), age=n('age'), sex=n('sex'), activity=n('activity'); if([kg,cm,age,sex,activity].some(isNaN)||kg<=0||cm<=0||age<=0)return out('Enter weight, height, age, sex and activity level.'); const bmr=10*kg+6.25*cm-5*age+sex; out('Estimated TDEE: '+(bmr*activity).toFixed(0)+' kcal/day • BMR: '+bmr.toFixed(0)+' kcal/day');},
+'macro-calculator.html':()=>{const calories=n('feet'), protein=n('inches'), fat=n('rate'); if([calories,protein,fat].some(isNaN)||calories<=0||protein<0||fat<0)return out('Enter calories, protein and fat.'); const remaining=calories-(protein*4)-(fat*9); if(remaining<0)return out('Protein and fat exceed the calorie target.'); out('Protein: '+protein.toFixed(0)+' g • Fat: '+fat.toFixed(0)+' g • Carbs: '+(remaining/4).toFixed(0)+' g');},
+'drywall-calculator.html':()=>{const area=n('feet'), sheet=n('inches'), waste=n('rate')||0; if([area,sheet].some(isNaN)||area<=0||sheet<=0)return out('Enter wall area and sheet area.'); out('Estimated sheets needed: '+Math.ceil(area*(1+waste/100)/sheet).toLocaleString());},
+'wallpaper-calculator.html':()=>{const area=n('feet'), roll=n('inches'), waste=n('rate')||0; if([area,roll].some(isNaN)||area<=0||roll<=0)return out('Enter wall area and roll coverage.'); out('Estimated rolls needed: '+Math.ceil(area*(1+waste/100)/roll).toLocaleString());},
+'decking-calculator.html':()=>{const area=n('feet'), board=n('inches'), waste=n('rate')||0; if([area,board].some(isNaN)||area<=0||board<=0)return out('Enter deck area and board coverage.'); out('Estimated boards needed: '+Math.ceil(area*(1+waste/100)/board).toLocaleString());},
+'time-card-calculator.html':()=>{const start=n('feet'), end=n('inches'), breakMin=n('rate')||0, days=n('years')||1; if([start,end,days].some(isNaN)||end<start||days<=0)return out('Enter start time, end time and days.'); const hours=(end-start)-(breakMin/60); out('Paid hours: '+(hours*days).toFixed(2)+' hours');},
+'week-number-calculator.html':()=>{const date=dt('feet'); if(!date||isNaN(date))return out('Choose a date.'); const dte=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate())); const day=dte.getUTCDay()||7; dte.setUTCDate(dte.getUTCDate()+4-day); const yearStart=new Date(Date.UTC(dte.getUTCFullYear(),0,1)); const week=Math.ceil((((dte-yearStart)/86400000)+1)/7); out('ISO week: '+week+' • ISO week-year: '+dte.getUTCFullYear());}
+});
+
+
+Object.assign(calculatorConfigs,{
+'refinance-calculator.html':()=>{const loan=n('loan'), rate=n('rate'), years=n('years'), newRate=n('newRate'), newYears=n('newYears'), fees=n('fees')||0; if([loan,rate,years,newRate,newYears].some(isNaN)||loan<=0||years<=0||newYears<=0)return out('Enter loan balance, rates and terms.'); const pay=(p,apr,y)=>{const r=apr/100/12, m=y*12; return r===0?p/m:p*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1)}; const oldP=pay(loan,rate,years), newP=pay(loan,newRate,newYears), save=oldP-newP; const be=save>0?fees/save:NaN; out('Current payment: '+money(oldP)+' • New payment: '+money(newP)+' • Monthly saving: '+money(save)+' • Break-even: '+(isFinite(be)?Math.ceil(be)+' months':'not reached'));},
+'amortization-calculator.html':()=>{const loan=n('loan'), rate=n('rate'), years=n('years'); if([loan,rate,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan amount, rate and term.'); const r=rate/100/12, m=years*12; const p=r===0?loan/m:loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1); out('Monthly payment: '+money(p)+' • Total paid: '+money(p*m)+' • Total interest: '+money(p*m-loan));},
+'extra-payment-calculator.html':()=>{const loan=n('loan'), rate=n('rate'), years=n('years'), extra=n('extra')||0; if([loan,rate,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan balance, rate, term and extra payment.'); const r=rate/100/12, m=years*12; const base=r===0?loan/m:loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1); const p=base+extra; if(p<=loan*r)return out('Payment is too low to reduce the balance.'); const newMonths=r===0?loan/p:Math.ceil(-Math.log(1-r*loan/p)/Math.log(1+r)); out('Standard payment: '+money(base)+' • With extra: '+money(p)+' • Estimated payoff: '+monthsToText(newMonths)+' • Time saved: '+monthsToText(m-newMonths));},
+'rent-vs-buy-calculator.html':()=>{const rent=n('rent'), price=n('price'), down=n('down')||0, rate=n('rate'), years=n('years'), costs=n('costs')||0; if([rent,price,rate,years].some(isNaN)||rent<0||price<=0||years<=0)return out('Enter rent, price, rate and term.'); const loan=Math.max(0,price-down), r=rate/100/12, m=years*12; const mortgage=r===0?loan/m:loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1); const own=mortgage+costs; out('Estimated ownership cost: '+money(own)+' / month • Rent: '+money(rent)+' / month • Difference: '+money(own-rent)+' / month');},
+'salary-to-hourly-calculator.html':()=>{const salary=n('salary'), hours=n('hours'), weeks=n('weeks'); if([salary,hours,weeks].some(isNaN)||salary<=0||hours<=0||weeks<=0)return out('Enter salary, hours per week and weeks per year.'); const hourly=salary/(hours*weeks); out('Hourly equivalent: '+money(hourly)+' • Weekly: '+money(salary/weeks)+' • Monthly: '+money(salary/12));}
+});
+
+
+Object.assign(calculatorConfigs,{
+'biweekly-mortgage-calculator.html':()=>{const loan=n('loan'),rate=n('rate'),years=n('years');if([loan,rate,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan amount, rate and term.');const r=rate/100/12,m=years*12,p=r===0?loan/m:loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1);out('Monthly payment: '+money(p)+' • Biweekly equivalent: '+money(p*12/26)+' • Annual paid: '+money(p*12));},
+'mortgage-payoff-calculator.html':()=>{const loan=n('loan'),rate=n('rate')/100/12,payment=n('payment');if([loan,rate,payment].some(isNaN)||loan<=0||payment<=0)return out('Enter balance, rate and payment.');if(payment<=loan*rate)return out('Payment must be greater than monthly interest.');const months=rate===0?Math.ceil(loan/payment):Math.ceil(-Math.log(1-rate*loan/payment)/Math.log(1+rate));out('Estimated payoff time: '+monthsToText(months)+' • Estimated total paid: '+money(payment*months)+' • Estimated interest: '+money(payment*months-loan));},
+'mortgage-interest-calculator.html':()=>{const loan=n('loan'),rate=n('rate'),years=n('years');if([loan,rate,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan amount, rate and term.');const r=rate/100/12,m=years*12,p=r===0?loan/m:loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1);out('Monthly payment: '+money(p)+' • Total interest: '+money(p*m-loan)+' • Total paid: '+money(p*m));},
+'refinance-savings-calculator.html':()=>{const cur=n('current'),nw=n('newPayment'),costs=n('costs')||0;if([cur,nw].some(isNaN)||cur<0||nw<0)return out('Enter current and new payment.');const save=cur-nw;out('Monthly savings: '+money(save)+' • Break-even: '+(save>0?monthsToText(Math.ceil(costs/save)):'No monthly saving'));},
+'arm-vs-fixed-mortgage-calculator.html':()=>{const loan=n('loan'),fixed=n('fixedRate'),arm=n('armRate'),years=n('years');if([loan,fixed,arm,years].some(isNaN)||loan<=0||years<=0)return out('Enter loan amount, rates and term.');const pay=(apr)=>{const r=apr/100/12,m=years*12;return r===0?loan/m:loan*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1)};const fp=pay(fixed),ap=pay(arm);out('Fixed starting payment: '+money(fp)+' • ARM starting payment: '+money(ap)+' • Starting difference: '+money(ap-fp));},
+'bonus-tax-calculator.html':()=>{const bonus=n('bonus'),rate=n('rate');if([bonus,rate].some(isNaN)||bonus<0)return out('Enter bonus and withholding rate.');const tax=bonus*rate/100;out('Estimated withholding: '+money(tax)+' • Estimated net bonus: '+money(bonus-tax));},
+'tax-withholding-calculator.html':()=>{const gross=n('gross'),rate=n('rate');if([gross,rate].some(isNaN)||gross<0)return out('Enter gross pay and withholding rate.');const tax=gross*rate/100;out('Estimated tax withheld: '+money(tax)+' • Estimated net pay: '+money(gross-tax));},
+'self-employed-tax-calculator.html':()=>{const income=n('income'),expenses=n('expenses')||0,rate=n('rate');if([income,rate].some(isNaN)||income<0)return out('Enter income, expenses and estimated tax rate.');const profit=Math.max(0,income-expenses),tax=profit*rate/100;out('Estimated profit: '+money(profit)+' • Suggested tax reserve: '+money(tax));},
+'freelance-rate-calculator.html':()=>{const target=n('target'),expenses=n('expenses')||0,hours=n('hours');if([target,hours].some(isNaN)||hours<=0)return out('Enter target income and billable hours.');out('Suggested hourly rate: '+money((target+expenses)/hours)+' • Required revenue: '+money(target+expenses));},
+'shift-differential-calculator.html':()=>{const rate=n('rate'),hours=n('hours'),diff=n('diff');if([rate,hours,diff].some(isNaN)||hours<0)return out('Enter rate, hours and differential.');const effective=rate*(1+diff/100);out('Effective rate: '+money(effective)+'/hour • Estimated pay: '+money(effective*hours));},
+'paycheck-estimator-calculator.html':()=>{const gross=n('gross'),tax=n('tax')||0,ded=n('deductions')||0;if(isNaN(gross)||gross<0)return out('Enter gross pay.');const withheld=gross*tax/100;out('Estimated take-home pay: '+money(gross-withheld-ded)+' • Tax: '+money(withheld)+' • Deductions: '+money(ded));},
+'calorie-deficit-calculator.html':()=>{const maintenance=n('maintenance'),deficit=n('deficit');if([maintenance,deficit].some(isNaN)||maintenance<=0)return out('Enter maintenance calories and deficit.');out('Target calories: '+Math.max(0,maintenance-deficit).toFixed(0)+' kcal/day • Weekly deficit: '+(deficit*7).toFixed(0)+' kcal');},
+'lean-body-mass-calculator.html':()=>{const weight=n('weight'),bf=n('bodyfat');if([weight,bf].some(isNaN)||weight<=0||bf<0||bf>=100)return out('Enter weight and body fat percentage.');out('Lean body mass: '+(weight*(1-bf/100)).toFixed(d())+' • Fat mass: '+(weight*bf/100).toFixed(d()));},
+'one-rep-max-calculator.html':()=>{const weight=n('weight'),reps=n('reps');if([weight,reps].some(isNaN)||weight<=0||reps<=0)return out('Enter weight lifted and reps.');out('Estimated one-rep max: '+(weight*(1+reps/30)).toFixed(d()));},
+'water-intake-calculator.html':()=>{const weight=n('weight'),minutes=n('minutes')||0;if(isNaN(weight)||weight<=0)return out('Enter body weight.');const ml=weight*35+minutes*12;out('Estimated daily water target: '+(ml/1000).toFixed(2)+' L/day');},
+'body-surface-area-calculator.html':()=>{const h=n('height'),w=n('weight');if([h,w].some(isNaN)||h<=0||w<=0)return out('Enter height and weight.');out('Estimated body surface area: '+(0.007184*Math.pow(h,0.725)*Math.pow(w,0.425)).toFixed(2)+' m²');},
+'gravel-calculator.html':()=>{const area=n('area'),depth=n('depth');if([area,depth].some(isNaN)||area<=0||depth<=0)return out('Enter area and depth.');out('Estimated gravel volume: '+(area*depth).toFixed(d())+' cubic units');},
+'paver-calculator.html':()=>{const area=n('area'),paver=n('paver'),waste=n('waste')||0;if([area,paver].some(isNaN)||area<=0||paver<=0)return out('Enter project area and paver area.');out('Estimated pavers: '+Math.ceil(area*(1+waste/100)/paver).toLocaleString());},
+'brick-calculator.html':()=>{const area=n('area'),bricks=n('bricks'),waste=n('waste')||0;if([area,bricks].some(isNaN)||area<=0||bricks<=0)return out('Enter wall area and bricks per area.');out('Estimated bricks: '+Math.ceil(area*bricks*(1+waste/100)).toLocaleString());},
+'topsoil-calculator.html':()=>{const area=n('area'),depth=n('depth');if([area,depth].some(isNaN)||area<=0||depth<=0)return out('Enter area and depth.');out('Estimated topsoil volume: '+(area*depth).toFixed(d())+' cubic units');},
+'cubic-yard-calculator.html':()=>{const length=n('length'),width=n('width'),depth=n('depth');if([length,width,depth].some(isNaN)||length<=0||width<=0||depth<=0)return out('Enter length, width and depth in feet.');out('Estimated volume: '+(length*width*depth/27).toFixed(d())+' cubic yards');},
+'asphalt-calculator.html':()=>{const area=n('area'),depth=n('depth');if([area,depth].some(isNaN)||area<=0||depth<=0)return out('Enter area and depth.');out('Estimated asphalt volume: '+(area*depth).toFixed(d())+' cubic units');}
+});
+
+if(calculateBtn&&resetBtn){const keyBase=calculatorKey.replace(/\.html$/,''); const pageBase=currentPage.replace(/\.html$/,''); const candidates=[currentPage, calculatorKey, calculatorKey+'.html', keyBase, keyBase+'.html', pageBase, pageBase+'.html', currentPage.replace('-calculator.html','.html'), pageBase.replace('-calculator','')+'.html']; const fn=candidates.map(k=>calculatorConfigs[k]).find(Boolean); if(fn){calculateBtn.addEventListener('click',fn); resetBtn.addEventListener('click',resetCalculator); document.querySelectorAll('input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')fn();}));}}
+const mainCalcScreen=$('mainCalcScreen'); const mainCalcKeys=document.querySelectorAll('.calc-key'); if(mainCalcScreen&&mainCalcKeys.length){let expr=''; const display=()=>mainCalcScreen.textContent=(expr||'0').replace(/\*/g,'×').replace(/\//g,'÷').replace(/-/g,'−'); mainCalcKeys.forEach(btn=>btn.addEventListener('click',()=>{const v=btn.dataset.value,a=btn.dataset.action; if(a==='clear'){expr='';display();return;} if(a==='backspace'){expr=expr.slice(0,-1);display();return;} if(a==='equals'){try{const r=Function('"use strict";return ('+expr.replace(/%/g,'/100')+')')(); expr=isFinite(r)?Number(r.toFixed(10)).toString():''; mainCalcScreen.textContent=expr||'Error';}catch{expr='';mainCalcScreen.textContent='Error';} return;} if(v){expr+=v;display();}}));}
+
+
+/* ===== CalculatorWorks Planning System ===== */
+
+(function(){
+
+const calculatorLinks = Array.from(document.querySelectorAll('a[href$=".html"]'))
+.filter(link => link.textContent.trim().length > 2);
+
+const uniqueMap = new Map();
+
+calculatorLinks.forEach(link=>{
+const href = link.getAttribute('href');
+if(!href || href.startsWith('#')) return;
+
+const title = link.textContent.trim();
+
+if(!uniqueMap.has(href)){
+uniqueMap.set(href,{
+href,
+title
+});
+}
+});
+
+const calculators = Array.from(uniqueMap.values());
+
+function buildSearchUI(){
+
+if(document.querySelector('.search-trigger')) return;
+
+const nav = document.querySelector('.main-nav');
+
+if(!nav) return;
+
+const trigger = document.createElement('button');
+trigger.className = 'search-trigger';
+trigger.innerHTML = '🔎 Search Calculators';
+
+nav.appendChild(trigger);
+
+const overlay = document.createElement('div');
+overlay.className = 'global-search-overlay';
+
+overlay.innerHTML = `
+<div class="global-search-panel">
+<div class="global-search-top">
+<input type="text" id="globalCalculatorSearch" placeholder="Search calculators...">
+</div>
+<div class="search-results"></div>
+</div>
+`;
+
+document.body.appendChild(overlay);
+
+const input = overlay.querySelector('#globalCalculatorSearch');
+const results = overlay.querySelector('.search-results');
+
+function renderResults(query=''){
+
+const q = query.toLowerCase().trim();
+
+const filtered = calculators
+.filter(item => item.title.toLowerCase().includes(q))
+.slice(0,60);
+
+results.innerHTML = filtered.map(item=>`
+<a class="search-result-item" href="${item.href}">
+<strong>${item.title}</strong>
+<span>${item.href.replace('.html','').replace(/-/g,' ')}</span>
+</a>
+`).join('');
+
+if(!filtered.length){
+results.innerHTML = '<div class="search-result-item"><strong>No calculators found</strong><span>Try another keyword.</span></div>';
+}
+}
+
+trigger.addEventListener('click', ()=>{
+overlay.classList.add('active');
+input.focus();
+renderResults();
+});
+
+overlay.addEventListener('click', (e)=>{
+if(e.target === overlay){
+overlay.classList.remove('active');
+}
+});
+
+document.addEventListener('keydown', (e)=>{
+if(e.key === 'Escape'){
+overlay.classList.remove('active');
+}
+});
+
+input.addEventListener('input', ()=>{
+renderResults(input.value);
+});
+
+}
+
+function addAuthorityBlocks(){
+
+const article = document.querySelector('.calculator-content, .content-section, main');
+
+if(!article) return;
+
+if(document.querySelector('.authority-highlight')) return;
+
+const block = document.createElement('section');
+block.className = 'authority-highlight';
+
+block.innerHTML = `
+<h2>Why Use CalculatorWorks?</h2>
+
+<div class="feature-grid">
+
+<div class="feature-card">
+<h3>Fast Calculations</h3>
+<p>Get instant, accurate results for finance, salary, mortgage, health, construction and everyday calculations.</p>
+</div>
+
+<div class="feature-card">
+<h3>Free Online Tools</h3>
+<p>All calculators are free to use with no sign-up required and work across desktop, tablet and mobile devices.</p>
+</div>
+
+<div class="feature-card">
+<h3>Built for Accuracy</h3>
+<p>CalculatorWorks tools are designed to provide clear formulas, worked examples and reliable calculation logic.</p>
+</div>
+
+</div>
+`;
+
+const related = document.querySelector('.related-calculators');
+
+if(related && related.parentNode){
+related.parentNode.insertBefore(block, related);
+}
+
+}
+
+buildSearchUI();
+addAuthorityBlocks();
+
+})();
+
+
+/* ===== CalculatorWorks Elite Calculator Layer ===== */
+
+(function(){
+
+function money2(v){
+if(!isFinite(v)) return '$0.00';
+return '$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function num(id){
+const el=document.getElementById(id);
+if(!el) return NaN;
+return parseFloat(el.value);
+}
+
+function safeYears(){
+const years=num('years');
+if(!isNaN(years)) return years;
+const dec=document.getElementById('decimals');
+if(dec && !isNaN(parseFloat(dec.value))) return parseFloat(dec.value);
+return NaN;
+}
+
+function payment(principal, apr, years){
+const months=years*12;
+const r=apr/100/12;
+if(months<=0) return NaN;
+return r===0 ? principal/months : principal*r*Math.pow(1+r,months)/(Math.pow(1+r,months)-1);
+}
+
+function amortize(principal, apr, years, extra){
+const months=Math.round(years*12);
+const r=apr/100/12;
+const base=payment(principal, apr, years);
+const pay=base+(extra||0);
+let balance=principal;
+let totalInterest=0;
+let rows=[];
+let annual=[];
+let yearInterest=0;
+let yearPrincipal=0;
+let count=0;
+
+for(let m=1;m<=months && balance>0 && m<1200;m++){
+const interest=balance*r;
+const principalPaid=Math.min(balance, pay-interest);
+if(principalPaid<=0 && r>0) break;
+balance=Math.max(0,balance-principalPaid);
+totalInterest+=interest;
+yearInterest+=interest;
+yearPrincipal+=principalPaid;
+count=m;
+
+if(m<=24 || m%12===0 || balance===0){
+rows.push({
+month:m,
+payment:interest+principalPaid,
+principal:principalPaid,
+interest:interest,
+balance:balance
+});
+}
+
+if(m%12===0 || balance===0){
+annual.push({
+year:Math.ceil(m/12),
+principal:yearPrincipal,
+interest:yearInterest,
+balance:balance
+});
+yearInterest=0;
+yearPrincipal=0;
+}
+}
+return {base, pay, totalInterest, totalPaid:principal+totalInterest, rows, annual, months:count};
+}
+
+function lineSvg(points, label){
+if(!points || points.length<2) return '';
+const w=640, h=220, pad=28;
+const max=Math.max(...points.map(p=>p.value),1);
+const min=Math.min(...points.map(p=>p.value),0);
+const span=Math.max(max-min,1);
+const coords=points.map((p,i)=>{
+const x=pad+(i/(points.length-1))*(w-pad*2);
+const y=h-pad-((p.value-min)/span)*(h-pad*2);
+return [x,y];
+});
+const poly=coords.map(p=>p.join(',')).join(' ');
+const area=coords.map(p=>p.join(',')).join(' ')+' '+(w-pad)+','+(h-pad)+' '+pad+','+(h-pad);
+return `
+<svg class="cw-svg-chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}">
+<defs>
+<linearGradient id="cwLineFill" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#2563eb" stop-opacity=".22"></stop>
+<stop offset="100%" stop-color="#2563eb" stop-opacity=".02"></stop>
+</linearGradient>
+</defs>
+<line x1="${pad}" y1="${h-pad}" x2="${w-pad}" y2="${h-pad}" stroke="#cbd5e1" stroke-width="1"></line>
+<line x1="${pad}" y1="${pad}" x2="${pad}" y2="${h-pad}" stroke="#cbd5e1" stroke-width="1"></line>
+<polygon points="${area}" fill="url(#cwLineFill)"></polygon>
+<polyline points="${poly}" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+<text x="${pad}" y="18" fill="#475569" font-size="13">${label}</text>
+<text x="${pad}" y="${h-8}" fill="#64748b" font-size="12">Start</text>
+<text x="${w-pad-42}" y="${h-8}" fill="#64748b" font-size="12">End</text>
+</svg>`;
+}
+
+function barSplit(labelA, valA, labelB, valB){
+const total=Math.max(valA+valB,1);
+const pct=Math.max(0,Math.min(100,(valA/total)*100));
+return `
+<div class="cw-guidance-card">
+<h4>Cost breakdown</h4>
+<p><strong>${labelA}:</strong> ${money2(valA)}</p>
+<div class="cw-progress"><span style="width:${pct}%"></span></div>
+<p style="margin-top:10px"><strong>${labelB}:</strong> ${money2(valB)}</p>
+</div>`;
+}
+
+function ensurePanel(){
+const card=document.querySelector('.calculator-card');
+if(!card) return null;
+let panel=document.getElementById('cwInsightPanel');
+if(!panel){
+panel=document.createElement('section');
+panel.id='cwInsightPanel';
+panel.className='cw-insight-panel';
+card.insertAdjacentElement('afterend',panel);
+}
+return panel;
+}
+
+function rowsTable(headers, rows){
+return `<div class="cw-table-wrap"><table class="cw-data-table"><thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+}
+
+function currentKey(){
+const path=window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+const normalized=path.includes('.html') ? path : path + '.html';
+const card=document.querySelector('.calculator-card');
+const data=card ? (card.dataset.calculator || '') : '';
+return (data || normalized).replace(/^\//,'');
+}
+
+function renderLoanInsights(){
+const key=currentKey();
+if(!/(mortgage|loan|amortization)/.test(key)) return false;
+
+const principal = !isNaN(num('loan')) ? num('loan') : (!isNaN(num('feet')) ? num('feet') : NaN);
+const apr = !isNaN(num('rate')) ? num('rate') : (!isNaN(num('inches')) ? num('inches') : NaN);
+const years = safeYears();
+
+if([principal,apr,years].some(isNaN) || principal<=0 || years<=0) return false;
+
+const extra = !isNaN(num('extra')) ? num('extra') : 0;
+const a=amortize(principal,apr,years,extra);
+if(!isFinite(a.base)) return false;
+
+const points=a.annual.map(r=>({label:r.year,value:r.balance}));
+const tableRows=a.annual.slice(0,30).map(r=>`<tr><td>Year ${r.year}</td><td>${money2(r.principal)}</td><td>${money2(r.interest)}</td><td>${money2(r.balance)}</td></tr>`);
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Repayment intelligence</h3>
+<p>useful calculator pages do more than show one answer. This section turns the result into a repayment timeline, cost breakdown, and decision-ready summary.</p>
+</div>
+<span class="cw-badge">Enhanced result</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>Monthly payment</span><strong>${money2(a.pay)}</strong></div>
+<div class="cw-metric"><span>Total interest</span><strong>${money2(a.totalInterest)}</strong></div>
+<div class="cw-metric"><span>Total paid</span><strong>${money2(a.totalPaid)}</strong></div>
+<div class="cw-metric"><span>Payoff time</span><strong>${Math.ceil(a.months/12)} years</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-chart-card">
+<h4>Balance over time</h4>
+${lineSvg(points.length?points:[{value:principal},{value:0}], 'Estimated remaining balance')}
+</div>
+${barSplit('Original loan', principal, 'Interest cost', a.totalInterest)}
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Annual repayment summary</h4>
+${rowsTable(['Period','Principal','Interest','Balance'], tableRows)}
+</div>
+<div class="cw-guidance-card">
+<h4>How to use this result</h4>
+<ul class="cw-guidance-list">
+<li>Compare a shorter loan term against the monthly payment increase.</li>
+<li>Test a higher interest rate to understand downside risk.</li>
+<li>Use extra-payment calculators to estimate time and interest saved.</li>
+<li>Check lender fees, taxes, insurance, and local rules before relying on the estimate.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderGrowthInsights(){
+const key=currentKey();
+if(!/(compound|savings|investment|retirement)/.test(key)) return false;
+
+const principal = !isNaN(num('principal')) ? num('principal') : (!isNaN(num('feet')) ? num('feet') : NaN);
+const apr = !isNaN(num('rate')) ? num('rate') : (!isNaN(num('inches')) ? num('inches') : NaN);
+const years = safeYears();
+const contribution = !isNaN(num('contribution')) ? num('contribution') : 0;
+
+if([principal,apr,years].some(isNaN) || years<=0) return false;
+
+let balance=principal;
+let totalContrib=principal;
+let annual=[];
+const monthlyRate=apr/100/12;
+const months=Math.round(years*12);
+
+for(let m=1;m<=months;m++){
+balance=balance*(1+monthlyRate)+contribution;
+totalContrib+=contribution;
+if(m%12===0 || m===months){
+annual.push({year:Math.ceil(m/12), balance, contributed:totalContrib, growth:balance-totalContrib});
+}
+}
+
+const tableRows=annual.slice(0,40).map(r=>`<tr><td>Year ${r.year}</td><td>${money2(r.contributed)}</td><td>${money2(Math.max(0,r.growth))}</td><td>${money2(r.balance)}</td></tr>`);
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Growth projection</h3>
+<p>This adds a year-by-year growth view so the calculator works more like a planning tool than a single-output widget.</p>
+</div>
+<span class="cw-badge">Projection view</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>Future value</span><strong>${money2(balance)}</strong></div>
+<div class="cw-metric"><span>Total contributed</span><strong>${money2(totalContrib)}</strong></div>
+<div class="cw-metric"><span>Estimated growth</span><strong>${money2(balance-totalContrib)}</strong></div>
+<div class="cw-metric"><span>Time horizon</span><strong>${years} years</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-chart-card">
+<h4>Projected balance</h4>
+${lineSvg(annual.map(r=>({value:r.balance})), 'Estimated balance over time')}
+</div>
+${barSplit('Contributions', totalContrib, 'Growth', Math.max(0,balance-totalContrib))}
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Year-by-year projection</h4>
+${rowsTable(['Period','Contributed','Growth','Balance'], tableRows)}
+</div>
+<div class="cw-guidance-card">
+<h4>Planning interpretation</h4>
+<ul class="cw-guidance-list">
+<li>Small rate changes compound into large long-term differences.</li>
+<li>Regular contributions often matter as much as the starting amount.</li>
+<li>Compare this result with inflation to estimate purchasing power.</li>
+<li>Real investment returns can vary and may include fees, tax, and market risk.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderSalaryInsights(){
+const key=currentKey();
+if(!/(salary|paycheck|hourly|wage|pay-raise|overtime)/.test(key)) return false;
+
+let annual = !isNaN(num('salary')) ? num('salary') : NaN;
+const hourly = !isNaN(num('rate')) ? num('rate') : NaN;
+const hours = !isNaN(num('hours')) ? num('hours') : 40;
+const weeks = !isNaN(num('weeks')) ? num('weeks') : 52;
+
+if(isNaN(annual) && !isNaN(hourly)) annual=hourly*hours*weeks;
+if(isNaN(annual) || annual<=0) return false;
+
+const monthly=annual/12, fortnightly=annual/26, weekly=annual/52, daily=annual/260, hourlyEq=annual/(hours*weeks || 2080);
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Pay breakdown</h3>
+<p>Salary and wage calculators become more useful when they translate one figure into practical weekly, monthly, annual, and hourly views.</p>
+</div>
+<span class="cw-badge">Pay intelligence</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>Annual</span><strong>${money2(annual)}</strong></div>
+<div class="cw-metric"><span>Monthly</span><strong>${money2(monthly)}</strong></div>
+<div class="cw-metric"><span>Weekly</span><strong>${money2(weekly)}</strong></div>
+<div class="cw-metric"><span>Hourly equivalent</span><strong>${money2(hourlyEq)}</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Common pay periods</h4>
+${rowsTable(['Pay period','Estimated amount'],[
+`<tr><td>Annual</td><td>${money2(annual)}</td></tr>`,
+`<tr><td>Monthly</td><td>${money2(monthly)}</td></tr>`,
+`<tr><td>Fortnightly</td><td>${money2(fortnightly)}</td></tr>`,
+`<tr><td>Weekly</td><td>${money2(weekly)}</td></tr>`,
+`<tr><td>Daily</td><td>${money2(daily)}</td></tr>`,
+`<tr><td>Hourly</td><td>${money2(hourlyEq)}</td></tr>`
+])}
+</div>
+<div class="cw-guidance-card">
+<h4>Use this to compare offers</h4>
+<ul class="cw-guidance-list">
+<li>Compare annual salary with hourly or contract alternatives.</li>
+<li>Account for unpaid leave, overtime, benefits, and deductions.</li>
+<li>Use paycheck and tax calculators for take-home estimates.</li>
+<li>Check local employment, tax, and superannuation rules.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderBmiInsights(){
+const key=currentKey();
+if(!/(bmi|body-mass)/.test(key)) return false;
+
+const weight=num('weight');
+const height=num('height')/100;
+if([weight,height].some(isNaN) || weight<=0 || height<=0) return false;
+
+const bmi=weight/(height*height);
+let category='Healthy weight';
+if(bmi<18.5) category='Underweight';
+else if(bmi<25) category='Healthy weight';
+else if(bmi<30) category='Overweight';
+else category='Obesity range';
+
+const pct=Math.max(0,Math.min(100,((bmi-12)/(42-12))*100));
+const panel=ensurePanel();
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>BMI interpretation</h3>
+<p>This section adds context to the number so the tool is easier to understand and more useful for general screening.</p>
+</div>
+<span class="cw-badge">Health context</span>
+</div>
+
+<div class="cw-metric-grid">
+<div class="cw-metric"><span>BMI</span><strong>${bmi.toFixed(1)}</strong></div>
+<div class="cw-metric"><span>Category</span><strong>${category}</strong></div>
+<div class="cw-metric"><span>Height</span><strong>${(height*100).toFixed(0)} cm</strong></div>
+<div class="cw-metric"><span>Weight</span><strong>${weight.toFixed(1)} kg</strong></div>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-guidance-card">
+<h4>BMI scale position</h4>
+<div class="cw-progress"><span style="width:${pct}%"></span></div>
+<p style="color:var(--muted);font-size:14px">BMI is a broad screening estimate and does not account for body composition, age, sex, pregnancy, ethnicity, or athletic build.</p>
+</div>
+<div class="cw-guidance-card">
+<h4>Important note</h4>
+<ul class="cw-guidance-list">
+<li>Use BMI as a general indicator only.</li>
+<li>Do not use it as a diagnosis.</li>
+<li>Speak with a qualified health professional for personal guidance.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderPercentageInsights(){
+const key=currentKey();
+if(!/(percentage|discount|increase|decrease)/.test(key)) return false;
+const panel=ensurePanel();
+if(!panel) return false;
+
+panel.innerHTML=`
+<div class="cw-insight-header">
+<div>
+<h3>Percentage shortcuts</h3>
+<p>Use these common percentage relationships to check your result and understand what the number means.</p>
+</div>
+<span class="cw-badge">Quick reference</span>
+</div>
+
+<div class="cw-visual-grid">
+<div class="cw-table-card">
+<h4>Common percentage operations</h4>
+${rowsTable(['Question','Formula'],[
+'<tr><td>What is X% of Y?</td><td>Y × X ÷ 100</td></tr>',
+'<tr><td>What percent is A of B?</td><td>A ÷ B × 100</td></tr>',
+'<tr><td>Percentage increase</td><td>(New − Old) ÷ Old × 100</td></tr>',
+'<tr><td>Percentage decrease</td><td>(Old − New) ÷ Old × 100</td></tr>',
+'<tr><td>Discount price</td><td>Price × (1 − discount ÷ 100)</td></tr>'
+])}
+</div>
+<div class="cw-guidance-card">
+<h4>Best uses</h4>
+<ul class="cw-guidance-list">
+<li>Shopping discounts and sale prices.</li>
+<li>Salary increases and business growth.</li>
+<li>Margin, markup, and comparison calculations.</li>
+<li>Checking whether a percentage change is relative or absolute.</li>
+</ul>
+</div>
+</div>`;
+return true;
+}
+
+function renderEnhancedInsights(){
+if(renderLoanInsights()) return;
+if(renderGrowthInsights()) return;
+if(renderSalaryInsights()) return;
+if(renderBmiInsights()) return;
+if(renderPercentageInsights()) return;
+}
+
+function attachEnhancement(){
+const btn=document.getElementById('calculateBtn');
+if(btn){
+btn.addEventListener('click', function(){setTimeout(renderEnhancedInsights, 20);});
+}
+document.querySelectorAll('input,select').forEach(el=>{
+el.addEventListener('keydown', function(e){
+if(e.key==='Enter') setTimeout(renderEnhancedInsights, 30);
+});
+});
+}
+
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded', attachEnhancement);
+}else{
+attachEnhancement();
+}
+
+})();
+
+
+/* ===== CalculatorWorks Flagship Authority Upgrade ===== */
+
+(function(){
+
+function byId(id){ return document.getElementById(id); }
+function val(id){ const el=byId(id); return el ? parseFloat(el.value) : NaN; }
+function fmtMoney(n){ return isFinite(n) ? '$'+Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2}) : '$0.00'; }
+
+function addShareState(){
+const card=document.querySelector('.calculator-card');
+if(!card || document.getElementById('cwShareState')) return;
+
+const controls=document.createElement('div');
+controls.id='cwShareState';
+controls.style.marginTop='16px';
+controls.innerHTML='<button type="button" class="btn secondary" id="cwCopyLinkBtn">Copy result link</button>';
+
+const result=document.getElementById('result');
+if(result && result.parentNode){
+result.parentNode.appendChild(controls);
+}
+
+const copyBtn=document.getElementById('cwCopyLinkBtn');
+if(!copyBtn) return;
+
+copyBtn.addEventListener('click',function(){
+const params=new URLSearchParams();
+document.querySelectorAll('input,select').forEach(el=>{
+if(el.id && el.value) params.set(el.id, el.value);
+});
+const url=window.location.origin+window.location.pathname+(params.toString()?'?'+params.toString():'');
+navigator.clipboard && navigator.clipboard.writeText(url).then(()=>{
+copyBtn.textContent='Copied';
+setTimeout(()=>copyBtn.textContent='Copy result link',1400);
+}).catch(()=>{
+copyBtn.textContent='Copy unavailable';
+setTimeout(()=>copyBtn.textContent='Copy result link',1400);
+});
+});
+}
+
+function restoreInputsFromUrl(){
+const params=new URLSearchParams(window.location.search);
+if(!params.toString()) return;
+params.forEach((value,key)=>{
+const el=byId(key);
+if(el && 'value' in el) el.value=value;
+});
+}
+
+function addScenarioHint(){
+const key=(location.pathname.split('/').pop()||'').toLowerCase();
+if(!/(mortgage|loan|compound|savings|salary|debt|credit-card|bmi|percentage)/.test(key)) return;
+const card=document.querySelector('.calculator-card');
+if(!card || document.querySelector('.cw-scenario-hint')) return;
+const hint=document.createElement('div');
+hint.className='cw-authority-note cw-scenario-hint';
+hint.innerHTML='<strong>Scenario tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';
+card.appendChild(hint);
+}
+
+restoreInputsFromUrl();
+
+if(document.readyState==='loading'){
+document.addEventListener('DOMContentLoaded',function(){
+addShareState();
+addScenarioHint();
+});
+}else{
+addShareState();
+addScenarioHint();
+}
+
+})();
+
+
+/* ===== CalculatorWorks Advanced Flagship Tools Upgrade ===== */
+(function(){
+function addShareState(){const card=document.querySelector('.calculator-card');if(!card||document.getElementById('cwShareState'))return;const controls=document.createElement('div');controls.id='cwShareState';controls.style.marginTop='16px';controls.innerHTML='<button type="button" class="btn secondary" id="cwCopyLinkBtn">Copy result link</button>';const result=document.getElementById('result');if(result&&result.parentNode){result.parentNode.appendChild(controls);}const btn=document.getElementById('cwCopyLinkBtn');if(!btn)return;btn.addEventListener('click',function(){const params=new URLSearchParams();document.querySelectorAll('input,select').forEach(el=>{if(el.id&&el.value)params.set(el.id,el.value);});const url=window.location.origin+window.location.pathname+(params.toString()?'?'+params.toString():'');if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>{btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy result link',1400);}).catch(()=>{btn.textContent='Copy unavailable';setTimeout(()=>btn.textContent='Copy result link',1400);});}});}
+function restoreInputsFromUrl(){const params=new URLSearchParams(window.location.search);if(!params.toString())return;params.forEach((value,key)=>{const el=document.getElementById(key);if(el&&'value' in el)el.value=value;});}
+function addScenarioHint(){const key=(location.pathname.split('/').pop()||'').toLowerCase();if(!/(mortgage|loan|compound|savings|salary|debt|credit-card|bmi|percentage)/.test(key))return;const card=document.querySelector('.calculator-card');if(!card||document.querySelector('.cw-scenario-hint'))return;const hint=document.createElement('div');hint.className='cw-warning-box cw-scenario-hint';hint.innerHTML='<strong>Scenario tip:</strong> Run more than one scenario. Change the rate, term, contribution, payment amount, or starting value to compare outcomes before relying on a single result.';card.appendChild(hint);}restoreInputsFromUrl();if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){addShareState();addScenarioHint();});}else{addShareState();addScenarioHint();}})();
+
+
+/* ===== CalculatorWorks Reliable Global Search Fix ===== */
+
+(function() {
+'use strict';
+
+const CW_SEARCH_INDEX = [{"title": "Loan Repayment Calculator", "url": "/loan-repayment-calculator", "category": "Finance", "description": "Use the free loan repayment calculator to estimate monthly loan payments with amortisation formula examples, planning tips, and related mortgage and savings tools.", "searchText": "loan repayment calculator loan repayment calculator.html use the free loan repayment calculator to estimate monthly loan payments with amortisation formula examples, planning tips, and related mortgage and savings tools. finance"}, {"title": "Extra Payment Mortgage Calculator", "url": "/extra-payment-mortgage-calculator", "category": "Finance", "description": "Estimate how making an extra monthly mortgage payment could reduce interest and shorten the loan payoff timeline.", "searchText": "extra payment mortgage calculator extra payment mortgage calculator.html estimate how making an extra monthly mortgage payment could reduce interest and shorten the loan payoff timeline. finance"}, {"title": "Mortgage Affordability Calculator", "url": "/mortgage-affordability-calculator", "category": "Finance", "description": "Estimate an affordable home price from a monthly mortgage budget, interest rate, loan term and down payment.", "searchText": "mortgage affordability calculator mortgage affordability calculator.html estimate an affordable home price from a monthly mortgage budget, interest rate, loan term and down payment. finance"}, {"title": "Mortgage Calculator", "url": "/mortgage-calculator", "category": "Finance", "description": "Estimate monthly mortgage repayments from loan amount, interest rate, and loan term.", "searchText": "mortgage calculator mortgage calculator.html estimate monthly mortgage repayments from loan amount, interest rate, and loan term. finance"}, {"title": "Mortgage Interest Calculator", "url": "/mortgage-interest-calculator", "category": "Finance", "description": "Estimate total mortgage interest over the life of a loan.", "searchText": "mortgage interest calculator mortgage interest calculator.html estimate total mortgage interest over the life of a loan. finance"}, {"title": "Extra Payment Mortgage Calculator", "url": "/extra-payment-mortgage", "category": "Finance", "description": "Estimate interest savings from extra mortgage payments.", "searchText": "extra payment mortgage calculator extra payment mortgage.html estimate interest savings from extra mortgage payments. finance"}, {"title": "Mortgage Tools and Calculators", "url": "/mortgage-tools", "category": "Finance", "description": "Compare mortgage payments, affordability, refinance savings, amortization, extra repayments, down payments, DTI and rent-vs-buy scenarios.", "searchText": "mortgage tools and calculators mortgage tools.html compare mortgage payments, affordability, refinance savings, amortization, extra repayments, down payments, dti and rent-vs-buy scenarios. finance"}, {"title": "Offset Account Savings Calculator", "url": "/offset-account-savings", "category": "Finance", "description": "Estimate simple mortgage offset interest savings.", "searchText": "offset account savings calculator offset account savings.html estimate simple mortgage offset interest savings. finance"}, {"title": "Refinance Calculator", "url": "/refinance-calculator", "category": "Finance", "description": "Estimate potential monthly savings and break-even time when refinancing a mortgage.", "searchText": "refinance calculator refinance calculator.html estimate potential monthly savings and break-even time when refinancing a mortgage. finance"}, {"title": "Refinance Savings Calculator", "url": "/refinance-savings", "category": "Finance", "description": "Compare current and new loan payments to estimate monthly refinance savings.", "searchText": "refinance savings calculator refinance savings.html compare current and new loan payments to estimate monthly refinance savings. finance"}, {"title": "Finance Calculators", "url": "/finance-calculators", "category": "Finance", "description": "Use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas and examples.", "searchText": "finance calculators finance calculators.html use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas and examples. finance"}, {"title": "Finance Calculators", "url": "/finance", "category": "Finance", "description": "Use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas and examples.", "searchText": "finance calculators finance.html use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas and examples. finance"}, {"title": "Down Payment Calculator", "url": "/down-payment-calculator", "category": "Calculator", "description": "Estimate deposit size and resulting loan amount from a purchase price and deposit percentage.", "searchText": "down payment calculator down payment calculator.html estimate deposit size and resulting loan amount from a purchase price and deposit percentage. calculator"}, {"title": "Down Payment Calculator", "url": "/down-payment", "category": "Calculator", "description": "Work out a down payment amount, down payment percentage, and remaining loan size from a home purchase price.", "searchText": "down payment calculator down payment.html work out a down payment amount, down payment percentage, and remaining loan size from a home purchase price. calculator"}, {"title": "Offset Account Savings Calculator", "url": "/offset-account-calculator", "category": "Calculator", "description": "Estimate annual interest savings from holding money in a mortgage offset account.", "searchText": "offset account savings calculator offset account calculator.html estimate annual interest savings from holding money in a mortgage offset account. calculator"}, {"title": "Pay Raise Calculator", "url": "/pay-raise-calculator", "category": "Calculator", "description": "Estimate raise amount and new salary after a percentage increase.", "searchText": "pay raise calculator pay raise calculator.html estimate raise amount and new salary after a percentage increase. calculator"}, {"title": "ARM vs Fixed Mortgage Calculator", "url": "/arm-vs-fixed-mortgage-calculator", "category": "Finance", "description": "Compare an adjustable-rate mortgage estimate with a fixed-rate mortgage estimate.", "searchText": "arm vs fixed mortgage calculator arm vs fixed mortgage calculator.html compare an adjustable-rate mortgage estimate with a fixed-rate mortgage estimate. finance"}, {"title": "Biweekly Mortgage Calculator", "url": "/biweekly-mortgage-calculator", "category": "Finance", "description": "Estimate biweekly mortgage payments and compare them with standard monthly payments.", "searchText": "biweekly mortgage calculator biweekly mortgage calculator.html estimate biweekly mortgage payments and compare them with standard monthly payments. finance"}, {"title": "Mortgage Amortization Calculator", "url": "/mortgage-amortization-calculator", "category": "Finance", "description": "Estimate monthly mortgage repayment, total interest, total repayment, and the approximate first-month interest and principal split.", "searchText": "mortgage amortization calculator mortgage amortization calculator.html estimate monthly mortgage repayment, total interest, total repayment, and the approximate first-month interest and principal split. finance"}, {"title": "Mortgage Amortization Calculator", "url": "/mortgage-amortization", "category": "Finance", "description": "Estimate principal, interest, and total mortgage cost.", "searchText": "mortgage amortization calculator mortgage amortization.html estimate principal, interest, and total mortgage cost. finance"}, {"title": "Mortgage Payoff Calculator", "url": "/mortgage-payoff-calculator", "category": "Finance", "description": "Estimate how long it may take to pay off a mortgage with a chosen monthly payment.", "searchText": "mortgage payoff calculator mortgage payoff calculator.html estimate how long it may take to pay off a mortgage with a chosen monthly payment. finance"}, {"title": "Auto Loan Calculator", "url": "/auto-loan", "category": "Finance", "description": "Estimate a car loan payment using vehicle price, deposit, interest rate, and loan term.", "searchText": "auto loan calculator auto loan.html estimate a car loan payment using vehicle price, deposit, interest rate, and loan term. finance"}, {"title": "Discount Calculator", "url": "/discount", "category": "Percentage", "description": "Calculate sale price and savings after a discount.", "searchText": "discount calculator discount.html calculate sale price and savings after a discount. percentage"}, {"title": "Loan Payment Calculator", "url": "/loan-payment", "category": "Finance", "description": "Estimate monthly loan repayments, total repayment, and interest from amount, rate, and term.", "searchText": "loan payment calculator loan payment.html estimate monthly loan repayments, total repayment, and interest from amount, rate, and term. finance"}, {"title": "Compound Interest Calculator", "url": "/compound-interest-calculator", "category": "Finance", "description": "Calculate compound interest growth, interest earned, and final balance with the free Compound Interest Calculator from CalculatorWorks.", "searchText": "compound interest calculator compound interest calculator.html calculate compound interest growth, interest earned, and final balance with the free compound interest calculator from calculatorworks. finance"}, {"title": "Compound Interest Calculator", "url": "/compound-interest", "category": "Finance", "description": "Estimate growth from principal, contributions, interest rate, and time.", "searchText": "compound interest calculator compound interest.html estimate growth from principal, contributions, interest rate, and time. finance"}, {"title": "Hourly to Salary Calculator", "url": "/hourly-to-salary-calculator", "category": "Finance", "description": "Convert an hourly rate into weekly, monthly, and annual pay using hours per week.", "searchText": "hourly to salary calculator hourly to salary calculator.html convert an hourly rate into weekly, monthly, and annual pay using hours per week. finance"}, {"title": "Hourly to Salary Calculator", "url": "/hourly-to-salary", "category": "Finance", "description": "Convert hourly pay into weekly, monthly, and annual salary estimates.", "searchText": "hourly to salary calculator hourly to salary.html convert hourly pay into weekly, monthly, and annual salary estimates. finance"}, {"title": "Paycheck Calculator", "url": "/paycheck-calculator", "category": "Finance", "description": "Estimate gross and post-tax pay per pay period from annual salary, pay periods, and a flat tax rate.", "searchText": "paycheck calculator paycheck calculator.html estimate gross and post-tax pay per pay period from annual salary, pay periods, and a flat tax rate. finance"}, {"title": "Salary Calculator", "url": "/salary-calculator", "category": "Finance", "description": "Convert annual salary into monthly, fortnightly, weekly, and hourly pay estimates with the free Salary Calculator from CalculatorWorks.", "searchText": "salary calculator salary calculator.html convert annual salary into monthly, fortnightly, weekly, and hourly pay estimates with the free salary calculator from calculatorworks. finance"}, {"title": "Salary and Pay Calculators", "url": "/salary-pay-calculators", "category": "Finance", "description": "Convert salary, hourly pay, overtime, commission, pay raises, contractor rates and leave payout estimates with one connected pay calculator hub.", "searchText": "salary and pay calculators salary pay calculators.html convert salary, hourly pay, overtime, commission, pay raises, contractor rates and leave payout estimates with one connected pay calculator hub. finance"}, {"title": "Salary to Hourly Calculator", "url": "/salary-to-hourly-calculator", "category": "Finance", "description": "Convert an annual salary into an estimated hourly rate.", "searchText": "salary to hourly calculator salary to hourly calculator.html convert an annual salary into an estimated hourly rate. finance"}, {"title": "All free online calculators", "url": "/all-calculators", "category": "Calculator", "description": "Browse every free online calculator available on CalculatorWorks, including finance calculators, percentage tools, unit converters, health calculators, date tools, busine", "searchText": "all free online calculators all calculators.html browse every free online calculator available on calculatorworks, including finance calculators, percentage tools, unit converters, health calculators, date tools, busine calculator"}, {"title": "All free online calculators", "url": "/calculators", "category": "Calculator", "description": "Browse every free online calculator available on CalculatorWorks, including finance calculators, percentage tools, unit converters, health calculators, date tools, busine", "searchText": "all free online calculators calculators.html browse every free online calculator available on calculatorworks, including finance calculators, percentage tools, unit converters, health calculators, date tools, busine calculator"}, {"title": "Paycheck Calculator", "url": "/paycheck", "category": "Finance", "description": "Estimate take-home pay after a simple deduction percentage.", "searchText": "paycheck calculator paycheck.html estimate take-home pay after a simple deduction percentage. finance"}, {"title": "Tax Withholding Calculator", "url": "/tax-withholding-calculator", "category": "Finance", "description": "Estimate tax withheld from gross pay using a withholding percentage.", "searchText": "tax withholding calculator tax withholding calculator.html estimate tax withheld from gross pay using a withholding percentage. finance"}, {"title": "Refinance Savings Calculator", "url": "/refinance-savings-calculator", "category": "Finance", "description": "Estimate monthly refinance savings and break-even time from refinance costs.", "searchText": "refinance savings calculator refinance savings calculator.html estimate monthly refinance savings and break-even time from refinance costs. finance"}, {"title": "Retirement Savings Calculator", "url": "/retirement-savings-calculator", "category": "Finance", "description": "Estimate future retirement savings from a current balance, annual return, and years to retirement.", "searchText": "retirement savings calculator retirement savings calculator.html estimate future retirement savings from a current balance, annual return, and years to retirement. finance"}, {"title": "Retirement Savings Calculator", "url": "/retirement-savings", "category": "Finance", "description": "Project retirement savings from current balance and return.", "searchText": "retirement savings calculator retirement savings.html project retirement savings from current balance and return. finance"}, {"title": "Savings Calculator", "url": "/savings-calculator", "category": "Finance", "description": "Use the free savings calculator to estimate future balance and interest earned from a starting amount, annual rate, and savings term with examples and FAQs.", "searchText": "savings calculator savings calculator.html use the free savings calculator to estimate future balance and interest earned from a starting amount, annual rate, and savings term with examples and faqs. finance"}, {"title": "Savings Goal Calculator", "url": "/savings-goal-calculator", "category": "Finance", "description": "Estimate months needed to hit a target using a starting balance and monthly saving amount.", "searchText": "savings goal calculator savings goal calculator.html estimate months needed to hit a target using a starting balance and monthly saving amount. finance"}, {"title": "Savings Goal Calculator", "url": "/savings-goal", "category": "Finance", "description": "Calculate the monthly saving needed to reach a target by a deadline.", "searchText": "savings goal calculator savings goal.html calculate the monthly saving needed to reach a target by a deadline. finance"}, {"title": "Debt Avalanche Calculator", "url": "/debt-avalanche-calculator", "category": "Finance", "description": "Estimate debt payoff time when prioritising higher-interest debt with a fixed monthly payment.", "searchText": "debt avalanche calculator debt avalanche calculator.html estimate debt payoff time when prioritising higher-interest debt with a fixed monthly payment. finance"}, {"title": "Debt Avalanche Calculator", "url": "/debt-avalanche", "category": "Finance", "description": "Estimate payoff time for high-interest debt.", "searchText": "debt avalanche calculator debt avalanche.html estimate payoff time for high-interest debt. finance"}, {"title": "Debt Payoff Calculator", "url": "/debt-payoff-calculator", "category": "Finance", "description": "Estimate payoff time and total interest for a balance with a fixed monthly payment.", "searchText": "debt payoff calculator debt payoff calculator.html estimate payoff time and total interest for a balance with a fixed monthly payment. finance"}, {"title": "Debt Payoff Calculator", "url": "/debt-payoff", "category": "Finance", "description": "Estimate a debt payoff timeline using balance, rate, and monthly payment.", "searchText": "debt payoff calculator debt payoff.html estimate a debt payoff timeline using balance, rate, and monthly payment. finance"}, {"title": "Debt Snowball Calculator", "url": "/debt-snowball-calculator", "category": "Finance", "description": "Estimate how quickly you can pay off a debt using a fixed monthly payment and compare payoff time against the debt balance.", "searchText": "debt snowball calculator debt snowball calculator.html estimate how quickly you can pay off a debt using a fixed monthly payment and compare payoff time against the debt balance. finance"}, {"title": "Debt Snowball Calculator", "url": "/debt-snowball", "category": "Finance", "description": "Estimate payoff time for a fixed debt payment.", "searchText": "debt snowball calculator debt snowball.html estimate payoff time for a fixed debt payment. finance"}, {"title": "Debt-to-Income Calculator", "url": "/debt-to-income-calculator", "category": "Finance", "description": "Estimate debt-to-income ratio from monthly debt payments and gross monthly income.", "searchText": "debt-to-income calculator debt to income calculator.html estimate debt-to-income ratio from monthly debt payments and gross monthly income. finance"}, {"title": "Debt-to-Income Calculator", "url": "/debt-to-income", "category": "Finance", "description": "Compare monthly debt payments with gross monthly income.", "searchText": "debt-to-income calculator debt to income.html compare monthly debt payments with gross monthly income. finance"}, {"title": "Credit Card Payoff Calculator", "url": "/credit-card-payoff-calculator", "category": "Finance", "description": "Estimate payoff time and total interest from a balance, APR, and monthly payment.", "searchText": "credit card payoff calculator credit card payoff calculator.html estimate payoff time and total interest from a balance, apr, and monthly payment. finance"}, {"title": "Credit Card Payoff Calculator", "url": "/credit-card-payoff", "category": "Finance", "description": "Estimate how long it may take to pay off a card balance and how much interest could be paid.", "searchText": "credit card payoff calculator credit card payoff.html estimate how long it may take to pay off a card balance and how much interest could be paid. finance"}, {"title": "Amortization Calculator", "url": "/amortization-calculator", "category": "Calculator", "description": "Estimate monthly payment, total interest and total cost for an amortising loan.", "searchText": "amortization calculator amortization calculator.html estimate monthly payment, total interest and total cost for an amortising loan. calculator"}, {"title": "Extra Payment Calculator", "url": "/extra-payment-calculator", "category": "Calculator", "description": "Estimate how extra monthly repayments can reduce loan time and interest.", "searchText": "extra payment calculator extra payment calculator.html estimate how extra monthly repayments can reduce loan time and interest. calculator"}, {"title": "Commission Calculator", "url": "/commission-calculator", "category": "Calculator", "description": "Use the free commission calculator to work out sales commission, commission amount, and total pay including optional base salary. Includes formula, examples, and FAQ.", "searchText": "commission calculator commission calculator.html use the free commission calculator to work out sales commission, commission amount, and total pay including optional base salary. includes formula, examples, and faq. calculator"}, {"title": "Body Fat Calculator", "url": "/body-fat-calculator", "category": "Health", "description": "Estimate body fat percentage from common circumference measurements for general fitness planning.", "searchText": "body fat calculator body fat calculator.html estimate body fat percentage from common circumference measurements for general fitness planning. health"}, {"title": "Contribution Margin Calculator", "url": "/contribution-margin-calculator", "category": "Percentage", "description": "Calculate contribution per unit and contribution-margin ratio from price and variable cost.", "searchText": "contribution margin calculator contribution margin calculator.html calculate contribution per unit and contribution-margin ratio from price and variable cost. percentage"}, {"title": "Contribution Margin Calculator", "url": "/contribution-margin", "category": "Percentage", "description": "Calculate contribution margin per unit and margin percentage.", "searchText": "contribution margin calculator contribution margin.html calculate contribution margin per unit and margin percentage. percentage"}, {"title": "Credit Utilization Calculator", "url": "/credit-utilization", "category": "Calculator", "description": "Calculate credit usage as a percentage of total credit limit.", "searchText": "credit utilization calculator credit utilization.html calculate credit usage as a percentage of total credit limit. calculator"}, {"title": "Discount Calculator", "url": "/discount-calculator", "category": "Percentage", "description": "Use the free discount calculator to find sale price, amount saved, and percentage-off results with simple formulas, examples, and related percentage tools.", "searchText": "discount calculator discount calculator.html use the free discount calculator to find sale price, amount saved, and percentage-off results with simple formulas, examples, and related percentage tools. percentage"}, {"title": "Lean Body Mass Calculator", "url": "/lean-body-mass-calculator", "category": "Health", "description": "Estimate lean body mass from body weight and body fat percentage.", "searchText": "lean body mass calculator lean body mass calculator.html estimate lean body mass from body weight and body fat percentage. health"}, {"title": "Margin Calculator", "url": "/margin-calculator", "category": "Percentage", "description": "Use the free margin calculator to find gross profit and profit margin percentage from selling price and cost, with examples, FAQs, and related pricing tools.", "searchText": "margin calculator margin calculator.html use the free margin calculator to find gross profit and profit margin percentage from selling price and cost, with examples, faqs, and related pricing tools. percentage"}, {"title": "Markup Calculator", "url": "/markup-calculator", "category": "Percentage", "description": "Use the free markup calculator to turn product cost and markup percentage into selling price and gross profit, with examples, FAQs, and related pricing tools.", "searchText": "markup calculator markup calculator.html use the free markup calculator to turn product cost and markup percentage into selling price and gross profit, with examples, faqs, and related pricing tools. percentage"}, {"title": "Pay Raise Calculator", "url": "/pay-raise", "category": "Calculator", "description": "Calculate new pay after a raise amount or percentage.", "searchText": "pay raise calculator pay raise.html calculate new pay after a raise amount or percentage. calculator"}, {"title": "Percent Change Calculator", "url": "/percent-change-calculator", "category": "Percentage", "description": "Calculate percent change between two values instantly with CalculatorWorks. Includes formula, examples, and a simple percent change calculator.", "searchText": "percent change calculator percent change calculator.html calculate percent change between two values instantly with calculatorworks. includes formula, examples, and a simple percent change calculator. percentage"}, {"title": "Percentage Calculator", "url": "/percentage-calculator", "category": "Percentage", "description": "Use the free percentage calculator to find X% of Y instantly with a simple formula, worked examples, and links to discount and percent change tools.", "searchText": "percentage calculator percentage calculator.html use the free percentage calculator to find x% of y instantly with a simple formula, worked examples, and links to discount and percent change tools. percentage"}, {"title": "Percentage Calculators", "url": "/percentage-calculators", "category": "Percentage", "description": "Use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons.", "searchText": "percentage calculators percentage calculators.html use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons. percentage"}, {"title": "Percentage Calculators", "url": "/percentage", "category": "Percentage", "description": "Use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons.", "searchText": "percentage calculators percentage.html use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons. percentage"}, {"title": "Percentage Decrease Calculator", "url": "/percentage-decrease-calculator", "category": "Percentage", "description": "Calculate percentage decreases instantly with CalculatorWorks. Includes formula, examples, and a simple decrease calculator.", "searchText": "percentage decrease calculator percentage decrease calculator.html calculate percentage decreases instantly with calculatorworks. includes formula, examples, and a simple decrease calculator. percentage"}, {"title": "Percentage Decrease Calculator", "url": "/percentage-decrease", "category": "Percentage", "description": "Calculate the percentage decrease from one value to another.", "searchText": "percentage decrease calculator percentage decrease.html calculate the percentage decrease from one value to another. percentage"}, {"title": "Percentage Increase Calculator", "url": "/percentage-increase-calculator", "category": "Percentage", "description": "Calculate percentage increases instantly with CalculatorWorks. Includes formula, examples, and a simple increase calculator.", "searchText": "percentage increase calculator percentage increase calculator.html calculate percentage increases instantly with calculatorworks. includes formula, examples, and a simple increase calculator. percentage"}, {"title": "Percentage Increase Calculator", "url": "/percentage-increase", "category": "Percentage", "description": "Calculate the percentage increase from one value to another.", "searchText": "percentage increase calculator percentage increase.html calculate the percentage increase from one value to another. percentage"}, {"title": "ROI Calculator", "url": "/roi-calculator", "category": "Calculator", "description": "Use the free ROI calculator to find return on investment percentage and net profit from your investment cost and gain. Includes formula, worked examples, and FAQ.", "searchText": "roi calculator roi calculator.html use the free roi calculator to find return on investment percentage and net profit from your investment cost and gain. includes formula, worked examples, and faq. calculator"}, {"title": "Roofing Calculator", "url": "/roofing-calculator", "category": "Calculator", "description": "Estimate roof area and material allowance from building length, width, roof pitch factor and waste percentage.", "searchText": "roofing calculator roofing calculator.html estimate roof area and material allowance from building length, width, roof pitch factor and waste percentage. calculator"}, {"title": "BMI Calculator", "url": "/bmi-calculator", "category": "Health", "description": "Calculate your Body Mass Index (BMI) instantly with CalculatorWorks. Includes formula, weight category ranges, worked examples, and a simple BMI calculator.", "searchText": "bmi calculator bmi calculator.html calculate your body mass index (bmi) instantly with calculatorworks. includes formula, weight category ranges, worked examples, and a simple bmi calculator. health"}, {"title": "BMI Calculator", "url": "/bmi", "category": "Health", "description": "Estimate body mass index from height and weight.", "searchText": "bmi calculator bmi.html estimate body mass index from height and weight. health"}, {"title": "Bonus Tax Calculator", "url": "/bonus-tax-calculator", "category": "Finance", "description": "Estimate bonus tax withholding and net bonus amount.", "searchText": "bonus tax calculator bonus tax calculator.html estimate bonus tax withholding and net bonus amount. finance"}, {"title": "Investment Return Calculator", "url": "/investment-return-calculator", "category": "Finance", "description": "Estimate future investment value, total contributions, and growth from a starting amount, annual return, and time period.", "searchText": "investment return calculator investment return calculator.html estimate future investment value, total contributions, and growth from a starting amount, annual return, and time period. finance"}, {"title": "Investment Return Calculator", "url": "/investment-return", "category": "Finance", "description": "Estimate long-term investment growth.", "searchText": "investment return calculator investment return.html estimate long-term investment growth. finance"}, {"title": "Paycheck Estimator", "url": "/paycheck-estimator-calculator", "category": "Finance", "description": "Estimate take-home pay after taxes and deductions.", "searchText": "paycheck estimator paycheck estimator calculator.html estimate take-home pay after taxes and deductions. finance"}, {"title": "Sales Tax Calculator", "url": "/sales-tax-calculator", "category": "Finance", "description": "Calculate tax amount and final price from a pre-tax amount and sales-tax rate.", "searchText": "sales tax calculator sales tax calculator.html calculate tax amount and final price from a pre-tax amount and sales-tax rate. finance"}, {"title": "Sales Tax Calculator", "url": "/sales-tax", "category": "Finance", "description": "Add or reverse sales tax from a purchase price.", "searchText": "sales tax calculator sales tax.html add or reverse sales tax from a purchase price. finance"}, {"title": "Self-Employed Tax Calculator", "url": "/self-employed-tax-calculator", "category": "Finance", "description": "Estimate self-employed tax reserve from income and expenses.", "searchText": "self-employed tax calculator self employed tax calculator.html estimate self-employed tax reserve from income and expenses. finance"}, {"title": "Simple Interest Calculator", "url": "/simple-interest-calculator", "category": "Finance", "description": "Calculate simple interest, total interest earned, and final balance with the free Simple Interest Calculator from CalculatorWorks.", "searchText": "simple interest calculator simple interest calculator.html calculate simple interest, total interest earned, and final balance with the free simple interest calculator from calculatorworks. finance"}, {"title": "Simple Interest Calculator", "url": "/simple-interest", "category": "Finance", "description": "Calculate interest using principal, annual rate, and time.", "searchText": "simple interest calculator simple interest.html calculate interest using principal, annual rate, and time. finance"}, {"title": "Age Calculator", "url": "/age-calculator", "category": "Calculator", "description": "Calculate your exact age in years, months, and days with CalculatorWorks. Includes formula, worked examples, and a simple age calculator.", "searchText": "age calculator age calculator.html calculate your exact age in years, months, and days with calculatorworks. includes formula, worked examples, and a simple age calculator. calculator"}, {"title": "Age Calculator", "url": "/age", "category": "Calculator", "description": "Calculate age from a date of birth.", "searchText": "age calculator age.html calculate age from a date of birth. calculator"}, {"title": "Age Difference Calculator", "url": "/age-difference-calculator", "category": "Calculator", "description": "Estimate the age difference between two birth dates in years and months.", "searchText": "age difference calculator age difference calculator.html estimate the age difference between two birth dates in years and months. calculator"}, {"title": "Asphalt Calculator", "url": "/asphalt-calculator", "category": "Calculator", "description": "Estimate asphalt volume from area and depth.", "searchText": "asphalt calculator asphalt calculator.html estimate asphalt volume from area and depth. calculator"}, {"title": "Average Calculator", "url": "/average-calculator", "category": "Calculator", "description": "Calculate the average (mean) of a set of numbers instantly with CalculatorWorks. Includes formula, worked examples, and a simple average calculator.", "searchText": "average calculator average calculator.html calculate the average (mean) of a set of numbers instantly with calculatorworks. includes formula, worked examples, and a simple average calculator. calculator"}, {"title": "BMR Calculator", "url": "/bmr-calculator", "category": "Calculator", "description": "Estimate basal metabolic rate using weight, height, age and sex adjustment.", "searchText": "bmr calculator bmr calculator.html estimate basal metabolic rate using weight, height, age and sex adjustment. calculator"}, {"title": "Body Surface Area Calculator", "url": "/body-surface-area-calculator", "category": "Health", "description": "Estimate body surface area from height and weight.", "searchText": "body surface area calculator body surface area calculator.html estimate body surface area from height and weight. health"}, {"title": "Break-Even Calculator", "url": "/break-even-calculator", "category": "Calculator", "description": "Use the free break-even calculator to find how many units you need to sell to cover costs. Shows break-even units and break-even revenue with formula and examples.", "searchText": "break-even calculator break even calculator.html use the free break-even calculator to find how many units you need to sell to cover costs. shows break-even units and break-even revenue with formula and examples. calculator"}, {"title": "Brick Calculator", "url": "/brick-calculator", "category": "Calculator", "description": "Estimate bricks required from wall area and brick coverage.", "searchText": "brick calculator brick calculator.html estimate bricks required from wall area and brick coverage. calculator"}, {"title": "Business Calculators", "url": "/business-calculators", "category": "Calculator", "description": "Use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios.", "searchText": "business calculators business calculators.html use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios. calculator"}, {"title": "Business Calculators", "url": "/business", "category": "Calculator", "description": "Use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios.", "searchText": "business calculators business.html use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios. calculator"}, {"title": "Business Days Calculator", "url": "/business-days-calculator", "category": "Calculator", "description": "Count weekdays between two dates while excluding weekends.", "searchText": "business days calculator business days calculator.html count weekdays between two dates while excluding weekends. calculator"}, {"title": "Business Profit Planner Calculator", "url": "/business-profit-planner-calculator", "category": "Calculator", "description": "Estimate projected profit from units sold and profit per unit.", "searchText": "business profit planner calculator business profit planner calculator.html estimate projected profit from units sold and profit per unit. calculator"}, {"title": "CM to Inches Calculator", "url": "/cm-to-inches", "category": "Conversion", "description": "Convert centimetres to inches quickly and accurately.", "searchText": "cm to inches calculator cm to inches.html convert centimetres to inches quickly and accurately. conversion"}, {"title": "Calorie Calculator", "url": "/calorie-calculator", "category": "Health", "description": "Estimate daily maintenance calories using weight, height, age, sex and activity level.", "searchText": "calorie calculator calorie calculator.html estimate daily maintenance calories using weight, height, age, sex and activity level. health"}, {"title": "Calorie Deficit Calculator", "url": "/calorie-deficit-calculator", "category": "Health", "description": "Estimate a calorie target from maintenance calories and desired deficit.", "searchText": "calorie deficit calculator calorie deficit calculator.html estimate a calorie target from maintenance calories and desired deficit. health"}, {"title": "Celsius to Fahrenheit Calculator", "url": "/celsius-to-fahrenheit", "category": "Conversion", "description": "Convert Celsius to Fahrenheit with a fast °C to °F converter, weather and cooking examples, quick reference values, and clear formula guidance.", "searchText": "celsius to fahrenheit calculator celsius to fahrenheit.html convert celsius to fahrenheit with a fast °c to °f converter, weather and cooking examples, quick reference values, and clear formula guidance. conversion"}, {"title": "Concrete Calculator", "url": "/concrete-calculator", "category": "Calculator", "description": "Estimate cubic metres of concrete for a rectangular slab.", "searchText": "concrete calculator concrete calculator.html estimate cubic metres of concrete for a rectangular slab. calculator"}, {"title": "Contractor Rate Calculator", "url": "/contractor-rate-calculator", "category": "Calculator", "description": "Convert a target annual income into an estimated contractor or freelance hourly rate after overhead and billable hours.", "searchText": "contractor rate calculator contractor rate calculator.html convert a target annual income into an estimated contractor or freelance hourly rate after overhead and billable hours. calculator"}, {"title": "Countdown Calculator", "url": "/countdown-calculator", "category": "Calculator", "description": "Count the days remaining until a future date with a simple countdown calculator for events, deadlines, and milestones.", "searchText": "countdown calculator countdown calculator.html count the days remaining until a future date with a simple countdown calculator for events, deadlines, and milestones. calculator"}, {"title": "Credit Utilization Calculator", "url": "/credit-utilization-calculator", "category": "Calculator", "description": "Estimate credit utilization from combined revolving balances and total credit limits.", "searchText": "credit utilization calculator credit utilization calculator.html estimate credit utilization from combined revolving balances and total credit limits. calculator"}, {"title": "Cubic Yard Calculator", "url": "/cubic-yard-calculator", "category": "Calculator", "description": "Estimate cubic yards from length, width and depth in feet.", "searchText": "cubic yard calculator cubic yard calculator.html estimate cubic yards from length, width and depth in feet. calculator"}, {"title": "Cups to mL Calculator", "url": "/cups-to-ml-calculator", "category": "Conversion", "description": "Convert US cups to millilitres instantly for cooking, baking, meal prep, and everyday kitchen measurements.", "searchText": "cups to ml calculator cups to ml calculator.html convert us cups to millilitres instantly for cooking, baking, meal prep, and everyday kitchen measurements. conversion"}, {"title": "Current Ratio Calculator", "url": "/current-ratio-calculator", "category": "Calculator", "description": "Estimate current ratio from current assets and current liabilities.", "searchText": "current ratio calculator current ratio calculator.html estimate current ratio from current assets and current liabilities. calculator"}, {"title": "Current Ratio Calculator", "url": "/current-ratio", "category": "Calculator", "description": "Compare current assets with current liabilities.", "searchText": "current ratio calculator current ratio.html compare current assets with current liabilities. calculator"}, {"title": "Date & Time Calculators", "url": "/date-and-time-calculators", "category": "Calculator", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "searchText": "date & time calculators date and time calculators.html use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations. calculator"}, {"title": "Date & Time Calculators", "url": "/date-calculators", "category": "Calculator", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "searchText": "date & time calculators date calculators.html use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations. calculator"}, {"title": "Date & Time Calculators", "url": "/date-time-calculators", "category": "Calculator", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "searchText": "date & time calculators date time calculators.html use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations. calculator"}, {"title": "Date & Time Calculators", "url": "/date-time", "category": "Calculator", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "searchText": "date & time calculators date time.html use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations. calculator"}, {"title": "Date Add Calculator", "url": "/date-add-calculator", "category": "Calculator", "description": "Add days to a date to estimate a future deadline or milestone.", "searchText": "date add calculator date add calculator.html add days to a date to estimate a future deadline or milestone. calculator"}, {"title": "Date Difference Calculator", "url": "/date-difference", "category": "Calculator", "description": "Calculate the number of days between two dates.", "searchText": "date difference calculator date difference.html calculate the number of days between two dates. calculator"}, {"title": "Days Between Dates Calculator", "url": "/days-between-dates-calculator", "category": "Calculator", "description": "Calculate the number of days between two dates instantly with CalculatorWorks. Includes formula, worked examples, and a simple date difference calculator.", "searchText": "days between dates calculator days between dates calculator.html calculate the number of days between two dates instantly with calculatorworks. includes formula, worked examples, and a simple date difference calculator. calculator"}, {"title": "Decking Calculator", "url": "/decking-calculator", "category": "Calculator", "description": "Estimate decking board requirements from deck area, board coverage and waste allowance.", "searchText": "decking calculator decking calculator.html estimate decking board requirements from deck area, board coverage and waste allowance. calculator"}, {"title": "Depreciation Calculator", "url": "/depreciation-calculator", "category": "Calculator", "description": "Estimate straight-line annual depreciation from cost, salvage value, and useful life.", "searchText": "depreciation calculator depreciation calculator.html estimate straight-line annual depreciation from cost, salvage value, and useful life. calculator"}, {"title": "Depreciation Calculator", "url": "/depreciation", "category": "Calculator", "description": "Estimate straight-line depreciation from cost, salvage value, and useful life.", "searchText": "depreciation calculator depreciation.html estimate straight-line depreciation from cost, salvage value, and useful life. calculator"}, {"title": "Drywall Calculator", "url": "/drywall-calculator", "category": "Calculator", "description": "Estimate drywall sheet requirements from wall area, sheet size and waste allowance.", "searchText": "drywall calculator drywall calculator.html estimate drywall sheet requirements from wall area, sheet size and waste allowance. calculator"}, {"title": "Due Date Calculator", "url": "/due-date-calculator", "category": "Calculator", "description": "Estimate a due date from the first day of the last menstrual period.", "searchText": "due date calculator due date calculator.html estimate a due date from the first day of the last menstrual period. calculator"}, {"title": "Editorial Standards", "url": "/editorial-standards", "category": "Calculator", "description": "CalculatorWorks explains how calculators are written, reviewed, maintained, and presented for general guidance.", "searchText": "editorial standards editorial standards.html calculatorworks explains how calculators are written, reviewed, maintained, and presented for general guidance. calculator"}, {"title": "Emergency Fund Calculator", "url": "/emergency-fund-calculator", "category": "Calculator", "description": "Estimate an emergency-fund target from monthly essential expenses and desired months of coverage.", "searchText": "emergency fund calculator emergency fund calculator.html estimate an emergency-fund target from monthly essential expenses and desired months of coverage. calculator"}, {"title": "Emergency Fund Calculator", "url": "/emergency-fund", "category": "Calculator", "description": "Estimate an emergency fund target based on monthly essential expenses.", "searchText": "emergency fund calculator emergency fund.html estimate an emergency fund target based on monthly essential expenses. calculator"}, {"title": "Everyday Calculators", "url": "/everyday-calculators", "category": "Calculator", "description": "Find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons.", "searchText": "everyday calculators everyday calculators.html find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons. calculator"}, {"title": "Everyday Calculators", "url": "/everyday", "category": "Calculator", "description": "Find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons.", "searchText": "everyday calculators everyday.html find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons. calculator"}, {"title": "FIRE Calculator", "url": "/fire-calculator", "category": "Calculator", "description": "Estimate a simple financial independence target from annual expenses and a withdrawal-rate assumption.", "searchText": "fire calculator fire calculator.html estimate a simple financial independence target from annual expenses and a withdrawal-rate assumption. calculator"}, {"title": "FIRE Calculator", "url": "/fire", "category": "Calculator", "description": "Estimate a financial independence target.", "searchText": "fire calculator fire.html estimate a financial independence target. calculator"}, {"title": "Fahrenheit to Celsius Calculator", "url": "/fahrenheit-to-celsius", "category": "Conversion", "description": "Convert Fahrenheit to Celsius with a fast °F to °C converter, weather and cooking examples, quick reference values, and clear formula guidance.", "searchText": "fahrenheit to celsius calculator fahrenheit to celsius.html convert fahrenheit to celsius with a fast °f to °c converter, weather and cooking examples, quick reference values, and clear formula guidance. conversion"}, {"title": "Feet to Metres Calculator", "url": "/feet-to-metres", "category": "Conversion", "description": "Convert feet and inches to metres with a clear formula and examples.", "searchText": "feet to metres calculator feet to metres.html convert feet and inches to metres with a clear formula and examples. conversion"}, {"title": "Fence Calculator", "url": "/fence-calculator", "category": "Calculator", "description": "Estimate fence panels and posts from total fence length, panel width and post spacing.", "searchText": "fence calculator fence calculator.html estimate fence panels and posts from total fence length, panel width and post spacing. calculator"}, {"title": "Flooring Calculator", "url": "/flooring-calculator", "category": "Calculator", "description": "Estimate room area and waste-adjusted flooring requirement.", "searchText": "flooring calculator flooring calculator.html estimate room area and waste-adjusted flooring requirement. calculator"}, {"title": "Flooring Calculator", "url": "/flooring", "category": "Calculator", "description": "Estimate flooring quantity including waste allowance.", "searchText": "flooring calculator flooring.html estimate flooring quantity including waste allowance. calculator"}, {"title": "Freelance Rate Calculator", "url": "/freelance-rate-calculator", "category": "Calculator", "description": "Estimate a freelance hourly rate from target income, expenses and billable hours.", "searchText": "freelance rate calculator freelance rate calculator.html estimate a freelance hourly rate from target income, expenses and billable hours. calculator"}, {"title": "GPA Calculator", "url": "/gpa-calculator", "category": "Calculator", "description": "Calculate GPA from letter grades or grade points with optional course credits using the free GPA Calculator from CalculatorWorks.", "searchText": "gpa calculator gpa calculator.html calculate gpa from letter grades or grade points with optional course credits using the free gpa calculator from calculatorworks. calculator"}, {"title": "Gallons to Litres Calculator", "url": "/gallons-to-litres-calculator", "category": "Conversion", "description": "Convert US gallons to litres instantly for fuel, water, storage, and everyday volume measurements.", "searchText": "gallons to litres calculator gallons to litres calculator.html convert us gallons to litres instantly for fuel, water, storage, and everyday volume measurements. conversion"}, {"title": "Gravel Calculator", "url": "/gravel-calculator", "category": "Calculator", "description": "Estimate gravel volume from area and depth.", "searchText": "gravel calculator gravel calculator.html estimate gravel volume from area and depth. calculator"}, {"title": "Health Calculators", "url": "/health-calculators", "category": "Health", "description": "Use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates.", "searchText": "health calculators health calculators.html use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates. health"}, {"title": "Health Calculators", "url": "/health", "category": "Health", "description": "Use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates.", "searchText": "health calculators health.html use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates. health"}, {"title": "Hours Between Dates Calculator", "url": "/hours-between-dates-calculator", "category": "Calculator", "description": "Count the number of hours between two date-and-time values.", "searchText": "hours between dates calculator hours between dates calculator.html count the number of hours between two date-and-time values. calculator"}, {"title": "Household Calculators", "url": "/construction-calculators", "category": "Calculator", "description": "Plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates.", "searchText": "household calculators construction calculators.html plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates. calculator"}, {"title": "Household Calculators", "url": "/household-calculators", "category": "Calculator", "description": "Plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates.", "searchText": "household calculators household calculators.html plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates. calculator"}, {"title": "Household Calculators", "url": "/household", "category": "Calculator", "description": "Plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates.", "searchText": "household calculators household.html plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates. calculator"}, {"title": "Ideal Weight Calculator", "url": "/ideal-weight-calculator", "category": "Calculator", "description": "Estimate a guideline weight from height using the Devine method with an optional frame adjustment.", "searchText": "ideal weight calculator ideal weight calculator.html estimate a guideline weight from height using the devine method with an optional frame adjustment. calculator"}, {"title": "Inches to CM Calculator", "url": "/inches-to-cm", "category": "Conversion", "description": "Convert inches to centimetres quickly and accurately.", "searchText": "inches to cm calculator inches to cm.html convert inches to centimetres quickly and accurately. conversion"}, {"title": "Inflation Calculator", "url": "/inflation-calculator", "category": "Calculator", "description": "Use the free inflation calculator to estimate future prices based on an annual inflation rate. Shows future cost, inflation increase amount, and purchasing power impact.", "searchText": "inflation calculator inflation calculator.html use the free inflation calculator to estimate future prices based on an annual inflation rate. shows future cost, inflation increase amount, and purchasing power impact. calculator"}, {"title": "KG to LB Calculator", "url": "/kg-to-lb", "category": "Conversion", "description": "Convert kilograms to pounds with a fast kg to lb converter, quick reference values, common weight examples, and practical fitness and shipping use cases.", "searchText": "kg to lb calculator kg to lb.html convert kilograms to pounds with a fast kg to lb converter, quick reference values, common weight examples, and practical fitness and shipping use cases. conversion"}, {"title": "KM to Miles Calculator", "url": "/km-to-miles", "category": "Conversion", "description": "Convert kilometres to miles with a fast km to mi converter, route examples, quick reference values, and practical travel and running use cases.", "searchText": "km to miles calculator km to miles.html convert kilometres to miles with a fast km to mi converter, route examples, quick reference values, and practical travel and running use cases. conversion"}, {"title": "KPH to MPH Calculator", "url": "/kph-to-mph-calculator", "category": "Conversion", "description": "Convert kilometres per hour to miles per hour instantly for travel, running, cycling, and speed checks.", "searchText": "kph to mph calculator kph to mph calculator.html convert kilometres per hour to miles per hour instantly for travel, running, cycling, and speed checks. conversion"}, {"title": "LB to KG Calculator", "url": "/lb-to-kg", "category": "Conversion", "description": "Convert pounds to kilograms with a fast lb to kg converter, quick reference values, common weight examples, and practical travel and fitness use cases.", "searchText": "lb to kg calculator lb to kg.html convert pounds to kilograms with a fast lb to kg converter, quick reference values, common weight examples, and practical travel and fitness use cases. conversion"}, {"title": "Leave Payout Calculator", "url": "/leave-payout-calculator", "category": "Calculator", "description": "Estimate the gross value of unused leave from pay rate, hours per day and leave days.", "searchText": "leave payout calculator leave payout calculator.html estimate the gross value of unused leave from pay rate, hours per day and leave days. calculator"}, {"title": "Litres per Square Metre Calculator", "url": "/litres-per-square-metre-calculator", "category": "Calculator", "description": "Estimate litres needed from area and application rate.", "searchText": "litres per square metre calculator litres per square metre calculator.html estimate litres needed from area and application rate. calculator"}, {"title": "Litres to Gallons Calculator", "url": "/litres-to-gallons-calculator", "category": "Conversion", "description": "Convert litres to US gallons instantly for fuel, water, storage, and everyday volume measurements.", "searchText": "litres to gallons calculator litres to gallons calculator.html convert litres to us gallons instantly for fuel, water, storage, and everyday volume measurements. conversion"}, {"title": "MPH to KPH Calculator", "url": "/mph-to-kph-calculator", "category": "Conversion", "description": "Convert miles per hour to kilometres per hour instantly for travel, running, cycling, and speed checks.", "searchText": "mph to kph calculator mph to kph calculator.html convert miles per hour to kilometres per hour instantly for travel, running, cycling, and speed checks. conversion"}, {"title": "Macro Calculator", "url": "/macro-calculator", "category": "Calculator", "description": "Split daily calories into estimated protein, fat and carbohydrate targets.", "searchText": "macro calculator macro calculator.html split daily calories into estimated protein, fat and carbohydrate targets. calculator"}, {"title": "Math Calculators", "url": "/math-calculators", "category": "Calculator", "description": "Use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes.", "searchText": "math calculators math calculators.html use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes. calculator"}, {"title": "Math Calculators", "url": "/math", "category": "Calculator", "description": "Use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes.", "searchText": "math calculators math.html use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes. calculator"}, {"title": "Measurement Calculators", "url": "/measurement", "category": "Calculator", "description": "Area, volume, and speed converters for practical measurement tasks.", "searchText": "measurement calculators measurement.html area, volume, and speed converters for practical measurement tasks. calculator"}, {"title": "Median Calculator", "url": "/median-calculator", "category": "Calculator", "description": "Find the median of a comma-separated list of numbers.", "searchText": "median calculator median calculator.html find the median of a comma-separated list of numbers. calculator"}, {"title": "Metres to Feet Calculator", "url": "/metres-to-feet", "category": "Conversion", "description": "Convert metres to feet and inches with practical rounding.", "searchText": "metres to feet calculator metres to feet.html convert metres to feet and inches with practical rounding. conversion"}, {"title": "Midpoint Calculator", "url": "/midpoint-calculator", "category": "Calculator", "description": "Calculate the midpoint between two coordinate points entered as x,y pairs.", "searchText": "midpoint calculator midpoint calculator.html calculate the midpoint between two coordinate points entered as x,y pairs. calculator"}, {"title": "Miles to KM Calculator", "url": "/miles-to-km", "category": "Conversion", "description": "Convert miles to kilometres with a fast mi to km converter, route examples, quick reference values, and practical travel and running use cases.", "searchText": "miles to km calculator miles to km.html convert miles to kilometres with a fast mi to km converter, route examples, quick reference values, and practical travel and running use cases. conversion"}, {"title": "Mode Calculator", "url": "/mode-calculator", "category": "Calculator", "description": "Find the most frequent value in a comma-separated list of numbers.", "searchText": "mode calculator mode calculator.html find the most frequent value in a comma-separated list of numbers. calculator"}, {"title": "Mulch Calculator", "url": "/mulch-calculator", "category": "Calculator", "description": "Estimate mulch volume from garden-bed area and depth.", "searchText": "mulch calculator mulch calculator.html estimate mulch volume from garden-bed area and depth. calculator"}, {"title": "Net Worth Calculator", "url": "/net-worth-calculator", "category": "Calculator", "description": "Estimate net worth by subtracting liabilities from assets.", "searchText": "net worth calculator net worth calculator.html estimate net worth by subtracting liabilities from assets. calculator"}, {"title": "Net Worth Calculator", "url": "/net-worth", "category": "Calculator", "description": "Estimate net worth by comparing assets and liabilities.", "searchText": "net worth calculator net worth.html estimate net worth by comparing assets and liabilities. calculator"}, {"title": "One Rep Max Calculator", "url": "/one-rep-max-calculator", "category": "Calculator", "description": "Estimate one-rep max strength from weight and reps.", "searchText": "one rep max calculator one rep max calculator.html estimate one-rep max strength from weight and reps. calculator"}, {"title": "Overtime Calculator", "url": "/overtime-calculator", "category": "Calculator", "description": "Estimate gross weekly pay when hours above 40 use an overtime multiplier.", "searchText": "overtime calculator overtime calculator.html estimate gross weekly pay when hours above 40 use an overtime multiplier. calculator"}, {"title": "Overtime Calculator", "url": "/overtime", "category": "Calculator", "description": "Estimate overtime pay from hourly rate, regular hours, and overtime hours.", "searchText": "overtime calculator overtime.html estimate overtime pay from hourly rate, regular hours, and overtime hours. calculator"}, {"title": "Ovulation Calculator", "url": "/ovulation-calculator", "category": "Calculator", "description": "Estimate the next ovulation date from the first day of the last period and average cycle length.", "searchText": "ovulation calculator ovulation calculator.html estimate the next ovulation date from the first day of the last period and average cycle length. calculator"}, {"title": "Pace Calculator", "url": "/pace-calculator", "category": "Calculator", "description": "Calculate average pace per kilometre from distance and total time in minutes.", "searchText": "pace calculator pace calculator.html calculate average pace per kilometre from distance and total time in minutes. calculator"}, {"title": "Page not found", "url": "/404", "category": "Calculator", "description": "The page you requested is not available at this URL.", "searchText": "page not found 404.html the page you requested is not available at this url. calculator"}, {"title": "Paint Calculator", "url": "/paint-calculator", "category": "Calculator", "description": "Estimate paint needed from wall area and coverage per litre.", "searchText": "paint calculator paint calculator.html estimate paint needed from wall area and coverage per litre. calculator"}, {"title": "Paint Calculator", "url": "/paint", "category": "Calculator", "description": "Estimate paint needed from wall area and coverage.", "searchText": "paint calculator paint.html estimate paint needed from wall area and coverage. calculator"}, {"title": "Paver Calculator", "url": "/paver-calculator", "category": "Calculator", "description": "Estimate number of pavers needed from area and paver size.", "searchText": "paver calculator paver calculator.html estimate number of pavers needed from area and paver size. calculator"}, {"title": "Protein Intake Calculator", "url": "/protein-intake-calculator", "category": "Calculator", "description": "Estimate a daily protein target from body weight and a grams-per-kilogram target.", "searchText": "protein intake calculator protein intake calculator.html estimate a daily protein target from body weight and a grams-per-kilogram target. calculator"}, {"title": "Quick Ratio Calculator", "url": "/quick-ratio-calculator", "category": "Calculator", "description": "Estimate the quick ratio from liquid assets and current liabilities.", "searchText": "quick ratio calculator quick ratio calculator.html estimate the quick ratio from liquid assets and current liabilities. calculator"}, {"title": "Quick Ratio Calculator", "url": "/quick-ratio", "category": "Calculator", "description": "Compare liquid assets with current liabilities.", "searchText": "quick ratio calculator quick ratio.html compare liquid assets with current liabilities. calculator"}, {"title": "Ratio Calculator", "url": "/ratio-calculator", "category": "Calculator", "description": "Simplify a ratio instantly and compare two values for recipes, scaling, maths homework, and planning tasks.", "searchText": "ratio calculator ratio calculator.html simplify a ratio instantly and compare two values for recipes, scaling, maths homework, and planning tasks. calculator"}, {"title": "Rent vs Buy Calculator", "url": "/rent-vs-buy-calculator", "category": "Calculator", "description": "Compare estimated monthly renting cost with estimated monthly ownership cost.", "searchText": "rent vs buy calculator rent vs buy calculator.html compare estimated monthly renting cost with estimated monthly ownership cost. calculator"}, {"title": "Rent vs Buy Calculator", "url": "/rent-vs-buy", "category": "Calculator", "description": "Compare estimated monthly renting costs with estimated monthly home ownership costs.", "searchText": "rent vs buy calculator rent vs buy.html compare estimated monthly renting costs with estimated monthly home ownership costs. calculator"}, {"title": "Room Perimeter Calculator", "url": "/room-perimeter-calculator", "category": "Calculator", "description": "Calculate room perimeter from length and width for painting, skirting, trim, flooring, and renovation planning.", "searchText": "room perimeter calculator room perimeter calculator.html calculate room perimeter from length and width for painting, skirting, trim, flooring, and renovation planning. calculator"}, {"title": "Shift Differential Calculator", "url": "/shift-differential-calculator", "category": "Calculator", "description": "Estimate extra earnings from a shift differential rate.", "searchText": "shift differential calculator shift differential calculator.html estimate extra earnings from a shift differential rate. calculator"}, {"title": "Slope Calculator", "url": "/slope-calculator", "category": "Calculator", "description": "Calculate slope between two coordinate points entered as x,y pairs.", "searchText": "slope calculator slope calculator.html calculate slope between two coordinate points entered as x,y pairs. calculator"}, {"title": "Square Feet to Square Metres Calculator", "url": "/square-feet-to-square-metres-calculator", "category": "Conversion", "description": "Convert square feet to square metres instantly for property, flooring, renovation, and area planning tasks.", "searchText": "square feet to square metres calculator square feet to square metres calculator.html convert square feet to square metres instantly for property, flooring, renovation, and area planning tasks. conversion"}, {"title": "Square Footage Calculator", "url": "/square-footage-calculator", "category": "Calculator", "description": "Calculate square footage from room length and width for flooring, paint, furniture, and renovation planning.", "searchText": "square footage calculator square footage calculator.html calculate square footage from room length and width for flooring, paint, furniture, and renovation planning. calculator"}, {"title": "Square Metres to Square Feet Calculator", "url": "/square-metres-to-square-feet-calculator", "category": "Conversion", "description": "Convert square metres to square feet instantly for property, flooring, renovation, and area planning tasks.", "searchText": "square metres to square feet calculator square metres to square feet calculator.html convert square metres to square feet instantly for property, flooring, renovation, and area planning tasks. conversion"}, {"title": "Standard Deviation Calculator", "url": "/standard-deviation-calculator", "category": "Calculator", "description": "Estimate population standard deviation from a list of numbers.", "searchText": "standard deviation calculator standard deviation calculator.html estimate population standard deviation from a list of numbers. calculator"}, {"title": "TDEE Calculator", "url": "/tdee-calculator", "category": "Calculator", "description": "Estimate total daily energy expenditure from weight, height, age, sex and activity level.", "searchText": "tdee calculator tdee calculator.html estimate total daily energy expenditure from weight, height, age, sex and activity level. calculator"}, {"title": "Tile Calculator", "url": "/tile-calculator", "category": "Calculator", "description": "Estimate tile quantity from total area and tile dimensions.", "searchText": "tile calculator tile calculator.html estimate tile quantity from total area and tile dimensions. calculator"}, {"title": "Time Card Calculator", "url": "/time-card-calculator", "category": "Calculator", "description": "Estimate paid hours from start time, end time, break length and number of work days.", "searchText": "time card calculator time card calculator.html estimate paid hours from start time, end time, break length and number of work days. calculator"}, {"title": "Time Duration Calculator", "url": "/time-duration-calculator", "category": "Calculator", "description": "Calculate the duration between two times in hours and minutes with CalculatorWorks. Includes formula, worked examples, and a simple time duration calculator.", "searchText": "time duration calculator time duration calculator.html calculate the duration between two times in hours and minutes with calculatorworks. includes formula, worked examples, and a simple time duration calculator. calculator"}, {"title": "Tip Calculator", "url": "/tip-calculator", "category": "Calculator", "description": "Calculate tips, total bill amounts, and per-person splits instantly with the free Tip Calculator from CalculatorWorks.", "searchText": "tip calculator tip calculator.html calculate tips, total bill amounts, and per-person splits instantly with the free tip calculator from calculatorworks. calculator"}, {"title": "Topsoil Calculator", "url": "/topsoil-calculator", "category": "Calculator", "description": "Estimate topsoil volume from area and depth.", "searchText": "topsoil calculator topsoil calculator.html estimate topsoil volume from area and depth. calculator"}, {"title": "Unit Conversion Calculators", "url": "/unit-conversion-calculators", "category": "Conversion", "description": "Convert common measurements quickly with simple unit conversion tools for home, school, work and travel.", "searchText": "unit conversion calculators unit conversion calculators.html convert common measurements quickly with simple unit conversion tools for home, school, work and travel. conversion"}, {"title": "Unit Conversion Calculators", "url": "/unit-conversion", "category": "Conversion", "description": "Convert common measurements quickly with simple unit conversion tools for home, school, work and travel.", "searchText": "unit conversion calculators unit conversion.html convert common measurements quickly with simple unit conversion tools for home, school, work and travel. conversion"}, {"title": "VAT Calculator", "url": "/vat-calculator", "category": "Calculator", "description": "Use the free VAT calculator to add VAT to a net price or remove VAT from a gross price. Shows VAT amount, net price, and gross price clearly with formula and examples.", "searchText": "vat calculator vat calculator.html use the free vat calculator to add vat to a net price or remove vat from a gross price. shows vat amount, net price, and gross price clearly with formula and examples. calculator"}, {"title": "Waist-to-Hip Ratio Calculator", "url": "/waist-to-hip-ratio-calculator", "category": "Conversion", "description": "Calculate waist-to-hip ratio from waist and hip measurements.", "searchText": "waist-to-hip ratio calculator waist to hip ratio calculator.html calculate waist-to-hip ratio from waist and hip measurements. conversion"}, {"title": "Wallpaper Calculator", "url": "/wallpaper-calculator", "category": "Calculator", "description": "Estimate wallpaper rolls from wall area, roll coverage and waste allowance.", "searchText": "wallpaper calculator wallpaper calculator.html estimate wallpaper rolls from wall area, roll coverage and waste allowance. calculator"}, {"title": "Water Intake Calculator", "url": "/water-intake-calculator", "category": "Calculator", "description": "Estimate daily water intake from body weight and activity.", "searchText": "water intake calculator water intake calculator.html estimate daily water intake from body weight and activity. calculator"}, {"title": "Week Number Calculator", "url": "/week-number-calculator", "category": "Calculator", "description": "Find the ISO week number for a selected date.", "searchText": "week number calculator week number calculator.html find the iso week number for a selected date. calculator"}, {"title": "Weeks Between Dates Calculator", "url": "/weeks-between-dates-calculator", "category": "Calculator", "description": "Convert the time span between two dates into weeks for schedules, planning, pregnancy, and project timing.", "searchText": "weeks between dates calculator weeks between dates calculator.html convert the time span between two dates into weeks for schedules, planning, pregnancy, and project timing. calculator"}, {"title": "Weighted Average Calculator", "url": "/weighted-average-calculator", "category": "Calculator", "description": "Calculate a weighted average from comma-separated values and weights.", "searchText": "weighted average calculator weighted average calculator.html calculate a weighted average from comma-separated values and weights. calculator"}, {"title": "Weighted Average Calculator", "url": "/weighted-average", "category": "Calculator", "description": "Calculate weighted average from values and weights.", "searchText": "weighted average calculator weighted average.html calculate weighted average from values and weights. calculator"}, {"title": "Work Hours Calculator", "url": "/work-hours-calculator", "category": "Calculator", "description": "Calculate total work hours from start time, end time, break length and number of days.", "searchText": "work hours calculator work hours calculator.html calculate total work hours from start time, end time, break length and number of days. calculator"}, {"title": "mL to Cups Calculator", "url": "/ml-to-cups-calculator", "category": "Conversion", "description": "Convert millilitres to US cups instantly for cooking, baking, meal prep, and kitchen measurements.", "searchText": "ml to cups calculator ml to cups calculator.html convert millilitres to us cups instantly for cooking, baking, meal prep, and kitchen measurements. conversion"}, {"title": "About CalculatorWorks", "url": "/about", "category": "Site page", "description": "About CalculatorWorks for CalculatorWorks.", "searchText": "about calculatorworks about.html about calculatorworks for calculatorworks. site page"}, {"title": "Contact CalculatorWorks", "url": "/contact", "category": "Site page", "description": "Contact CalculatorWorks for CalculatorWorks.", "searchText": "contact calculatorworks contact.html contact calculatorworks for calculatorworks. site page"}, {"title": "Privacy Policy", "url": "/privacy-policy", "category": "Site page", "description": "Read the CalculatorWorks privacy policy, including general information about analytics, advertising, and how contact details may be handled.", "searchText": "privacy policy privacy policy.html read the calculatorworks privacy policy, including general information about analytics, advertising, and how contact details may be handled. site page"}, {"title": "Privacy Policy", "url": "/privacy", "category": "Site page", "description": "Privacy Policy for CalculatorWorks.", "searchText": "privacy policy privacy.html privacy policy for calculatorworks. site page"}, {"title": "Terms of Use", "url": "/terms", "category": "Site page", "description": "Terms of Use for CalculatorWorks.", "searchText": "terms of use terms.html terms of use for calculatorworks. site page"}];
+
+function normaliseQuery(value) {
+  return String(value || '').toLowerCase().trim();
+}
+
+function scoreItem(item, q) {
+  if (!q) return 1;
+  const title = item.title.toLowerCase();
+  const category = item.category.toLowerCase();
+  const haystack = item.searchText || '';
+  let score = 0;
+
+  if (title === q) score += 100;
+  if (title.startsWith(q)) score += 70;
+  if (title.includes(q)) score += 45;
+  if (category.includes(q)) score += 25;
+
+  const terms = q.split(/\s+/).filter(Boolean);
+  terms.forEach(term => {
+    if (title.includes(term)) score += 18;
+    if (haystack.includes(term)) score += 6;
+  });
+
+  return score;
+}
+
+function cleanTitle(title) {
+  return String(title || 'Calculator').replace(/\s*\|\s*CalculatorWorks\s*$/i, '').trim();
+}
+
+function ensureSearchButton() {
+  const nav = document.querySelector('.main-nav') || document.querySelector('nav');
+  if (!nav) return null;
+
+  let trigger = document.querySelector('[data-cw-search-trigger]');
+  if (!trigger) {
+    trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'search-trigger';
+    trigger.setAttribute('data-cw-search-trigger', 'true');
+    trigger.setAttribute('aria-label', 'Search calculators');
+    trigger.textContent = 'Search Calculators';
+    nav.appendChild(trigger);
+  }
+  return trigger;
+}
+
+function ensureOverlay() {
+  let overlay = document.getElementById('cwGlobalSearchOverlay');
+
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'cwGlobalSearchOverlay';
+    overlay.className = 'global-search-overlay';
+    overlay.setAttribute('aria-hidden', 'true');
+
+    overlay.innerHTML = `
+      <div class="global-search-panel" role="dialog" aria-modal="true" aria-label="Search calculators">
+        <div class="global-search-top">
+          <input type="search" id="globalCalculatorSearch" autocomplete="off" placeholder="Search mortgage, percentage, BMI, salary, loan..." aria-label="Search calculators">
+        </div>
+        <div class="search-results" id="cwSearchResults"></div>
+      </div>
+    `;
+
+    document.body.appendChild(overlay);
+  }
+
+  return overlay;
+}
+
+function renderResults(query) {
+  const results = document.getElementById('cwSearchResults');
+  if (!results) return;
+
+  const q = normaliseQuery(query);
+
+  let matches = CW_SEARCH_INDEX
+    .map(item => ({ item, score: scoreItem(item, q) }))
+    .filter(row => !q || row.score > 0)
+    .sort((a, b) => b.score - a.score || a.item.title.localeCompare(b.item.title))
+    .slice(0, 80)
+    .map(row => row.item);
+
+  if (!matches.length) {
+    results.innerHTML = `
+      <div class="search-result-item" role="status">
+        <strong>No calculators found</strong>
+        <span>Try a broader search such as mortgage, loan, salary, percentage, BMI, savings, or conversion.</span>
+      </div>
+    `;
+    return;
+  }
+
+  results.innerHTML = matches.map(item => `
+    <a class="search-result-item" href="${item.url}">
+      <strong>${cleanTitle(item.title)}</strong>
+      <span>${item.category}${item.description ? ' — ' + item.description : ''}</span>
+    </a>
+  `).join('');
+}
+
+function openSearch() {
+  const overlay = ensureOverlay();
+  const input = overlay.querySelector('#globalCalculatorSearch');
+
+  overlay.classList.add('active');
+  overlay.setAttribute('aria-hidden', 'false');
+
+  renderResults(input ? input.value : '');
+
+  if (input) {
+    setTimeout(() => input.focus(), 0);
+  }
+}
+
+function closeSearch() {
+  const overlay = document.getElementById('cwGlobalSearchOverlay');
+  if (!overlay) return;
+
+  overlay.classList.remove('active');
+  overlay.setAttribute('aria-hidden', 'true');
+}
+
+function initReliableSearch() {
+  const trigger = ensureSearchButton();
+  const overlay = ensureOverlay();
+  const input = overlay.querySelector('#globalCalculatorSearch');
+
+  if (trigger && !trigger.dataset.cwSearchReady) {
+    trigger.dataset.cwSearchReady = 'true';
+    trigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      openSearch();
+    });
+  }
+
+  if (input && !input.dataset.cwSearchReady) {
+    input.dataset.cwSearchReady = 'true';
+    input.addEventListener('input', function() {
+      renderResults(input.value);
+    });
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeSearch();
+      }
+    });
+  }
+
+  if (!overlay.dataset.cwSearchReady) {
+    overlay.dataset.cwSearchReady = 'true';
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        closeSearch();
+      }
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeSearch();
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+  });
+
+  renderResults('');
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initReliableSearch);
+} else {
+  initReliableSearch();
+}
+
+})();
+
+
+/* ===== CalculatorWorks Interactive Intelligence Layer ===== */
+
+(function(){
+
+function applyStickyResults(){
+document.querySelectorAll('.result-box,.result,.calculator-result').forEach(function(el){
+if(!el.classList.contains('cw-sticky-result')){
+el.classList.add('cw-sticky-result');
+}
+});
+}
+
+function addScenarioButtons(){
+document.querySelectorAll('[data-cw-scenario]').forEach(function(btn){
+btn.addEventListener('click', function(e){
+e.preventDefault();
+
+const payload = JSON.parse(btn.getAttribute('data-cw-scenario'));
+Object.keys(payload).forEach(function(key){
+const input = document.getElementById(key);
+if(input){
+input.value = payload[key];
+}
+});
+
+const calc = document.getElementById('calculateBtn');
+if(calc){
+calc.click();
+}
+});
+});
+}
+
+function addShareableState(){
+const btn = document.getElementById('calculateBtn');
+if(!btn) return;
+
+btn.addEventListener('click', function(){
+const params = new URLSearchParams();
+
+document.querySelectorAll('input,select').forEach(function(el){
+if(el.id && el.value){
+params.set(el.id, el.value);
+}
+});
+
+const newUrl = window.location.pathname + '?' + params.toString();
+window.history.replaceState({}, '', newUrl);
+});
+}
+
+function restoreState(){
+const params = new URLSearchParams(window.location.search);
+params.forEach(function(value,key){
+const el = document.getElementById(key);
+if(el){
+el.value = value;
+}
+});
+}
+
+if(document.readyState === 'loading'){
+document.addEventListener('DOMContentLoaded', function(){
+restoreState();
+applyStickyResults();
+addScenarioButtons();
+addShareableState();
+});
+}else{
+restoreState();
+applyStickyResults();
+addScenarioButtons();
+addShareableState();
+}
+
+})();
+
+/* ===== CalculatorWorks Core Experience Engine ===== */
+(function(){
+'use strict';
+const CW_ENGINE_INDEX = [{"title": "Mortgage Tools and Calculators", "url": "/mortgage-tools", "category": "Finance", "description": "Compare mortgage payments, affordability, refinance savings, amortization, extra repayments, down payments, DTI and rent-vs-buy scenarios.", "keywords": "mortgage tools and calculators mortgage tools compare mortgage payments, affordability, refinance savings, amortization, extra repayments, down payments, dti and rent-vs-buy scenarios."}, {"title": "Refinance Calculator", "url": "/refinance-calculator", "category": "Finance", "description": "Estimate potential monthly savings and break-even time when refinancing a mortgage.", "keywords": "refinance calculator refinance calculator estimate potential monthly savings and break-even time when refinancing a mortgage."}, {"title": "Refinance Savings Calculator", "url": "/refinance-savings", "category": "Finance", "description": "Compare current and new loan payments to estimate monthly refinance savings.", "keywords": "refinance savings calculator refinance savings compare current and new loan payments to estimate monthly refinance savings."}, {"title": "Finance Calculators", "url": "/finance-calculators", "category": "Finance", "description": "Use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas an", "keywords": "finance calculators finance calculators use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas an"}, {"title": "Finance Calculators", "url": "/finance", "category": "Finance", "description": "Use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas an", "keywords": "finance calculators finance use these finance calculators to estimate repayments, compare borrowing costs, plan savings, understand returns and manage debt with clear formulas an"}, {"title": "Extra Payment Mortgage Calculator", "url": "/extra-payment-mortgage-calculator", "category": "Finance", "description": "Estimate how making an extra monthly mortgage payment could reduce interest and shorten the loan payoff timeline.", "keywords": "extra payment mortgage calculator extra payment mortgage calculator estimate how making an extra monthly mortgage payment could reduce interest and shorten the loan payoff timeline."}, {"title": "Loan Repayment Calculator", "url": "/loan-repayment-calculator", "category": "Finance", "description": "Use the free loan repayment calculator to estimate monthly loan payments with amortisation formula examples, planning tips, and related mortgage and s", "keywords": "loan repayment calculator loan repayment calculator use the free loan repayment calculator to estimate monthly loan payments with amortisation formula examples, planning tips, and related mortgage and s"}, {"title": "Mortgage Affordability Calculator", "url": "/mortgage-affordability-calculator", "category": "Finance", "description": "Estimate an affordable home price from a monthly mortgage budget, interest rate, loan term and down payment.", "keywords": "mortgage affordability calculator mortgage affordability calculator estimate an affordable home price from a monthly mortgage budget, interest rate, loan term and down payment."}, {"title": "Mortgage Calculator", "url": "/mortgage-calculator", "category": "Finance", "description": "Estimate monthly mortgage repayments from loan amount, interest rate, and loan term.", "keywords": "mortgage calculator mortgage calculator estimate monthly mortgage repayments from loan amount, interest rate, and loan term."}, {"title": "Mortgage Interest Calculator", "url": "/mortgage-interest-calculator", "category": "Finance", "description": "Estimate total mortgage interest over the life of a loan.", "keywords": "mortgage interest calculator mortgage interest calculator estimate total mortgage interest over the life of a loan."}, {"title": "Down Payment Calculator", "url": "/down-payment-calculator", "category": "Popular", "description": "Estimate deposit size and resulting loan amount from a purchase price and deposit percentage.", "keywords": "down payment calculator down payment calculator estimate deposit size and resulting loan amount from a purchase price and deposit percentage."}, {"title": "Down Payment Calculator", "url": "/down-payment", "category": "Popular", "description": "Work out a down payment amount, down payment percentage, and remaining loan size from a home purchase price.", "keywords": "down payment calculator down payment work out a down payment amount, down payment percentage, and remaining loan size from a home purchase price."}, {"title": "Extra Payment Mortgage Calculator", "url": "/extra-payment-mortgage", "category": "Finance", "description": "Estimate interest savings from extra mortgage payments.", "keywords": "extra payment mortgage calculator extra payment mortgage estimate interest savings from extra mortgage payments."}, {"title": "Offset Account Savings Calculator", "url": "/offset-account-calculator", "category": "Popular", "description": "Estimate annual interest savings from holding money in a mortgage offset account.", "keywords": "offset account savings calculator offset account calculator estimate annual interest savings from holding money in a mortgage offset account."}, {"title": "Offset Account Savings Calculator", "url": "/offset-account-savings", "category": "Finance", "description": "Estimate simple mortgage offset interest savings.", "keywords": "offset account savings calculator offset account savings estimate simple mortgage offset interest savings."}, {"title": "Pay Raise Calculator", "url": "/pay-raise-calculator", "category": "Popular", "description": "Estimate raise amount and new salary after a percentage increase.", "keywords": "pay raise calculator pay raise calculator estimate raise amount and new salary after a percentage increase."}, {"title": "Credit Utilization Calculator", "url": "/credit-utilization", "category": "Popular", "description": "Calculate credit usage as a percentage of total credit limit.", "keywords": "credit utilization calculator credit utilization calculate credit usage as a percentage of total credit limit."}, {"title": "All free online calculators", "url": "/all-calculators", "category": "Popular", "description": "Browse every free online calculator available on CalculatorWorks, including finance calculators, percentage tools, unit converters, health calculators", "keywords": "all free online calculators all calculators browse every free online calculator available on calculatorworks, including finance calculators, percentage tools, unit converters, health calculators"}, {"title": "All free online calculators", "url": "/calculators", "category": "Popular", "description": "Browse every free online calculator available on CalculatorWorks, including finance calculators, percentage tools, unit converters, health calculators", "keywords": "all free online calculators calculators browse every free online calculator available on calculatorworks, including finance calculators, percentage tools, unit converters, health calculators"}, {"title": "Refinance Savings Calculator", "url": "/refinance-savings-calculator", "category": "Finance", "description": "Estimate monthly refinance savings and break-even time from refinance costs.", "keywords": "refinance savings calculator refinance savings calculator estimate monthly refinance savings and break-even time from refinance costs."}, {"title": "ARM vs Fixed Mortgage Calculator", "url": "/arm-vs-fixed-mortgage-calculator", "category": "Finance", "description": "Compare an adjustable-rate mortgage estimate with a fixed-rate mortgage estimate.", "keywords": "arm vs fixed mortgage calculator arm vs fixed mortgage calculator compare an adjustable-rate mortgage estimate with a fixed-rate mortgage estimate."}, {"title": "Biweekly Mortgage Calculator", "url": "/biweekly-mortgage-calculator", "category": "Finance", "description": "Estimate biweekly mortgage payments and compare them with standard monthly payments.", "keywords": "biweekly mortgage calculator biweekly mortgage calculator estimate biweekly mortgage payments and compare them with standard monthly payments."}, {"title": "Mortgage Amortization Calculator", "url": "/mortgage-amortization-calculator", "category": "Finance", "description": "Estimate monthly mortgage repayment, total interest, total repayment, and the approximate first-month interest and principal split.", "keywords": "mortgage amortization calculator mortgage amortization calculator estimate monthly mortgage repayment, total interest, total repayment, and the approximate first-month interest and principal split."}, {"title": "Mortgage Amortization Calculator", "url": "/mortgage-amortization", "category": "Finance", "description": "Estimate principal, interest, and total mortgage cost.", "keywords": "mortgage amortization calculator mortgage amortization estimate principal, interest, and total mortgage cost."}, {"title": "Mortgage Payoff Calculator", "url": "/mortgage-payoff-calculator", "category": "Finance", "description": "Estimate how long it may take to pay off a mortgage with a chosen monthly payment.", "keywords": "mortgage payoff calculator mortgage payoff calculator estimate how long it may take to pay off a mortgage with a chosen monthly payment."}, {"title": "Amortization Calculator", "url": "/amortization-calculator", "category": "Popular", "description": "Estimate monthly payment, total interest and total cost for an amortising loan.", "keywords": "amortization calculator amortization calculator estimate monthly payment, total interest and total cost for an amortising loan."}, {"title": "Auto Loan Calculator", "url": "/auto-loan", "category": "Finance", "description": "Estimate a car loan payment using vehicle price, deposit, interest rate, and loan term.", "keywords": "auto loan calculator auto loan estimate a car loan payment using vehicle price, deposit, interest rate, and loan term."}, {"title": "Extra Payment Calculator", "url": "/extra-payment-calculator", "category": "Popular", "description": "Estimate how extra monthly repayments can reduce loan time and interest.", "keywords": "extra payment calculator extra payment calculator estimate how extra monthly repayments can reduce loan time and interest."}, {"title": "Loan Payment Calculator", "url": "/loan-payment", "category": "Finance", "description": "Estimate monthly loan repayments, total repayment, and interest from amount, rate, and term.", "keywords": "loan payment calculator loan payment estimate monthly loan repayments, total repayment, and interest from amount, rate, and term."}, {"title": "Compound Interest Calculator", "url": "/compound-interest-calculator", "category": "Finance", "description": "Calculate compound interest growth, interest earned, and final balance with the free Compound Interest Calculator from CalculatorWorks.", "keywords": "compound interest calculator compound interest calculator calculate compound interest growth, interest earned, and final balance with the free compound interest calculator from calculatorworks."}, {"title": "Compound Interest Calculator", "url": "/compound-interest", "category": "Finance", "description": "Estimate growth from principal, contributions, interest rate, and time.", "keywords": "compound interest calculator compound interest estimate growth from principal, contributions, interest rate, and time."}, {"title": "Commission Calculator", "url": "/commission-calculator", "category": "Popular", "description": "Use the free commission calculator to work out sales commission, commission amount, and total pay including optional base salary. Includes formula, ex", "keywords": "commission calculator commission calculator use the free commission calculator to work out sales commission, commission amount, and total pay including optional base salary. includes formula, ex"}, {"title": "Hourly to Salary Calculator", "url": "/hourly-to-salary-calculator", "category": "Finance", "description": "Convert an hourly rate into weekly, monthly, and annual pay using hours per week.", "keywords": "hourly to salary calculator hourly to salary calculator convert an hourly rate into weekly, monthly, and annual pay using hours per week."}, {"title": "Hourly to Salary Calculator", "url": "/hourly-to-salary", "category": "Finance", "description": "Convert hourly pay into weekly, monthly, and annual salary estimates.", "keywords": "hourly to salary calculator hourly to salary convert hourly pay into weekly, monthly, and annual salary estimates."}, {"title": "Paycheck Calculator", "url": "/paycheck-calculator", "category": "Finance", "description": "Estimate gross and post-tax pay per pay period from annual salary, pay periods, and a flat tax rate.", "keywords": "paycheck calculator paycheck calculator estimate gross and post-tax pay per pay period from annual salary, pay periods, and a flat tax rate."}, {"title": "Salary Calculator", "url": "/salary-calculator", "category": "Finance", "description": "Convert annual salary into monthly, fortnightly, weekly, and hourly pay estimates with the free Salary Calculator from CalculatorWorks.", "keywords": "salary calculator salary calculator convert annual salary into monthly, fortnightly, weekly, and hourly pay estimates with the free salary calculator from calculatorworks."}, {"title": "Salary and Pay Calculators", "url": "/salary-pay-calculators", "category": "Finance", "description": "Convert salary, hourly pay, overtime, commission, pay raises, contractor rates and leave payout estimates with one connected pay calculator hub.", "keywords": "salary and pay calculators salary pay calculators convert salary, hourly pay, overtime, commission, pay raises, contractor rates and leave payout estimates with one connected pay calculator hub."}, {"title": "Salary to Hourly Calculator", "url": "/salary-to-hourly-calculator", "category": "Finance", "description": "Convert an annual salary into an estimated hourly rate.", "keywords": "salary to hourly calculator salary to hourly calculator convert an annual salary into an estimated hourly rate."}, {"title": "Body Fat Calculator", "url": "/body-fat-calculator", "category": "Health", "description": "Estimate body fat percentage from common circumference measurements for general fitness planning.", "keywords": "body fat calculator body fat calculator estimate body fat percentage from common circumference measurements for general fitness planning."}, {"title": "Contribution Margin Calculator", "url": "/contribution-margin", "category": "Percentage", "description": "Calculate contribution margin per unit and margin percentage.", "keywords": "contribution margin calculator contribution margin calculate contribution margin per unit and margin percentage."}, {"title": "Discount Calculator", "url": "/discount-calculator", "category": "Percentage", "description": "Use the free discount calculator to find sale price, amount saved, and percentage-off results with simple formulas, examples, and related percentage t", "keywords": "discount calculator discount calculator use the free discount calculator to find sale price, amount saved, and percentage-off results with simple formulas, examples, and related percentage t"}, {"title": "Lean Body Mass Calculator", "url": "/lean-body-mass-calculator", "category": "Health", "description": "Estimate lean body mass from body weight and body fat percentage.", "keywords": "lean body mass calculator lean body mass calculator estimate lean body mass from body weight and body fat percentage."}, {"title": "Margin Calculator", "url": "/margin-calculator", "category": "Percentage", "description": "Use the free margin calculator to find gross profit and profit margin percentage from selling price and cost, with examples, FAQs, and related pricing", "keywords": "margin calculator margin calculator use the free margin calculator to find gross profit and profit margin percentage from selling price and cost, with examples, faqs, and related pricing"}, {"title": "Markup Calculator", "url": "/markup-calculator", "category": "Percentage", "description": "Use the free markup calculator to turn product cost and markup percentage into selling price and gross profit, with examples, FAQs, and related pricin", "keywords": "markup calculator markup calculator use the free markup calculator to turn product cost and markup percentage into selling price and gross profit, with examples, faqs, and related pricin"}, {"title": "Pay Raise Calculator", "url": "/pay-raise", "category": "Popular", "description": "Calculate new pay after a raise amount or percentage.", "keywords": "pay raise calculator pay raise calculate new pay after a raise amount or percentage."}, {"title": "Paycheck Calculator", "url": "/paycheck", "category": "Finance", "description": "Estimate take-home pay after a simple deduction percentage.", "keywords": "paycheck calculator paycheck estimate take-home pay after a simple deduction percentage."}, {"title": "Percentage Calculator", "url": "/percentage-calculator", "category": "Percentage", "description": "Use the free percentage calculator to find X% of Y instantly with a simple formula, worked examples, and links to discount and percent change tools.", "keywords": "percentage calculator percentage calculator use the free percentage calculator to find x% of y instantly with a simple formula, worked examples, and links to discount and percent change tools."}, {"title": "Percentage Calculators", "url": "/percentage-calculators", "category": "Percentage", "description": "Use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons.", "keywords": "percentage calculators percentage calculators use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons."}, {"title": "Percentage Calculators", "url": "/percentage", "category": "Percentage", "description": "Use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons.", "keywords": "percentage calculators percentage use these percentage calculators for discounts, markups, percentage change, margins, tips, taxes and quick comparisons."}, {"title": "Percentage Decrease Calculator", "url": "/percentage-decrease-calculator", "category": "Percentage", "description": "Calculate percentage decreases instantly with CalculatorWorks. Includes formula, examples, and a simple decrease calculator.", "keywords": "percentage decrease calculator percentage decrease calculator calculate percentage decreases instantly with calculatorworks. includes formula, examples, and a simple decrease calculator."}, {"title": "Percentage Decrease Calculator", "url": "/percentage-decrease", "category": "Percentage", "description": "Calculate the percentage decrease from one value to another.", "keywords": "percentage decrease calculator percentage decrease calculate the percentage decrease from one value to another."}, {"title": "Percentage Increase Calculator", "url": "/percentage-increase-calculator", "category": "Percentage", "description": "Calculate percentage increases instantly with CalculatorWorks. Includes formula, examples, and a simple increase calculator.", "keywords": "percentage increase calculator percentage increase calculator calculate percentage increases instantly with calculatorworks. includes formula, examples, and a simple increase calculator."}, {"title": "Percentage Increase Calculator", "url": "/percentage-increase", "category": "Percentage", "description": "Calculate the percentage increase from one value to another.", "keywords": "percentage increase calculator percentage increase calculate the percentage increase from one value to another."}, {"title": "ROI Calculator", "url": "/roi-calculator", "category": "Popular", "description": "Use the free ROI calculator to find return on investment percentage and net profit from your investment cost and gain. Includes formula, worked exampl", "keywords": "roi calculator roi calculator use the free roi calculator to find return on investment percentage and net profit from your investment cost and gain. includes formula, worked exampl"}, {"title": "Roofing Calculator", "url": "/roofing-calculator", "category": "Popular", "description": "Estimate roof area and material allowance from building length, width, roof pitch factor and waste percentage.", "keywords": "roofing calculator roofing calculator estimate roof area and material allowance from building length, width, roof pitch factor and waste percentage."}, {"title": "Tax Withholding Calculator", "url": "/tax-withholding-calculator", "category": "Finance", "description": "Estimate tax withheld from gross pay using a withholding percentage.", "keywords": "tax withholding calculator tax withholding calculator estimate tax withheld from gross pay using a withholding percentage."}, {"title": "BMI Calculator", "url": "/bmi-calculator", "category": "Health", "description": "Calculate your Body Mass Index (BMI) instantly with CalculatorWorks. Includes formula, weight category ranges, worked examples, and a simple BMI calcu", "keywords": "bmi calculator bmi calculator calculate your body mass index (bmi) instantly with calculatorworks. includes formula, weight category ranges, worked examples, and a simple bmi calcu"}, {"title": "BMI Calculator", "url": "/bmi", "category": "Health", "description": "Estimate body mass index from height and weight.", "keywords": "bmi calculator bmi estimate body mass index from height and weight."}, {"title": "Discount Calculator", "url": "/discount", "category": "Percentage", "description": "Calculate sale price and savings after a discount.", "keywords": "discount calculator discount calculate sale price and savings after a discount."}, {"title": "Retirement Savings Calculator", "url": "/retirement-savings-calculator", "category": "Finance", "description": "Estimate future retirement savings from a current balance, annual return, and years to retirement.", "keywords": "retirement savings calculator retirement savings calculator estimate future retirement savings from a current balance, annual return, and years to retirement."}, {"title": "Retirement Savings Calculator", "url": "/retirement-savings", "category": "Finance", "description": "Project retirement savings from current balance and return.", "keywords": "retirement savings calculator retirement savings project retirement savings from current balance and return."}, {"title": "Savings Calculator", "url": "/savings-calculator", "category": "Finance", "description": "Use the free savings calculator to estimate future balance and interest earned from a starting amount, annual rate, and savings term with examples and", "keywords": "savings calculator savings calculator use the free savings calculator to estimate future balance and interest earned from a starting amount, annual rate, and savings term with examples and"}, {"title": "Savings Goal Calculator", "url": "/savings-goal-calculator", "category": "Finance", "description": "Estimate months needed to hit a target using a starting balance and monthly saving amount.", "keywords": "savings goal calculator savings goal calculator estimate months needed to hit a target using a starting balance and monthly saving amount."}, {"title": "Savings Goal Calculator", "url": "/savings-goal", "category": "Finance", "description": "Calculate the monthly saving needed to reach a target by a deadline.", "keywords": "savings goal calculator savings goal calculate the monthly saving needed to reach a target by a deadline."}, {"title": "Debt Avalanche Calculator", "url": "/debt-avalanche-calculator", "category": "Finance", "description": "Estimate debt payoff time when prioritising higher-interest debt with a fixed monthly payment.", "keywords": "debt avalanche calculator debt avalanche calculator estimate debt payoff time when prioritising higher-interest debt with a fixed monthly payment."}, {"title": "Debt Avalanche Calculator", "url": "/debt-avalanche", "category": "Finance", "description": "Estimate payoff time for high-interest debt.", "keywords": "debt avalanche calculator debt avalanche estimate payoff time for high-interest debt."}, {"title": "Debt Payoff Calculator", "url": "/debt-payoff-calculator", "category": "Finance", "description": "Estimate payoff time and total interest for a balance with a fixed monthly payment.", "keywords": "debt payoff calculator debt payoff calculator estimate payoff time and total interest for a balance with a fixed monthly payment."}, {"title": "Debt Payoff Calculator", "url": "/debt-payoff", "category": "Finance", "description": "Estimate a debt payoff timeline using balance, rate, and monthly payment.", "keywords": "debt payoff calculator debt payoff estimate a debt payoff timeline using balance, rate, and monthly payment."}, {"title": "Debt Snowball Calculator", "url": "/debt-snowball-calculator", "category": "Finance", "description": "Estimate how quickly you can pay off a debt using a fixed monthly payment and compare payoff time against the debt balance.", "keywords": "debt snowball calculator debt snowball calculator estimate how quickly you can pay off a debt using a fixed monthly payment and compare payoff time against the debt balance."}, {"title": "Debt Snowball Calculator", "url": "/debt-snowball", "category": "Finance", "description": "Estimate payoff time for a fixed debt payment.", "keywords": "debt snowball calculator debt snowball estimate payoff time for a fixed debt payment."}, {"title": "Debt-to-Income Calculator", "url": "/debt-to-income-calculator", "category": "Finance", "description": "Estimate debt-to-income ratio from monthly debt payments and gross monthly income.", "keywords": "debt-to-income calculator debt to income calculator estimate debt-to-income ratio from monthly debt payments and gross monthly income."}, {"title": "Debt-to-Income Calculator", "url": "/debt-to-income", "category": "Finance", "description": "Compare monthly debt payments with gross monthly income.", "keywords": "debt-to-income calculator debt to income compare monthly debt payments with gross monthly income."}, {"title": "Credit Card Payoff Calculator", "url": "/credit-card-payoff-calculator", "category": "Finance", "description": "Estimate payoff time and total interest from a balance, APR, and monthly payment.", "keywords": "credit card payoff calculator credit card payoff calculator estimate payoff time and total interest from a balance, apr, and monthly payment."}, {"title": "Credit Card Payoff Calculator", "url": "/credit-card-payoff", "category": "Finance", "description": "Estimate how long it may take to pay off a card balance and how much interest could be paid.", "keywords": "credit card payoff calculator credit card payoff estimate how long it may take to pay off a card balance and how much interest could be paid."}, {"title": "Credit Utilization Calculator", "url": "/credit-utilization-calculator", "category": "Popular", "description": "Estimate credit utilization from combined revolving balances and total credit limits.", "keywords": "credit utilization calculator credit utilization calculator estimate credit utilization from combined revolving balances and total credit limits."}, {"title": "GPA Calculator", "url": "/gpa-calculator", "category": "Popular", "description": "Calculate GPA from letter grades or grade points with optional course credits using the free GPA Calculator from CalculatorWorks.", "keywords": "gpa calculator gpa calculator calculate gpa from letter grades or grade points with optional course credits using the free gpa calculator from calculatorworks."}, {"title": "Unit Conversion Calculators", "url": "/unit-conversion-calculators", "category": "Popular", "description": "Convert common measurements quickly with simple unit conversion tools for home, school, work and travel.", "keywords": "unit conversion calculators unit conversion calculators convert common measurements quickly with simple unit conversion tools for home, school, work and travel."}, {"title": "Unit Conversion Calculators", "url": "/unit-conversion", "category": "Popular", "description": "Convert common measurements quickly with simple unit conversion tools for home, school, work and travel.", "keywords": "unit conversion calculators unit conversion convert common measurements quickly with simple unit conversion tools for home, school, work and travel."}, {"title": "Age Calculator", "url": "/age-calculator", "category": "Date & Time", "description": "Calculate your exact age in years, months, and days with CalculatorWorks. Includes formula, worked examples, and a simple age calculator.", "keywords": "age calculator age calculator calculate your exact age in years, months, and days with calculatorworks. includes formula, worked examples, and a simple age calculator."}, {"title": "Age Calculator", "url": "/age", "category": "Date & Time", "description": "Calculate age from a date of birth.", "keywords": "age calculator age calculate age from a date of birth."}, {"title": "Age Difference Calculator", "url": "/age-difference-calculator", "category": "Date & Time", "description": "Estimate the age difference between two birth dates in years and months.", "keywords": "age difference calculator age difference calculator estimate the age difference between two birth dates in years and months."}, {"title": "Asphalt Calculator", "url": "/asphalt-calculator", "category": "Popular", "description": "Estimate asphalt volume from area and depth.", "keywords": "asphalt calculator asphalt calculator estimate asphalt volume from area and depth."}, {"title": "Average Calculator", "url": "/average-calculator", "category": "Date & Time", "description": "Calculate the average (mean) of a set of numbers instantly with CalculatorWorks. Includes formula, worked examples, and a simple average calculator.", "keywords": "average calculator average calculator calculate the average (mean) of a set of numbers instantly with calculatorworks. includes formula, worked examples, and a simple average calculator."}, {"title": "BMR Calculator", "url": "/bmr-calculator", "category": "Popular", "description": "Estimate basal metabolic rate using weight, height, age and sex adjustment.", "keywords": "bmr calculator bmr calculator estimate basal metabolic rate using weight, height, age and sex adjustment."}, {"title": "Body Surface Area Calculator", "url": "/body-surface-area-calculator", "category": "Health", "description": "Estimate body surface area from height and weight.", "keywords": "body surface area calculator body surface area calculator estimate body surface area from height and weight."}, {"title": "Bonus Tax Calculator", "url": "/bonus-tax-calculator", "category": "Finance", "description": "Estimate bonus tax withholding and net bonus amount.", "keywords": "bonus tax calculator bonus tax calculator estimate bonus tax withholding and net bonus amount."}, {"title": "Break-Even Calculator", "url": "/break-even-calculator", "category": "Popular", "description": "Use the free break-even calculator to find how many units you need to sell to cover costs. Shows break-even units and break-even revenue with formula ", "keywords": "break-even calculator break even calculator use the free break-even calculator to find how many units you need to sell to cover costs. shows break-even units and break-even revenue with formula "}, {"title": "Brick Calculator", "url": "/brick-calculator", "category": "Popular", "description": "Estimate bricks required from wall area and brick coverage.", "keywords": "brick calculator brick calculator estimate bricks required from wall area and brick coverage."}, {"title": "Business Calculators", "url": "/business-calculators", "category": "Business", "description": "Use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios.", "keywords": "business calculators business calculators use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios."}, {"title": "Business Calculators", "url": "/business", "category": "Business", "description": "Use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios.", "keywords": "business calculators business use these calculators to price products, estimate profit, assess margins, plan break-even points and understand key business ratios."}, {"title": "Business Days Calculator", "url": "/business-days-calculator", "category": "Business", "description": "Count weekdays between two dates while excluding weekends.", "keywords": "business days calculator business days calculator count weekdays between two dates while excluding weekends."}, {"title": "Business Profit Planner Calculator", "url": "/business-profit-planner-calculator", "category": "Business", "description": "Estimate projected profit from units sold and profit per unit.", "keywords": "business profit planner calculator business profit planner calculator estimate projected profit from units sold and profit per unit."}, {"title": "CM to Inches Calculator", "url": "/cm-to-inches", "category": "Conversion", "description": "Convert centimetres to inches quickly and accurately.", "keywords": "cm to inches calculator cm to inches convert centimetres to inches quickly and accurately."}, {"title": "Calorie Calculator", "url": "/calorie-calculator", "category": "Health", "description": "Estimate daily maintenance calories using weight, height, age, sex and activity level.", "keywords": "calorie calculator calorie calculator estimate daily maintenance calories using weight, height, age, sex and activity level."}, {"title": "Calorie Deficit Calculator", "url": "/calorie-deficit-calculator", "category": "Health", "description": "Estimate a calorie target from maintenance calories and desired deficit.", "keywords": "calorie deficit calculator calorie deficit calculator estimate a calorie target from maintenance calories and desired deficit."}, {"title": "Celsius to Fahrenheit Calculator", "url": "/celsius-to-fahrenheit", "category": "Conversion", "description": "Convert Celsius to Fahrenheit with a fast °C to °F converter, weather and cooking examples, quick reference values, and clear formula guidance.", "keywords": "celsius to fahrenheit calculator celsius to fahrenheit convert celsius to fahrenheit with a fast °c to °f converter, weather and cooking examples, quick reference values, and clear formula guidance."}, {"title": "Concrete Calculator", "url": "/concrete-calculator", "category": "Popular", "description": "Estimate cubic metres of concrete for a rectangular slab.", "keywords": "concrete calculator concrete calculator estimate cubic metres of concrete for a rectangular slab."}, {"title": "Contractor Rate Calculator", "url": "/contractor-rate-calculator", "category": "Popular", "description": "Convert a target annual income into an estimated contractor or freelance hourly rate after overhead and billable hours.", "keywords": "contractor rate calculator contractor rate calculator convert a target annual income into an estimated contractor or freelance hourly rate after overhead and billable hours."}, {"title": "Contribution Margin Calculator", "url": "/contribution-margin-calculator", "category": "Percentage", "description": "Calculate contribution per unit and contribution-margin ratio from price and variable cost.", "keywords": "contribution margin calculator contribution margin calculator calculate contribution per unit and contribution-margin ratio from price and variable cost."}, {"title": "Countdown Calculator", "url": "/countdown-calculator", "category": "Popular", "description": "Count the days remaining until a future date with a simple countdown calculator for events, deadlines, and milestones.", "keywords": "countdown calculator countdown calculator count the days remaining until a future date with a simple countdown calculator for events, deadlines, and milestones."}, {"title": "Cubic Yard Calculator", "url": "/cubic-yard-calculator", "category": "Popular", "description": "Estimate cubic yards from length, width and depth in feet.", "keywords": "cubic yard calculator cubic yard calculator estimate cubic yards from length, width and depth in feet."}, {"title": "Cups to mL Calculator", "url": "/cups-to-ml-calculator", "category": "Conversion", "description": "Convert US cups to millilitres instantly for cooking, baking, meal prep, and everyday kitchen measurements.", "keywords": "cups to ml calculator cups to ml calculator convert us cups to millilitres instantly for cooking, baking, meal prep, and everyday kitchen measurements."}, {"title": "Current Ratio Calculator", "url": "/current-ratio-calculator", "category": "Popular", "description": "Estimate current ratio from current assets and current liabilities.", "keywords": "current ratio calculator current ratio calculator estimate current ratio from current assets and current liabilities."}, {"title": "Current Ratio Calculator", "url": "/current-ratio", "category": "Popular", "description": "Compare current assets with current liabilities.", "keywords": "current ratio calculator current ratio compare current assets with current liabilities."}, {"title": "Date & Time Calculators", "url": "/date-and-time-calculators", "category": "Date & Time", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "keywords": "date & time calculators date and time calculators use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations."}, {"title": "Date & Time Calculators", "url": "/date-calculators", "category": "Date & Time", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "keywords": "date & time calculators date calculators use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations."}, {"title": "Date & Time Calculators", "url": "/date-time-calculators", "category": "Date & Time", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "keywords": "date & time calculators date time calculators use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations."}, {"title": "Date & Time Calculators", "url": "/date-time", "category": "Date & Time", "description": "Use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations.", "keywords": "date & time calculators date time use these calculators to count days, compare dates, plan deadlines, estimate ages and manage time-based calculations."}, {"title": "Date Add Calculator", "url": "/date-add-calculator", "category": "Date & Time", "description": "Add days to a date to estimate a future deadline or milestone.", "keywords": "date add calculator date add calculator add days to a date to estimate a future deadline or milestone."}, {"title": "Date Difference Calculator", "url": "/date-difference", "category": "Date & Time", "description": "Calculate the number of days between two dates.", "keywords": "date difference calculator date difference calculate the number of days between two dates."}, {"title": "Days Between Dates Calculator", "url": "/days-between-dates-calculator", "category": "Date & Time", "description": "Calculate the number of days between two dates instantly with CalculatorWorks. Includes formula, worked examples, and a simple date difference calcula", "keywords": "days between dates calculator days between dates calculator calculate the number of days between two dates instantly with calculatorworks. includes formula, worked examples, and a simple date difference calcula"}, {"title": "Decking Calculator", "url": "/decking-calculator", "category": "Popular", "description": "Estimate decking board requirements from deck area, board coverage and waste allowance.", "keywords": "decking calculator decking calculator estimate decking board requirements from deck area, board coverage and waste allowance."}, {"title": "Depreciation Calculator", "url": "/depreciation-calculator", "category": "Popular", "description": "Estimate straight-line annual depreciation from cost, salvage value, and useful life.", "keywords": "depreciation calculator depreciation calculator estimate straight-line annual depreciation from cost, salvage value, and useful life."}, {"title": "Depreciation Calculator", "url": "/depreciation", "category": "Popular", "description": "Estimate straight-line depreciation from cost, salvage value, and useful life.", "keywords": "depreciation calculator depreciation estimate straight-line depreciation from cost, salvage value, and useful life."}, {"title": "Drywall Calculator", "url": "/drywall-calculator", "category": "Popular", "description": "Estimate drywall sheet requirements from wall area, sheet size and waste allowance.", "keywords": "drywall calculator drywall calculator estimate drywall sheet requirements from wall area, sheet size and waste allowance."}, {"title": "Due Date Calculator", "url": "/due-date-calculator", "category": "Date & Time", "description": "Estimate a due date from the first day of the last menstrual period.", "keywords": "due date calculator due date calculator estimate a due date from the first day of the last menstrual period."}, {"title": "Editorial Standards", "url": "/editorial-standards", "category": "Popular", "description": "CalculatorWorks explains how calculators are written, reviewed, maintained, and presented for general guidance.", "keywords": "editorial standards editorial standards calculatorworks explains how calculators are written, reviewed, maintained, and presented for general guidance."}, {"title": "Emergency Fund Calculator", "url": "/emergency-fund-calculator", "category": "Popular", "description": "Estimate an emergency-fund target from monthly essential expenses and desired months of coverage.", "keywords": "emergency fund calculator emergency fund calculator estimate an emergency-fund target from monthly essential expenses and desired months of coverage."}, {"title": "Emergency Fund Calculator", "url": "/emergency-fund", "category": "Popular", "description": "Estimate an emergency fund target based on monthly essential expenses.", "keywords": "emergency fund calculator emergency fund estimate an emergency fund target based on monthly essential expenses."}, {"title": "Everyday Calculators", "url": "/everyday-calculators", "category": "Popular", "description": "Find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons.", "keywords": "everyday calculators everyday calculators find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons."}, {"title": "Everyday Calculators", "url": "/everyday", "category": "Popular", "description": "Find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons.", "keywords": "everyday calculators everyday find practical calculators for everyday decisions, quick estimates, household planning, dates, health and simple comparisons."}, {"title": "FIRE Calculator", "url": "/fire-calculator", "category": "Popular", "description": "Estimate a simple financial independence target from annual expenses and a withdrawal-rate assumption.", "keywords": "fire calculator fire calculator estimate a simple financial independence target from annual expenses and a withdrawal-rate assumption."}, {"title": "FIRE Calculator", "url": "/fire", "category": "Popular", "description": "Estimate a financial independence target.", "keywords": "fire calculator fire estimate a financial independence target."}, {"title": "Fahrenheit to Celsius Calculator", "url": "/fahrenheit-to-celsius", "category": "Conversion", "description": "Convert Fahrenheit to Celsius with a fast °F to °C converter, weather and cooking examples, quick reference values, and clear formula guidance.", "keywords": "fahrenheit to celsius calculator fahrenheit to celsius convert fahrenheit to celsius with a fast °f to °c converter, weather and cooking examples, quick reference values, and clear formula guidance."}, {"title": "Feet to Metres Calculator", "url": "/feet-to-metres", "category": "Conversion", "description": "Convert feet and inches to metres with a clear formula and examples.", "keywords": "feet to metres calculator feet to metres convert feet and inches to metres with a clear formula and examples."}, {"title": "Fence Calculator", "url": "/fence-calculator", "category": "Popular", "description": "Estimate fence panels and posts from total fence length, panel width and post spacing.", "keywords": "fence calculator fence calculator estimate fence panels and posts from total fence length, panel width and post spacing."}, {"title": "Flooring Calculator", "url": "/flooring-calculator", "category": "Popular", "description": "Estimate room area and waste-adjusted flooring requirement.", "keywords": "flooring calculator flooring calculator estimate room area and waste-adjusted flooring requirement."}, {"title": "Flooring Calculator", "url": "/flooring", "category": "Popular", "description": "Estimate flooring quantity including waste allowance.", "keywords": "flooring calculator flooring estimate flooring quantity including waste allowance."}, {"title": "Freelance Rate Calculator", "url": "/freelance-rate-calculator", "category": "Popular", "description": "Estimate a freelance hourly rate from target income, expenses and billable hours.", "keywords": "freelance rate calculator freelance rate calculator estimate a freelance hourly rate from target income, expenses and billable hours."}, {"title": "Gallons to Litres Calculator", "url": "/gallons-to-litres-calculator", "category": "Conversion", "description": "Convert US gallons to litres instantly for fuel, water, storage, and everyday volume measurements.", "keywords": "gallons to litres calculator gallons to litres calculator convert us gallons to litres instantly for fuel, water, storage, and everyday volume measurements."}, {"title": "Gravel Calculator", "url": "/gravel-calculator", "category": "Popular", "description": "Estimate gravel volume from area and depth.", "keywords": "gravel calculator gravel calculator estimate gravel volume from area and depth."}, {"title": "Health Calculators", "url": "/health-calculators", "category": "Health", "description": "Use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates.", "keywords": "health calculators health calculators use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates."}, {"title": "Health Calculators", "url": "/health", "category": "Health", "description": "Use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates.", "keywords": "health calculators health use these health calculators as general planning tools for body metrics, hydration, nutrition and fitness estimates."}, {"title": "Hours Between Dates Calculator", "url": "/hours-between-dates-calculator", "category": "Date & Time", "description": "Count the number of hours between two date-and-time values.", "keywords": "hours between dates calculator hours between dates calculator count the number of hours between two date-and-time values."}, {"title": "Household Calculators", "url": "/construction-calculators", "category": "Popular", "description": "Plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates.", "keywords": "household calculators construction calculators plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates."}, {"title": "Household Calculators", "url": "/household-calculators", "category": "Popular", "description": "Plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates.", "keywords": "household calculators household calculators plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates."}, {"title": "Household Calculators", "url": "/household", "category": "Popular", "description": "Plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates.", "keywords": "household calculators household plan home projects with calculators for materials, room measurements, flooring, concrete, tiles, paint and other household estimates."}, {"title": "Ideal Weight Calculator", "url": "/ideal-weight-calculator", "category": "Health", "description": "Estimate a guideline weight from height using the Devine method with an optional frame adjustment.", "keywords": "ideal weight calculator ideal weight calculator estimate a guideline weight from height using the devine method with an optional frame adjustment."}, {"title": "Inches to CM Calculator", "url": "/inches-to-cm", "category": "Conversion", "description": "Convert inches to centimetres quickly and accurately.", "keywords": "inches to cm calculator inches to cm convert inches to centimetres quickly and accurately."}, {"title": "Inflation Calculator", "url": "/inflation-calculator", "category": "Popular", "description": "Use the free inflation calculator to estimate future prices based on an annual inflation rate. Shows future cost, inflation increase amount, and purch", "keywords": "inflation calculator inflation calculator use the free inflation calculator to estimate future prices based on an annual inflation rate. shows future cost, inflation increase amount, and purch"}, {"title": "Investment Return Calculator", "url": "/investment-return-calculator", "category": "Finance", "description": "Estimate future investment value, total contributions, and growth from a starting amount, annual return, and time period.", "keywords": "investment return calculator investment return calculator estimate future investment value, total contributions, and growth from a starting amount, annual return, and time period."}, {"title": "Investment Return Calculator", "url": "/investment-return", "category": "Finance", "description": "Estimate long-term investment growth.", "keywords": "investment return calculator investment return estimate long-term investment growth."}, {"title": "KG to LB Calculator", "url": "/kg-to-lb", "category": "Conversion", "description": "Convert kilograms to pounds with a fast kg to lb converter, quick reference values, common weight examples, and practical fitness and shipping use cas", "keywords": "kg to lb calculator kg to lb convert kilograms to pounds with a fast kg to lb converter, quick reference values, common weight examples, and practical fitness and shipping use cas"}, {"title": "KM to Miles Calculator", "url": "/km-to-miles", "category": "Conversion", "description": "Convert kilometres to miles with a fast km to mi converter, route examples, quick reference values, and practical travel and running use cases.", "keywords": "km to miles calculator km to miles convert kilometres to miles with a fast km to mi converter, route examples, quick reference values, and practical travel and running use cases."}, {"title": "KPH to MPH Calculator", "url": "/kph-to-mph-calculator", "category": "Conversion", "description": "Convert kilometres per hour to miles per hour instantly for travel, running, cycling, and speed checks.", "keywords": "kph to mph calculator kph to mph calculator convert kilometres per hour to miles per hour instantly for travel, running, cycling, and speed checks."}, {"title": "LB to KG Calculator", "url": "/lb-to-kg", "category": "Conversion", "description": "Convert pounds to kilograms with a fast lb to kg converter, quick reference values, common weight examples, and practical travel and fitness use cases", "keywords": "lb to kg calculator lb to kg convert pounds to kilograms with a fast lb to kg converter, quick reference values, common weight examples, and practical travel and fitness use cases"}, {"title": "Leave Payout Calculator", "url": "/leave-payout-calculator", "category": "Popular", "description": "Estimate the gross value of unused leave from pay rate, hours per day and leave days.", "keywords": "leave payout calculator leave payout calculator estimate the gross value of unused leave from pay rate, hours per day and leave days."}, {"title": "Litres per Square Metre Calculator", "url": "/litres-per-square-metre-calculator", "category": "Popular", "description": "Estimate litres needed from area and application rate.", "keywords": "litres per square metre calculator litres per square metre calculator estimate litres needed from area and application rate."}, {"title": "Litres to Gallons Calculator", "url": "/litres-to-gallons-calculator", "category": "Conversion", "description": "Convert litres to US gallons instantly for fuel, water, storage, and everyday volume measurements.", "keywords": "litres to gallons calculator litres to gallons calculator convert litres to us gallons instantly for fuel, water, storage, and everyday volume measurements."}, {"title": "MPH to KPH Calculator", "url": "/mph-to-kph-calculator", "category": "Conversion", "description": "Convert miles per hour to kilometres per hour instantly for travel, running, cycling, and speed checks.", "keywords": "mph to kph calculator mph to kph calculator convert miles per hour to kilometres per hour instantly for travel, running, cycling, and speed checks."}, {"title": "Macro Calculator", "url": "/macro-calculator", "category": "Popular", "description": "Split daily calories into estimated protein, fat and carbohydrate targets.", "keywords": "macro calculator macro calculator split daily calories into estimated protein, fat and carbohydrate targets."}, {"title": "Math Calculators", "url": "/math-calculators", "category": "Popular", "description": "Use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes.", "keywords": "math calculators math calculators use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes."}, {"title": "Math Calculators", "url": "/math", "category": "Popular", "description": "Use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes.", "keywords": "math calculators math use these math calculators for school, study, work and everyday calculations involving numbers, averages, spread and shapes."}, {"title": "Measurement Calculators", "url": "/measurement", "category": "Popular", "description": "Area, volume, and speed converters for practical measurement tasks.", "keywords": "measurement calculators measurement area, volume, and speed converters for practical measurement tasks."}, {"title": "Median Calculator", "url": "/median-calculator", "category": "Popular", "description": "Find the median of a comma-separated list of numbers.", "keywords": "median calculator median calculator find the median of a comma-separated list of numbers."}, {"title": "Metres to Feet Calculator", "url": "/metres-to-feet", "category": "Conversion", "description": "Convert metres to feet and inches with practical rounding.", "keywords": "metres to feet calculator metres to feet convert metres to feet and inches with practical rounding."}, {"title": "Midpoint Calculator", "url": "/midpoint-calculator", "category": "Popular", "description": "Calculate the midpoint between two coordinate points entered as x,y pairs.", "keywords": "midpoint calculator midpoint calculator calculate the midpoint between two coordinate points entered as x,y pairs."}, {"title": "Miles to KM Calculator", "url": "/miles-to-km", "category": "Conversion", "description": "Convert miles to kilometres with a fast mi to km converter, route examples, quick reference values, and practical travel and running use cases.", "keywords": "miles to km calculator miles to km convert miles to kilometres with a fast mi to km converter, route examples, quick reference values, and practical travel and running use cases."}, {"title": "Mode Calculator", "url": "/mode-calculator", "category": "Popular", "description": "Find the most frequent value in a comma-separated list of numbers.", "keywords": "mode calculator mode calculator find the most frequent value in a comma-separated list of numbers."}, {"title": "Mulch Calculator", "url": "/mulch-calculator", "category": "Popular", "description": "Estimate mulch volume from garden-bed area and depth.", "keywords": "mulch calculator mulch calculator estimate mulch volume from garden-bed area and depth."}, {"title": "Net Worth Calculator", "url": "/net-worth-calculator", "category": "Popular", "description": "Estimate net worth by subtracting liabilities from assets.", "keywords": "net worth calculator net worth calculator estimate net worth by subtracting liabilities from assets."}, {"title": "Net Worth Calculator", "url": "/net-worth", "category": "Popular", "description": "Estimate net worth by comparing assets and liabilities.", "keywords": "net worth calculator net worth estimate net worth by comparing assets and liabilities."}, {"title": "One Rep Max Calculator", "url": "/one-rep-max-calculator", "category": "Popular", "description": "Estimate one-rep max strength from weight and reps.", "keywords": "one rep max calculator one rep max calculator estimate one-rep max strength from weight and reps."}, {"title": "Overtime Calculator", "url": "/overtime-calculator", "category": "Date & Time", "description": "Estimate gross weekly pay when hours above 40 use an overtime multiplier.", "keywords": "overtime calculator overtime calculator estimate gross weekly pay when hours above 40 use an overtime multiplier."}, {"title": "Overtime Calculator", "url": "/overtime", "category": "Date & Time", "description": "Estimate overtime pay from hourly rate, regular hours, and overtime hours.", "keywords": "overtime calculator overtime estimate overtime pay from hourly rate, regular hours, and overtime hours."}, {"title": "Ovulation Calculator", "url": "/ovulation-calculator", "category": "Popular", "description": "Estimate the next ovulation date from the first day of the last period and average cycle length.", "keywords": "ovulation calculator ovulation calculator estimate the next ovulation date from the first day of the last period and average cycle length."}, {"title": "Pace Calculator", "url": "/pace-calculator", "category": "Popular", "description": "Calculate average pace per kilometre from distance and total time in minutes.", "keywords": "pace calculator pace calculator calculate average pace per kilometre from distance and total time in minutes."}, {"title": "Page not found", "url": "/404", "category": "Popular", "description": "", "keywords": "page not found 404 "}, {"title": "Paint Calculator", "url": "/paint-calculator", "category": "Popular", "description": "Estimate paint needed from wall area and coverage per litre.", "keywords": "paint calculator paint calculator estimate paint needed from wall area and coverage per litre."}, {"title": "Paint Calculator", "url": "/paint", "category": "Popular", "description": "Estimate paint needed from wall area and coverage.", "keywords": "paint calculator paint estimate paint needed from wall area and coverage."}, {"title": "Paver Calculator", "url": "/paver-calculator", "category": "Popular", "description": "Estimate number of pavers needed from area and paver size.", "keywords": "paver calculator paver calculator estimate number of pavers needed from area and paver size."}, {"title": "Paycheck Estimator", "url": "/paycheck-estimator-calculator", "category": "Finance", "description": "Estimate take-home pay after taxes and deductions.", "keywords": "paycheck estimator paycheck estimator calculator estimate take-home pay after taxes and deductions."}, {"title": "Percent Change Calculator", "url": "/percent-change-calculator", "category": "Percentage", "description": "Calculate percent change between two values instantly with CalculatorWorks. Includes formula, examples, and a simple percent change calculator.", "keywords": "percent change calculator percent change calculator calculate percent change between two values instantly with calculatorworks. includes formula, examples, and a simple percent change calculator."}, {"title": "Protein Intake Calculator", "url": "/protein-intake-calculator", "category": "Popular", "description": "Estimate a daily protein target from body weight and a grams-per-kilogram target.", "keywords": "protein intake calculator protein intake calculator estimate a daily protein target from body weight and a grams-per-kilogram target."}, {"title": "Quick Ratio Calculator", "url": "/quick-ratio-calculator", "category": "Popular", "description": "Estimate the quick ratio from liquid assets and current liabilities.", "keywords": "quick ratio calculator quick ratio calculator estimate the quick ratio from liquid assets and current liabilities."}, {"title": "Quick Ratio Calculator", "url": "/quick-ratio", "category": "Popular", "description": "Compare liquid assets with current liabilities.", "keywords": "quick ratio calculator quick ratio compare liquid assets with current liabilities."}, {"title": "Ratio Calculator", "url": "/ratio-calculator", "category": "Popular", "description": "Simplify a ratio instantly and compare two values for recipes, scaling, maths homework, and planning tasks.", "keywords": "ratio calculator ratio calculator simplify a ratio instantly and compare two values for recipes, scaling, maths homework, and planning tasks."}, {"title": "Rent vs Buy Calculator", "url": "/rent-vs-buy-calculator", "category": "Popular", "description": "Compare estimated monthly renting cost with estimated monthly ownership cost.", "keywords": "rent vs buy calculator rent vs buy calculator compare estimated monthly renting cost with estimated monthly ownership cost."}, {"title": "Rent vs Buy Calculator", "url": "/rent-vs-buy", "category": "Popular", "description": "Compare estimated monthly renting costs with estimated monthly home ownership costs.", "keywords": "rent vs buy calculator rent vs buy compare estimated monthly renting costs with estimated monthly home ownership costs."}, {"title": "Room Perimeter Calculator", "url": "/room-perimeter-calculator", "category": "Popular", "description": "Calculate room perimeter from length and width for painting, skirting, trim, flooring, and renovation planning.", "keywords": "room perimeter calculator room perimeter calculator calculate room perimeter from length and width for painting, skirting, trim, flooring, and renovation planning."}, {"title": "Sales Tax Calculator", "url": "/sales-tax-calculator", "category": "Finance", "description": "Calculate tax amount and final price from a pre-tax amount and sales-tax rate.", "keywords": "sales tax calculator sales tax calculator calculate tax amount and final price from a pre-tax amount and sales-tax rate."}, {"title": "Sales Tax Calculator", "url": "/sales-tax", "category": "Finance", "description": "Add or reverse sales tax from a purchase price.", "keywords": "sales tax calculator sales tax add or reverse sales tax from a purchase price."}, {"title": "Self-Employed Tax Calculator", "url": "/self-employed-tax-calculator", "category": "Finance", "description": "Estimate self-employed tax reserve from income and expenses.", "keywords": "self-employed tax calculator self employed tax calculator estimate self-employed tax reserve from income and expenses."}, {"title": "Shift Differential Calculator", "url": "/shift-differential-calculator", "category": "Popular", "description": "Estimate extra earnings from a shift differential rate.", "keywords": "shift differential calculator shift differential calculator estimate extra earnings from a shift differential rate."}, {"title": "Simple Interest Calculator", "url": "/simple-interest-calculator", "category": "Finance", "description": "Calculate simple interest, total interest earned, and final balance with the free Simple Interest Calculator from CalculatorWorks.", "keywords": "simple interest calculator simple interest calculator calculate simple interest, total interest earned, and final balance with the free simple interest calculator from calculatorworks."}, {"title": "Simple Interest Calculator", "url": "/simple-interest", "category": "Finance", "description": "Calculate interest using principal, annual rate, and time.", "keywords": "simple interest calculator simple interest calculate interest using principal, annual rate, and time."}, {"title": "Slope Calculator", "url": "/slope-calculator", "category": "Popular", "description": "Calculate slope between two coordinate points entered as x,y pairs.", "keywords": "slope calculator slope calculator calculate slope between two coordinate points entered as x,y pairs."}, {"title": "Square Feet to Square Metres Calculator", "url": "/square-feet-to-square-metres-calculator", "category": "Conversion", "description": "Convert square feet to square metres instantly for property, flooring, renovation, and area planning tasks.", "keywords": "square feet to square metres calculator square feet to square metres calculator convert square feet to square metres instantly for property, flooring, renovation, and area planning tasks."}, {"title": "Square Footage Calculator", "url": "/square-footage-calculator", "category": "Date & Time", "description": "Calculate square footage from room length and width for flooring, paint, furniture, and renovation planning.", "keywords": "square footage calculator square footage calculator calculate square footage from room length and width for flooring, paint, furniture, and renovation planning."}, {"title": "Square Metres to Square Feet Calculator", "url": "/square-metres-to-square-feet-calculator", "category": "Conversion", "description": "Convert square metres to square feet instantly for property, flooring, renovation, and area planning tasks.", "keywords": "square metres to square feet calculator square metres to square feet calculator convert square metres to square feet instantly for property, flooring, renovation, and area planning tasks."}, {"title": "Standard Deviation Calculator", "url": "/standard-deviation-calculator", "category": "Popular", "description": "Estimate population standard deviation from a list of numbers.", "keywords": "standard deviation calculator standard deviation calculator estimate population standard deviation from a list of numbers."}, {"title": "TDEE Calculator", "url": "/tdee-calculator", "category": "Popular", "description": "Estimate total daily energy expenditure from weight, height, age, sex and activity level.", "keywords": "tdee calculator tdee calculator estimate total daily energy expenditure from weight, height, age, sex and activity level."}, {"title": "Tile Calculator", "url": "/tile-calculator", "category": "Popular", "description": "Estimate tile quantity from total area and tile dimensions.", "keywords": "tile calculator tile calculator estimate tile quantity from total area and tile dimensions."}, {"title": "Time Card Calculator", "url": "/time-card-calculator", "category": "Date & Time", "description": "Estimate paid hours from start time, end time, break length and number of work days.", "keywords": "time card calculator time card calculator estimate paid hours from start time, end time, break length and number of work days."}, {"title": "Time Duration Calculator", "url": "/time-duration-calculator", "category": "Date & Time", "description": "Calculate the duration between two times in hours and minutes with CalculatorWorks. Includes formula, worked examples, and a simple time duration calc", "keywords": "time duration calculator time duration calculator calculate the duration between two times in hours and minutes with calculatorworks. includes formula, worked examples, and a simple time duration calc"}, {"title": "Tip Calculator", "url": "/tip-calculator", "category": "Popular", "description": "Calculate tips, total bill amounts, and per-person splits instantly with the free Tip Calculator from CalculatorWorks.", "keywords": "tip calculator tip calculator calculate tips, total bill amounts, and per-person splits instantly with the free tip calculator from calculatorworks."}, {"title": "Topsoil Calculator", "url": "/topsoil-calculator", "category": "Popular", "description": "Estimate topsoil volume from area and depth.", "keywords": "topsoil calculator topsoil calculator estimate topsoil volume from area and depth."}, {"title": "VAT Calculator", "url": "/vat-calculator", "category": "Business", "description": "Use the free VAT calculator to add VAT to a net price or remove VAT from a gross price. Shows VAT amount, net price, and gross price clearly with form", "keywords": "vat calculator vat calculator use the free vat calculator to add vat to a net price or remove vat from a gross price. shows vat amount, net price, and gross price clearly with form"}, {"title": "Waist-to-Hip Ratio Calculator", "url": "/waist-to-hip-ratio-calculator", "category": "Conversion", "description": "Calculate waist-to-hip ratio from waist and hip measurements.", "keywords": "waist-to-hip ratio calculator waist to hip ratio calculator calculate waist-to-hip ratio from waist and hip measurements."}, {"title": "Wallpaper Calculator", "url": "/wallpaper-calculator", "category": "Popular", "description": "Estimate wallpaper rolls from wall area, roll coverage and waste allowance.", "keywords": "wallpaper calculator wallpaper calculator estimate wallpaper rolls from wall area, roll coverage and waste allowance."}, {"title": "Water Intake Calculator", "url": "/water-intake-calculator", "category": "Popular", "description": "Estimate daily water intake from body weight and activity.", "keywords": "water intake calculator water intake calculator estimate daily water intake from body weight and activity."}, {"title": "Week Number Calculator", "url": "/week-number-calculator", "category": "Popular", "description": "Find the ISO week number for a selected date.", "keywords": "week number calculator week number calculator find the iso week number for a selected date."}, {"title": "Weeks Between Dates Calculator", "url": "/weeks-between-dates-calculator", "category": "Date & Time", "description": "Convert the time span between two dates into weeks for schedules, planning, pregnancy, and project timing.", "keywords": "weeks between dates calculator weeks between dates calculator convert the time span between two dates into weeks for schedules, planning, pregnancy, and project timing."}, {"title": "Weighted Average Calculator", "url": "/weighted-average-calculator", "category": "Health", "description": "Calculate a weighted average from comma-separated values and weights.", "keywords": "weighted average calculator weighted average calculator calculate a weighted average from comma-separated values and weights."}, {"title": "Weighted Average Calculator", "url": "/weighted-average", "category": "Health", "description": "Calculate weighted average from values and weights.", "keywords": "weighted average calculator weighted average calculate weighted average from values and weights."}, {"title": "Work Hours Calculator", "url": "/work-hours-calculator", "category": "Popular", "description": "Calculate total work hours from start time, end time, break length and number of days.", "keywords": "work hours calculator work hours calculator calculate total work hours from start time, end time, break length and number of days."}, {"title": "mL to Cups Calculator", "url": "/ml-to-cups-calculator", "category": "Conversion", "description": "Convert millilitres to US cups instantly for cooking, baking, meal prep, and kitchen measurements.", "keywords": "ml to cups calculator ml to cups calculator convert millilitres to us cups instantly for cooking, baking, meal prep, and kitchen measurements."}, {"title": "About CalculatorWorks", "url": "/about", "category": "Site", "description": "About CalculatorWorks for CalculatorWorks.", "keywords": "about calculatorworks about about calculatorworks for calculatorworks."}, {"title": "Contact CalculatorWorks", "url": "/contact", "category": "Site", "description": "Contact CalculatorWorks for CalculatorWorks.", "keywords": "contact calculatorworks contact contact calculatorworks for calculatorworks."}, {"title": "Privacy Policy", "url": "/privacy-policy", "category": "Site", "description": "Read the CalculatorWorks privacy policy, including general information about analytics, advertising, and how contact details may be handled.", "keywords": "privacy policy privacy policy read the calculatorworks privacy policy, including general information about analytics, advertising, and how contact details may be handled."}, {"title": "Privacy Policy", "url": "/privacy", "category": "Site", "description": "Privacy Policy for CalculatorWorks.", "keywords": "privacy policy privacy privacy policy for calculatorworks."}, {"title": "Terms of Use", "url": "/terms", "category": "Site", "description": "Terms of Use for CalculatorWorks.", "keywords": "terms of use terms terms of use for calculatorworks."}];
+function slug(){return (location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');}
+function title(){const h=document.querySelector('h1');return h&&h.textContent.trim()?h.textContent.trim():document.title.replace(/\s*\|\s*CalculatorWorks\s*$/i,'').trim();}
+function cat(){const s=slug();const f=CW_ENGINE_INDEX.find(i=>i.url.replace(/^\//,'')===s);if(f)return f.category;if(/mortgage|loan|interest|salary|savings|debt|credit|finance|tax|investment/.test(s))return'Finance';if(/percent|discount|markup|margin/.test(s))return'Percentage';if(/bmi|calorie|health|weight/.test(s))return'Health';if(/convert|to-|cm|inch|feet|metres|meters|kg|lb|mile/.test(s))return'Conversion';return'Popular';}
+function related(limit){const c=cat(), s=slug();return CW_ENGINE_INDEX.filter(i=>i.category===c&&i.url.replace(/^\//,'')!==s).slice(0,limit||8);}
+function addSmartRelated(){if(document.querySelector('.cw-smart-related'))return;const items=related(8);if(!items.length)return;const sec=document.createElement('section');sec.className='cw-smart-related';sec.innerHTML='<h2>Related calculators</h2><div class="cw-smart-related-grid">'+items.map(i=>`<a href="${i.url}">${i.title}<span>${i.category}</span></a>`).join('')+'</div>';const r=document.querySelector('.related-calculators');if(r&&r.parentNode)r.parentNode.insertBefore(sec,r);else(document.querySelector('main')||document.body).appendChild(sec);}
+function addCopyState(){const card=document.querySelector('.calculator-card'), btn=document.getElementById('calculateBtn');if(!card||!btn||document.querySelector('.cw-copy-state'))return;const copy=document.createElement('button');copy.type='button';copy.className='cw-copy-state';copy.textContent='Copy calculator link';btn.insertAdjacentElement('afterend',copy);copy.addEventListener('click',()=>{const p=new URLSearchParams();document.querySelectorAll('input,select').forEach(el=>{if(el.id&&el.value)p.set(el.id,el.value);});const u=location.origin+location.pathname.replace(/\.html$/,'')+(p.toString()?'?'+p.toString():'');if(navigator.clipboard)navigator.clipboard.writeText(u).then(()=>{copy.textContent='Copied';setTimeout(()=>copy.textContent='Copy calculator link',1400);});});}
+function restoreState(){const p=new URLSearchParams(location.search);p.forEach((v,k)=>{const el=document.getElementById(k);if(el&&'value'in el)el.value=v;});}
+function updateState(){const btn=document.getElementById('calculateBtn');if(!btn||btn.dataset.cwEngineState)return;btn.dataset.cwEngineState='true';btn.addEventListener('click',()=>{const p=new URLSearchParams();document.querySelectorAll('input,select').forEach(el=>{if(el.id&&el.value)p.set(el.id,el.value);});if(p.toString())history.replaceState(null,'',location.pathname.replace(/\.html$/,'')+'?'+p.toString());remember();});}
+function remember(){const t=title(), p=location.pathname.replace(/\.html$/,'');if(!t||/privacy|terms|contact/i.test(t))return;let a=[];try{a=JSON.parse(localStorage.getItem('cwRecentTools')||'[]');}catch(e){}a=a.filter(i=>i.url!==p);a.unshift({title:t,url:p});a=a.slice(0,5);try{localStorage.setItem('cwRecentTools',JSON.stringify(a));}catch(e){}}
+function recent(){let a=[];try{a=JSON.parse(localStorage.getItem('cwRecentTools')||'[]');}catch(e){}if(!a.length||document.querySelector('.cw-recent-toggle'))return;const b=document.createElement('button');b.type='button';b.className='cw-recent-toggle';b.textContent='Recent';const w=document.createElement('div');w.className='cw-recent-tools';w.innerHTML='<div class="cw-recent-panel"><h3>Recently used calculators</h3>'+a.map(i=>`<a href="${i.url}">${i.title}</a>`).join('')+'</div>';document.body.appendChild(w);document.body.appendChild(b);b.addEventListener('click',()=>w.classList.toggle('active'));}
+function context(){if(document.querySelector('.cw-context-tools'))return;const calc=document.querySelector('.calculator-card');if(!calc)return;const c=cat();const rows={Finance:[['Compare scenarios','Change the rate, term, payment or starting amount to understand how the result moves.'],['Check total cost','For money calculations, total cost or total growth is often more important than the first answer.']],Percentage:[['Use the right formula','Percent of a number, percentage change, discount and markup are different calculations.'],['Check the base value','Most percentage mistakes come from using the wrong starting number.']],Health:[['Use as a guide','Health calculators are useful screening tools but do not replace professional advice.'],['Check limitations','Personal context can change how a result should be interpreted.']],Conversion:[['Check unit direction','Make sure the starting and ending units are the right way around.'],['Pick useful precision','More decimals are not always more useful for real-world measurements.']],Popular:[['Try related tools','Many everyday calculations are easier when paired with a related calculator.'],['Save useful results','Use the copy link option to come back to a calculator with your inputs saved.']]}[c]||[['Try related tools','Many everyday calculations are easier when paired with a related calculator.']];const sec=document.createElement('section');sec.className='cw-context-tools';sec.innerHTML=rows.map(r=>`<div class="cw-context-box"><h3>${r[0]}</h3><ul><li>${r[1]}</li></ul></div>`).join('');calc.insertAdjacentElement('afterend',sec);}
+function init(){restoreState();remember();updateState();addCopyState();context();addSmartRelated();recent();}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
+
+/* ===== CalculatorWorks Visualization Comparison Engine ===== */
+
+(function(){
+'use strict';
+
+function money(n){
+  if(!isFinite(n)) return '$0.00';
+  return '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function read(id, fallback){
+  const el = document.getElementById(id);
+  if(!el) return fallback;
+  const v = parseFloat(el.value);
+  return isFinite(v) ? v : fallback;
+}
+
+function payment(principal, rate, years){
+  const months = years * 12;
+  const r = rate / 100 / 12;
+  if(months <= 0) return 0;
+  if(r === 0) return principal / months;
+  return principal * r * Math.pow(1+r, months) / (Math.pow(1+r, months)-1);
+}
+
+function lineChart(points, label){
+  const w=640, h=240, pad=30;
+  if(!points || points.length < 2){
+    points = [0,1];
+  }
+  const max=Math.max.apply(null, points);
+  const min=Math.min.apply(null, points);
+  const span=Math.max(max-min, 1);
+  const coords=points.map(function(v,i){
+    const x=pad + (i/(points.length-1))*(w-pad*2);
+    const y=h-pad - ((v-min)/span)*(h-pad*2);
+    return [x,y];
+  });
+  const poly=coords.map(function(p){return p[0]+','+p[1];}).join(' ');
+  const area=poly + ' ' + (w-pad) + ',' + (h-pad) + ' ' + pad + ',' + (h-pad);
+  return '<svg class="cw-viz-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+
+    '<defs><linearGradient id="cwVizFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#2563eb" stop-opacity=".22"></stop><stop offset="100%" stop-color="#2563eb" stop-opacity=".02"></stop></linearGradient></defs>'+
+    '<line x1="'+pad+'" y1="'+(h-pad)+'" x2="'+(w-pad)+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<line x1="'+pad+'" y1="'+pad+'" x2="'+pad+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<polygon points="'+area+'" fill="url(#cwVizFill)"></polygon>'+
+    '<polyline points="'+poly+'" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>'+
+    '<text x="'+pad+'" y="20" fill="#475569" font-size="13">'+label+'</text>'+
+  '</svg>';
+}
+
+function table(headers, rows){
+  return '<div class="cw-viz-table-wrap"><table class="cw-viz-table"><thead><tr>'+
+    headers.map(function(h){return '<th>'+h+'</th>';}).join('')+
+    '</tr></thead><tbody>'+
+    rows.join('')+
+    '</tbody></table></div>';
+}
+
+function makeShell(title, intro, controls, bodyId){
+  return '<section class="cw-viz-engine" id="'+bodyId+'">'+
+    '<div class="cw-viz-head"><h2>'+title+'</h2><p>'+intro+'</p></div>'+
+    '<div class="cw-viz-grid"><div class="cw-viz-card"><h3>Compare a scenario</h3><div class="cw-viz-controls">'+controls+'</div></div>'+
+    '<div class="cw-viz-card"><h3>Visual result</h3><div data-cw-viz-output></div></div></div>'+
+  '</section>';
+}
+
+function field(id,label,value){
+  return '<div class="cw-viz-control"><label for="'+id+'">'+label+'</label><input id="'+id+'" type="number" value="'+value+'"></div>';
+}
+
+function insertAfterCalculator(html){
+  if(document.querySelector('.cw-viz-engine')) return null;
+  const card = document.querySelector('.cw-tool-lab') || document.querySelector('.cw-popular-scenarios') || document.querySelector('.calculator-card');
+  if(!card) return null;
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const node = wrap.firstElementChild;
+  card.insertAdjacentElement('afterend', node);
+  return node;
+}
+
+function currentPage(){
+  return (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+}
+
+function metric(label,value){
+  return '<div class="cw-viz-metric"><span>'+label+'</span><strong>'+value+'</strong></div>';
+}
+
+function addMortgageEngine(){
+  const page=currentPage();
+  if(!/(mortgage|loan-repayment)/.test(page)) return;
+
+  const html = makeShell(
+    'Visual repayment comparison',
+    'Compare repayment scenarios, total interest and payoff pressure without leaving the page.',
+    field('cwVizLoan','Loan amount', read('loan', read('principal', 500000)))+
+    field('cwVizRate','Interest rate (%)', read('rate', 6))+
+    field('cwVizYears','Loan term (years)', read('years', 30))+
+    field('cwVizExtra','Extra monthly payment', 0)+
+    '<button class="cw-viz-button" type="button" data-cw-run-viz>Update comparison</button>',
+    'cwMortgageViz'
+  );
+
+  const node = insertAfterCalculator(html);
+  if(!node) return;
+
+  function render(){
+    const principal=read('cwVizLoan',500000);
+    const rate=read('cwVizRate',6);
+    const years=read('cwVizYears',30);
+    const extra=read('cwVizExtra',0);
+    const base=payment(principal,rate,years);
+    const pay=base+extra;
+    const r=rate/100/12;
+    let bal=principal, totalInterest=0, yearly=[], rows=[];
+    for(let m=1;m<=years*12 && bal>0 && m<1200;m++){
+      const interest=bal*r;
+      const principalPaid=Math.min(bal,pay-interest);
+      if(principalPaid <= 0) break;
+      bal=Math.max(0,bal-principalPaid);
+      totalInterest += interest;
+      if(m%12===0 || bal===0){
+        yearly.push(bal);
+        rows.push('<tr><td>Year '+Math.ceil(m/12)+'</td><td>'+money(principal-bal)+'</td><td>'+money(totalInterest)+'</td><td>'+money(bal)+'</td></tr>');
+      }
+    }
+
+    const output=node.querySelector('[data-cw-viz-output]');
+    output.innerHTML =
+      '<div class="cw-viz-metrics">'+
+      metric('Monthly payment', money(pay))+
+      metric('Total interest', money(totalInterest))+
+      metric('Total paid', money(principal+totalInterest))+
+      metric('Payoff years', String(Math.ceil(yearly.length)))+
+      '</div>'+
+      lineChart(yearly.length ? yearly : [principal,0], 'Estimated balance over time')+
+      '<div class="cw-viz-bars"><div class="cw-viz-bar-row">Principal vs interest<div class="cw-viz-bar-track"><span style="width:'+Math.max(5, Math.min(95, (principal/(principal+totalInterest))*100))+'%"></span></div></div></div>'+
+      table(['Period','Principal repaid','Interest paid','Balance'], rows.slice(0,30))+
+      '<div class="cw-viz-note">Try changing the rate, term or extra payment to see how the repayment path changes.</div>';
+  }
+
+  node.querySelector('[data-cw-run-viz]').addEventListener('click', render);
+  render();
+}
+
+function addGrowthEngine(){
+  const page=currentPage();
+  if(!/(compound-interest|savings)/.test(page)) return;
+
+  const html = makeShell(
+    'Visual growth comparison',
+    'See how starting amount, contribution, return rate and time affect long-term growth.',
+    field('cwVizStart','Starting amount', read('principal', 10000))+
+    field('cwVizContribution','Monthly contribution', read('contribution', 250))+
+    field('cwVizGrowthRate','Annual return (%)', read('rate', 7))+
+    field('cwVizGrowthYears','Years', read('years', 20))+
+    '<button class="cw-viz-button" type="button" data-cw-run-viz>Update projection</button>',
+    'cwGrowthViz'
+  );
+
+  const node = insertAfterCalculator(html);
+  if(!node) return;
+
+  function render(){
+    const start=read('cwVizStart',10000);
+    const contribution=read('cwVizContribution',250);
+    const rate=read('cwVizGrowthRate',7)/100/12;
+    const years=read('cwVizGrowthYears',20);
+    let balance=start, contributed=start, rows=[], yearly=[];
+    for(let m=1;m<=years*12;m++){
+      balance=balance*(1+rate)+contribution;
+      contributed+=contribution;
+      if(m%12===0 || m===years*12){
+        yearly.push(balance);
+        rows.push('<tr><td>Year '+Math.ceil(m/12)+'</td><td>'+money(contributed)+'</td><td>'+money(Math.max(0,balance-contributed))+'</td><td>'+money(balance)+'</td></tr>');
+      }
+    }
+    const growth=Math.max(0,balance-contributed);
+    const output=node.querySelector('[data-cw-viz-output]');
+    output.innerHTML =
+      '<div class="cw-viz-metrics">'+
+      metric('Future value', money(balance))+
+      metric('Contributed', money(contributed))+
+      metric('Growth', money(growth))+
+      metric('Years', String(years))+
+      '</div>'+
+      lineChart(yearly, 'Estimated growth over time')+
+      '<div class="cw-viz-bars"><div class="cw-viz-bar-row">Contributions vs growth<div class="cw-viz-bar-track"><span style="width:'+Math.max(5, Math.min(95, (contributed/(balance||1))*100))+'%"></span></div></div></div>'+
+      table(['Period','Contributed','Growth','Balance'], rows.slice(0,40))+
+      '<div class="cw-viz-note">Longer time periods and regular contributions usually have the largest effect on projected growth.</div>';
+  }
+
+  node.querySelector('[data-cw-run-viz]').addEventListener('click', render);
+  render();
+}
+
+function addDebtEngine(){
+  const page=currentPage();
+  if(!/(debt-payoff|credit-card-payoff)/.test(page)) return;
+
+  const html = makeShell(
+    'Visual debt payoff comparison',
+    'Compare payment size, payoff time and estimated interest to understand how faster payments can change the result.',
+    field('cwVizDebt','Debt balance', read('balance', 10000))+
+    field('cwVizDebtRate','APR (%)', read('rate', 18))+
+    field('cwVizDebtPayment','Monthly payment', read('payment', 300))+
+    '<button class="cw-viz-button" type="button" data-cw-run-viz>Update payoff view</button>',
+    'cwDebtViz'
+  );
+
+  const node = insertAfterCalculator(html);
+  if(!node) return;
+
+  function render(){
+    let balance=read('cwVizDebt',10000);
+    const original=balance;
+    const r=read('cwVizDebtRate',18)/100/12;
+    const pay=read('cwVizDebtPayment',300);
+    let totalInterest=0, months=0, yearly=[], rows=[];
+    while(balance>0 && months<600){
+      const interest=balance*r;
+      const principal=Math.min(balance,pay-interest);
+      if(principal<=0) break;
+      balance=Math.max(0,balance-principal);
+      totalInterest+=interest;
+      months++;
+      if(months%12===0 || balance===0){
+        yearly.push(balance);
+        rows.push('<tr><td>Month '+months+'</td><td>'+money(original-balance)+'</td><td>'+money(totalInterest)+'</td><td>'+money(balance)+'</td></tr>');
+      }
+    }
+    const output=node.querySelector('[data-cw-viz-output]');
+    output.innerHTML =
+      '<div class="cw-viz-metrics">'+
+      metric('Payoff months', months < 600 ? String(months) : 'Not reducing')+
+      metric('Interest', money(totalInterest))+
+      metric('Total paid', months < 600 ? money(original+totalInterest) : 'Increase payment')+
+      metric('Monthly payment', money(pay))+
+      '</div>'+
+      lineChart(yearly.length ? yearly : [original, original], 'Estimated debt balance over time')+
+      table(['Period','Principal repaid','Interest paid','Balance'], rows.slice(0,40))+
+      '<div class="cw-viz-note">If the payment is too low to reduce the balance, increase the payment or reduce the APR and try again.</div>';
+  }
+
+  node.querySelector('[data-cw-run-viz]').addEventListener('click', render);
+  render();
+}
+
+function init(){
+  addMortgageEngine();
+  addGrowthEngine();
+  addDebtEngine();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
+
+
+/* ===== CalculatorWorks Formula & Button Assurance Layer ===== */
+
+(function(){
+'use strict';
+
+function $(id){ return document.getElementById(id); }
+
+function currentPageKey(){
+  const part = window.location.pathname.split('/').filter(Boolean).pop() || 'index';
+  return part.replace(/\.html$/,'') + '.html';
+}
+
+function pageBase(){
+  return currentPageKey().replace(/\.html$/,'');
+}
+
+function text(id){
+  const el = $(id);
+  return el ? String(el.value || '').trim() : '';
+}
+
+function num(id){
+  const v = parseFloat(text(id));
+  return Number.isFinite(v) ? v : NaN;
+}
+
+function decimalOr(defaultValue){
+  const el = $('decimals');
+  if(!el) return defaultValue;
+  const v = parseFloat(el.value);
+  return Number.isFinite(v) ? v : defaultValue;
+}
+
+function out(message){
+  const result = $('result');
+  if(result) result.textContent = message;
+}
+
+function money(value){
+  if(!Number.isFinite(value)) return '$0.00';
+  return '$' + Number(value).toLocaleString(undefined,{minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function format(value, places){
+  const n = Number(value);
+  if(!Number.isFinite(n)) return '0';
+  return n.toFixed(Number.isFinite(places) ? places : 2);
+}
+
+function monthsToText(months){
+  if(!Number.isFinite(months) || months < 0) return 'Not payable with these inputs';
+  const rounded = Math.ceil(months);
+  const years = Math.floor(rounded / 12);
+  const rem = rounded % 12;
+  if(years && rem) return years + ' years ' + rem + ' months';
+  if(years) return years + ' years';
+  return rem + ' months';
+}
+
+function loanPayment(principal, apr, years){
+  const months = years * 12;
+  const r = apr / 100 / 12;
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years) || principal <= 0 || years <= 0) return NaN;
+  if(r === 0) return principal / months;
+  return principal * r * Math.pow(1 + r, months) / (Math.pow(1 + r, months) - 1);
+}
+
+function payoff(balance, apr, monthlyPayment){
+  const r = apr / 100 / 12;
+  if(!Number.isFinite(balance) || !Number.isFinite(apr) || !Number.isFinite(monthlyPayment) || balance <= 0 || monthlyPayment <= 0) return null;
+  if(monthlyPayment <= balance * r) return null;
+
+  let months = 0;
+  let interest = 0;
+  let bal = balance;
+
+  while(bal > 0 && months < 1200){
+    const monthInterest = bal * r;
+    const principal = Math.min(bal, monthlyPayment - monthInterest);
+    if(principal <= 0) return null;
+    bal -= principal;
+    interest += monthInterest;
+    months += 1;
+  }
+
+  return { months, interest };
+}
+
+function valuesForLoan(){
+  const loan = Number.isFinite(num('loan')) ? num('loan') : num('feet');
+  const rate = Number.isFinite(num('rate')) ? num('rate') : num('inches');
+  const years = Number.isFinite(num('years')) ? num('years') : decimalOr(NaN);
+  return { loan, rate, years };
+}
+
+function correctedMortgage(){
+  const v = valuesForLoan();
+  const p = loanPayment(v.loan, v.rate, v.years);
+  if(!Number.isFinite(p)) return out('Enter loan amount, rate, and term.');
+  const months = v.years * 12;
+  out('Estimated monthly payment: ' + money(p) + ' • Total interest: ' + money(p * months - v.loan) + ' • Total paid: ' + money(p * months));
+}
+
+function correctedLoanRepayment(){
+  const v = valuesForLoan();
+  const p = loanPayment(v.loan, v.rate, v.years);
+  if(!Number.isFinite(p)) return out('Enter loan amount, annual interest rate, and loan term.');
+  const months = v.years * 12;
+  out('Monthly payment: ' + money(p) + ' • Total interest: ' + money(p * months - v.loan) + ' • Total paid: ' + money(p * months));
+}
+
+function correctedCompound(){
+  const principal = Number.isFinite(num('principal')) ? num('principal') : num('feet');
+  const apr = Number.isFinite(num('rate')) ? num('rate') : num('inches');
+  const years = Number.isFinite(num('years')) ? num('years') : decimalOr(NaN);
+  const contribution = Number.isFinite(num('contribution')) ? num('contribution') : 0;
+
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years) || years < 0) {
+    return out('Enter principal, annual interest rate, and years.');
+  }
+
+  const months = Math.round(years * 12);
+  const r = apr / 100 / 12;
+  let balance = principal;
+  let contributed = principal;
+
+  for(let i = 0; i < months; i++){
+    balance = balance * (1 + r) + contribution;
+    contributed += contribution;
+  }
+
+  out('Estimated future value: ' + money(balance) + ' • Contributions: ' + money(contributed) + ' • Estimated growth: ' + money(balance - contributed));
+}
+
+function correctedSavings(){
+  const principal = num('feet');
+  const apr = num('inches');
+  const years = decimalOr(NaN);
+
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years) || years < 0) {
+    return out('Enter starting amount, annual interest rate, and term.');
+  }
+
+  const balance = principal * Math.pow(1 + apr / 100, years);
+  out('Estimated savings: ' + money(balance) + ' • Estimated interest: ' + money(balance - principal));
+}
+
+function correctedSavingsGoal(){
+  const goal = num('feet');
+  const current = num('inches');
+  const monthly = decimalOr(NaN);
+  if(!Number.isFinite(goal) || !Number.isFinite(current) || !Number.isFinite(monthly) || monthly <= 0) {
+    return out('Enter goal, current savings, and monthly contribution.');
+  }
+  const remaining = goal - current;
+  if(remaining <= 0) return out('Goal already reached.');
+  out('Time to goal: ' + monthsToText(Math.ceil(remaining / monthly)) + ' • Remaining amount: ' + money(remaining));
+}
+
+function correctedCreditDebt(){
+  const balance = Number.isFinite(num('balance')) ? num('balance') : num('feet');
+  const apr = Number.isFinite(num('rate')) ? num('rate') : num('inches');
+  const payment = Number.isFinite(num('payment')) ? num('payment') : decimalOr(NaN);
+  const result = payoff(balance, apr, payment);
+  if(!result) return out('Enter a payment greater than the monthly interest.');
+  out('Estimated payoff: ' + monthsToText(result.months) + ' • Estimated interest: ' + money(result.interest) + ' • Estimated total paid: ' + money(balance + result.interest));
+}
+
+function correctedBMI(){
+  const weight = Number.isFinite(num('weight')) ? num('weight') : num('feet');
+  const heightCm = Number.isFinite(num('height')) ? num('height') : num('inches');
+  const places = decimalOr(1);
+  if(!Number.isFinite(weight) || !Number.isFinite(heightCm) || weight <= 0 || heightCm <= 0) {
+    return out('Enter weight and height.');
+  }
+  const heightM = heightCm / 100;
+  const bmi = weight / (heightM * heightM);
+  let category = 'Healthy weight range';
+  if(bmi < 18.5) category = 'Underweight range';
+  else if(bmi >= 30) category = 'Obesity range';
+  else if(bmi >= 25) category = 'Overweight range';
+  out('BMI: ' + bmi.toFixed(places) + ' • ' + category);
+}
+
+function correctedSalary(){
+  const salary = Number.isFinite(num('salary')) ? num('salary') : num('feet');
+  const hours = Number.isFinite(num('hours')) ? num('hours') : num('inches');
+  const weeks = Number.isFinite(num('weeks')) ? num('weeks') : 52;
+  if(!Number.isFinite(salary) || !Number.isFinite(hours) || !Number.isFinite(weeks) || salary <= 0 || hours <= 0 || weeks <= 0) {
+    return out('Enter annual salary and weekly hours.');
+  }
+  const hourly = salary / (hours * weeks);
+  out('Hourly equivalent: ' + money(hourly) + ' • Weekly: ' + money(salary / weeks) + ' • Monthly: ' + money(salary / 12));
+}
+
+function correctedPercentage(){
+  const percentage = num('feet');
+  const number = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(percentage) || !Number.isFinite(number)) return out('Enter percentage and number.');
+  out(percentage + '% of ' + number + ' = ' + format((percentage / 100) * number, places));
+}
+
+function correctedPercentChange(){
+  const oldValue = num('feet');
+  const newValue = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(oldValue) || !Number.isFinite(newValue) || oldValue === 0) return out('Enter original and new values.');
+  out('Percent change: ' + format(((newValue - oldValue) / oldValue) * 100, places) + '%');
+}
+
+function correctedPercentageIncrease(){
+  const original = num('feet');
+  const increase = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(original) || !Number.isFinite(increase)) return out('Enter value and increase percentage.');
+  out('Result: ' + format(original * (1 + increase / 100), places) + ' • Increase: ' + format(original * increase / 100, places));
+}
+
+function correctedPercentageDecrease(){
+  const original = num('feet');
+  const decrease = num('inches');
+  const places = decimalOr(2);
+  if(!Number.isFinite(original) || !Number.isFinite(decrease)) return out('Enter value and decrease percentage.');
+  out('Result: ' + format(original * (1 - decrease / 100), places) + ' • Decrease: ' + format(original * decrease / 100, places));
+}
+
+function correctedDiscount(){
+  const price = num('feet');
+  const discount = num('inches');
+  if(!Number.isFinite(price) || !Number.isFinite(discount)) return out('Enter price and discount.');
+  out('Sale price: ' + money(price * (1 - discount / 100)) + ' • You save: ' + money(price * discount / 100));
+}
+
+function correctedMargin(){
+  const revenue = num('feet');
+  const cost = num('inches');
+  if(!Number.isFinite(revenue) || !Number.isFinite(cost) || revenue <= 0) return out('Enter revenue and cost.');
+  const profit = revenue - cost;
+  out('Profit: ' + money(profit) + ' • Margin: ' + ((profit / revenue) * 100).toFixed(2) + '%');
+}
+
+function correctedMarkup(){
+  const cost = num('feet');
+  const markup = num('inches');
+  if(!Number.isFinite(cost) || !Number.isFinite(markup)) return out('Enter cost and markup.');
+  out('Selling price: ' + money(cost * (1 + markup / 100)) + ' • Markup amount: ' + money(cost * markup / 100));
+}
+
+function correctedSimpleInterest(){
+  const principal = num('feet');
+  const apr = num('inches');
+  const years = decimalOr(NaN);
+  if(!Number.isFinite(principal) || !Number.isFinite(apr) || !Number.isFinite(years)) return out('Enter principal, rate, and years.');
+  const interest = principal * apr / 100 * years;
+  out('Simple interest: ' + money(interest) + ' • Total: ' + money(principal + interest));
+}
+
+function correctedDownPayment(){
+  const price = num('feet');
+  const pct = num('inches');
+  if(!Number.isFinite(price) || !Number.isFinite(pct) || price <= 0 || pct < 0) return out('Enter price and down payment percentage.');
+  const down = pct > 100 ? pct : price * pct / 100;
+  if(down > price) return out('Down payment cannot be greater than the purchase price.');
+  out('Down payment: ' + money(down) + ' • Remaining loan: ' + money(price - down) + ' • Down payment percentage: ' + ((down / price) * 100).toFixed(2) + '%');
+}
+
+function correctedConversions(){
+  const key = pageBase();
+  const value = num('feet');
+  const places = decimalOr(2);
+  if(!Number.isFinite(value)) return out('Please enter a valid number.');
+
+  const map = {
+    'feet-to-metres': [0.3048, ' ft', ' m'],
+    'metres-to-feet': [3.280839895, ' m', ' ft'],
+    'cm-to-inches': [1/2.54, ' cm', ' inches'],
+    'inches-to-cm': [2.54, ' inches', ' cm'],
+    'kg-to-lb': [2.2046226218, ' kg', ' lb'],
+    'lb-to-kg': [1/2.2046226218, ' lb', ' kg'],
+    'km-to-miles': [0.6213711922, ' km', ' miles'],
+    'miles-to-km': [1.609344, ' miles', ' km'],
+    'celsius-to-fahrenheit': null,
+    'fahrenheit-to-celsius': null
+  };
+
+  if(key === 'celsius-to-fahrenheit') return out(value + ' °C = ' + format((value * 9 / 5) + 32, places) + ' °F');
+  if(key === 'fahrenheit-to-celsius') return out(value + ' °F = ' + format((value - 32) * 5 / 9, places) + ' °C');
+
+  if(map[key]){
+    out(value + map[key][1] + ' = ' + format(value * map[key][0], places) + map[key][2]);
+  }
+}
+
+const fixedCalculators = {
+  'mortgage-calculator': correctedMortgage,
+  'loan-payment': correctedMortgage,
+  'loan-repayment-calculator': correctedLoanRepayment,
+  'mortgage-amortization-calculator': correctedLoanRepayment,
+  'mortgage-interest-calculator': correctedLoanRepayment,
+  'compound-interest-calculator': correctedCompound,
+  'compound-interest': correctedCompound,
+  'savings-calculator': correctedSavings,
+  'savings-goal-calculator': correctedSavingsGoal,
+  'credit-card-payoff-calculator': correctedCreditDebt,
+  'debt-payoff-calculator': correctedCreditDebt,
+  'debt-avalanche-calculator': correctedCreditDebt,
+  'debt-snowball-calculator': correctedCreditDebt,
+  'bmi-calculator': correctedBMI,
+  'bmi': correctedBMI,
+  'salary-calculator': correctedSalary,
+  'salary-to-hourly-calculator': correctedSalary,
+  'percentage-calculator': correctedPercentage,
+  'percent-change-calculator': correctedPercentChange,
+  'percentage-increase-calculator': correctedPercentageIncrease,
+  'percentage-decrease-calculator': correctedPercentageDecrease,
+  'discount-calculator': correctedDiscount,
+  'margin-calculator': correctedMargin,
+  'markup-calculator': correctedMarkup,
+  'simple-interest-calculator': correctedSimpleInterest,
+  'down-payment-calculator': correctedDownPayment,
+  'feet-to-metres': correctedConversions,
+  'metres-to-feet': correctedConversions,
+  'cm-to-inches': correctedConversions,
+  'inches-to-cm': correctedConversions,
+  'kg-to-lb': correctedConversions,
+  'lb-to-kg': correctedConversions,
+  'km-to-miles': correctedConversions,
+  'miles-to-km': correctedConversions,
+  'celsius-to-fahrenheit': correctedConversions,
+  'fahrenheit-to-celsius': correctedConversions
+};
+
+function correctedCalculate(){
+  const key = pageBase();
+  const fn = fixedCalculators[key];
+  if(fn) fn();
+}
+
+function repairScenarioPayload(payload){
+  if(!$('principal') && $('feet') && payload.principal !== undefined) payload.feet = payload.principal;
+  if(!$('rate') && $('inches') && payload.rate !== undefined) payload.inches = payload.rate;
+  if(!$('years') && $('decimals') && payload.years !== undefined) payload.decimals = payload.years;
+  if(!$('loan') && $('feet') && payload.loan !== undefined) payload.feet = payload.loan;
+  if(!$('payment') && $('decimals') && payload.payment !== undefined) payload.decimals = payload.payment;
+  return payload;
+}
+
+function applyScenarioFixes(){
+  document.querySelectorAll('[data-cw-scenario]').forEach(function(btn){
+    if(btn.dataset.cwFormulaScenarioFixed) return;
+    btn.dataset.cwFormulaScenarioFixed = 'true';
+
+    btn.addEventListener('click', function(){
+      let payload = {};
+      try { payload = JSON.parse(btn.getAttribute('data-cw-scenario') || '{}'); } catch(e) { payload = {}; }
+      payload = repairScenarioPayload(payload);
+
+      Object.keys(payload).forEach(function(key){
+        const input = $(key);
+        if(input) input.value = payload[key];
+      });
+
+      setTimeout(correctedCalculate, 0);
+    });
+  });
+}
+
+function repairReset(){
+  const reset = $('resetBtn');
+  if(!reset || reset.dataset.cwFormulaResetFixed) return;
+  reset.dataset.cwFormulaResetFixed = 'true';
+
+  reset.addEventListener('click', function(){
+    setTimeout(function(){
+      const decimals = $('decimals');
+      if(decimals && decimals.tagName && decimals.tagName.toLowerCase() === 'select'){
+        const optionValues = Array.from(decimals.options || []).map(function(o){ return o.value; });
+        if(optionValues.includes('2')) decimals.value = '2';
+        else if(optionValues.includes('10')) decimals.value = '10';
+        else if(decimals.options && decimals.options.length) decimals.value = decimals.options[0].value;
+      }
+      out('Enter values to begin');
+    }, 0);
+  });
+}
+
+function repairButtons(){
+  const calculate = $('calculateBtn');
+  if(calculate && !calculate.dataset.cwFormulaFixed){
+    calculate.dataset.cwFormulaFixed = 'true';
+    calculate.setAttribute('type', 'button');
+    calculate.addEventListener('click', function(){
+      setTimeout(correctedCalculate, 0);
+    });
+  }
+
+  const reset = $('resetBtn');
+  if(reset) reset.setAttribute('type', 'button');
+
+  document.querySelectorAll('input, select').forEach(function(input){
+    if(input.dataset.cwFormulaEnterFixed) return;
+    input.dataset.cwFormulaEnterFixed = 'true';
+    input.addEventListener('keydown', function(e){
+      if(e.key === 'Enter') setTimeout(correctedCalculate, 0);
+    });
+  });
+
+  repairReset();
+  applyScenarioFixes();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', repairButtons);
+}else{
+  repairButtons();
+}
+
+})();
+
+/* ===== CalculatorWorks Advanced Intelligence Projection Engine ===== */
+
+(function(){
+'use strict';
+
+function money(n){
+  if(!isFinite(n)) return '$0.00';
+  return '$' + Number(n).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function number(n, places){
+  if(!isFinite(n)) return '0';
+  return Number(n).toLocaleString(undefined,{maximumFractionDigits:places === undefined ? 2 : places});
+}
+
+function page(){
+  return (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+}
+
+function read(id, fallback){
+  const el = document.getElementById(id);
+  if(!el) return fallback;
+  const v = parseFloat(el.value);
+  return isFinite(v) ? v : fallback;
+}
+
+function getPrimary(name, fallback){
+  const map = {
+    principal: ['principal','loan','balance','feet'],
+    rate: ['rate','apr','inches'],
+    years: ['years','term','decimals'],
+    payment: ['payment','monthlyPayment','decimals'],
+    contribution: ['contribution','monthly','decimals'],
+    salary: ['salary','feet'],
+    hours: ['hours','inches']
+  };
+  const ids = map[name] || [name];
+  for(var i=0;i<ids.length;i++){
+    const el=document.getElementById(ids[i]);
+    if(el){
+      const v=parseFloat(el.value);
+      if(isFinite(v)) return v;
+    }
+  }
+  return fallback;
+}
+
+function setRangeLabel(input){
+  const label = input.parentNode.querySelector('.cw-ai-range-value');
+  if(label) label.textContent = input.value;
+}
+
+function metric(label, value){
+  return '<div class="cw-ai-metric"><span>'+label+'</span><strong>'+value+'</strong></div>';
+}
+
+function table(headers, rows){
+  return '<div class="cw-ai-table-wrap"><table class="cw-ai-table"><thead><tr>'+
+    headers.map(function(h){ return '<th>'+h+'</th>'; }).join('')+
+    '</tr></thead><tbody>'+rows.join('')+'</tbody></table></div>';
+}
+
+function lineChart(seriesA, seriesB, label){
+  const w=680,h=250,pad=32;
+  seriesA = seriesA && seriesA.length ? seriesA : [0,1];
+  seriesB = seriesB && seriesB.length ? seriesB : [];
+  const all = seriesA.concat(seriesB);
+  const max=Math.max.apply(null, all);
+  const min=Math.min.apply(null, all);
+  const span=Math.max(max-min,1);
+
+  function coords(points){
+    return points.map(function(v,i){
+      const x=pad+(i/(points.length-1 || 1))*(w-pad*2);
+      const y=h-pad-((v-min)/span)*(h-pad*2);
+      return [x,y];
+    });
+  }
+
+  function poly(points){
+    return coords(points).map(function(p){return p[0]+','+p[1];}).join(' ');
+  }
+
+  return '<svg class="cw-ai-chart" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="'+label+'">'+
+    '<line x1="'+pad+'" y1="'+(h-pad)+'" x2="'+(w-pad)+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<line x1="'+pad+'" y1="'+pad+'" x2="'+pad+'" y2="'+(h-pad)+'" stroke="#cbd5e1"></line>'+
+    '<polyline points="'+poly(seriesA)+'" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>'+
+    (seriesB.length ? '<polyline points="'+poly(seriesB)+'" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>' : '')+
+    '<text x="'+pad+'" y="20" fill="#475569" font-size="13">'+label+'</text>'+
+    '<circle cx="'+(w-142)+'" cy="18" r="5" fill="#2563eb"></circle><text x="'+(w-132)+'" y="22" fill="#475569" font-size="12">Scenario A</text>'+
+    (seriesB.length ? '<circle cx="'+(w-58)+'" cy="18" r="5" fill="#14b8a6"></circle><text x="'+(w-48)+'" y="22" fill="#475569" font-size="12">B</text>' : '')+
+  '</svg>';
+}
+
+function monthlyPayment(principal, apr, years){
+  const n=years*12;
+  const r=apr/100/12;
+  if(n<=0 || principal<=0) return NaN;
+  if(r===0) return principal/n;
+  return principal*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+}
+
+function amort(principal, apr, years, extra){
+  const p=monthlyPayment(principal,apr,years);
+  const pay=p+(extra||0);
+  const r=apr/100/12;
+  let bal=principal,totalInterest=0,months=0,series=[],rows=[];
+  while(bal>0 && months<years*12 && months<1200){
+    const interest=bal*r;
+    const principalPaid=Math.min(bal,pay-interest);
+    if(principalPaid<=0) break;
+    bal=Math.max(0,bal-principalPaid);
+    totalInterest+=interest;
+    months++;
+    if(months%12===0 || bal===0){
+      series.push(bal);
+      rows.push('<tr><td>Year '+Math.ceil(months/12)+'</td><td>'+money(principal-bal)+'</td><td>'+money(totalInterest)+'</td><td>'+money(bal)+'</td></tr>');
+    }
+  }
+  return {payment:p,pay:pay,totalInterest:totalInterest,totalPaid:principal+totalInterest,months:months,series:series,rows:rows};
+}
+
+function growth(start, contribution, apr, years){
+  const r=apr/100/12;
+  let balance=start, contributed=start, series=[],rows=[];
+  for(let m=1;m<=years*12;m++){
+    balance=balance*(1+r)+contribution;
+    contributed+=contribution;
+    if(m%12===0 || m===years*12){
+      series.push(balance);
+      rows.push('<tr><td>Year '+Math.ceil(m/12)+'</td><td>'+money(contributed)+'</td><td>'+money(Math.max(0,balance-contributed))+'</td><td>'+money(balance)+'</td></tr>');
+    }
+  }
+  return {balance:balance,contributed:contributed,growth:balance-contributed,series:series,rows:rows};
+}
+
+function payoff(balance, apr, payment){
+  const r=apr/100/12;
+  let bal=balance, interest=0, months=0, series=[], rows=[];
+  while(bal>0 && months<720){
+    const i=bal*r;
+    const principal=Math.min(bal,payment-i);
+    if(principal<=0) break;
+    bal=Math.max(0,bal-principal);
+    interest+=i;
+    months++;
+    if(months%12===0 || bal===0){
+      series.push(bal);
+      rows.push('<tr><td>Month '+months+'</td><td>'+money(balance-bal)+'</td><td>'+money(interest)+'</td><td>'+money(bal)+'</td></tr>');
+    }
+  }
+  return {months:months,interest:interest,total:balance+interest,series:series,rows:rows,finished:bal<=0};
+}
+
+function makeShell(id, title, intro, controls){
+  return '<section class="cw-ai-engine" id="'+id+'">'+
+    '<div class="cw-ai-head"><h2>'+title+'</h2><p>'+intro+'</p></div>'+
+    '<div class="cw-ai-grid"><div class="cw-ai-card"><h3>Scenario controls</h3><div class="cw-ai-controls">'+controls+'</div><div class="cw-ai-mobile-actions"><button class="cw-ai-button" type="button" data-cw-ai-run>Update comparison</button></div></div>'+
+    '<div class="cw-ai-card"><h3>Comparison result</h3><div data-cw-ai-output></div></div></div>'+
+  '</section>';
+}
+
+function input(id,label,value){
+  return '<div class="cw-ai-control"><label for="'+id+'">'+label+'</label><input id="'+id+'" type="number" value="'+value+'"></div>';
+}
+
+function range(id,label,value,min,max,step){
+  return '<div class="cw-ai-control"><label for="'+id+'">'+label+' <span class="cw-ai-range-value">'+value+'</span></label><input id="'+id+'" type="range" min="'+min+'" max="'+max+'" step="'+step+'" value="'+value+'"></div>';
+}
+
+function button(){
+  return '<button class="cw-ai-button" type="button" data-cw-ai-run>Update comparison</button>';
+}
+
+function insert(html){
+  if(document.querySelector('.cw-ai-engine')) return null;
+  const target=document.querySelector('.cw-viz-engine') || document.querySelector('.cw-tool-lab') || document.querySelector('.calculator-card');
+  if(!target) return null;
+  const wrap=document.createElement('div');
+  wrap.innerHTML=html;
+  const node=wrap.firstElementChild;
+  target.insertAdjacentElement('afterend', node);
+  return node;
+}
+
+function bindRanges(node, render){
+  node.querySelectorAll('input[type="range"]').forEach(function(el){
+    setRangeLabel(el);
+    el.addEventListener('input', function(){
+      setRangeLabel(el);
+      render();
+    });
+  });
+  node.querySelectorAll('input[type="number"]').forEach(function(el){
+    el.addEventListener('input', render);
+  });
+  node.querySelectorAll('[data-cw-ai-run]').forEach(function(btn){
+    btn.addEventListener('click', render);
+  });
+}
+
+function financeEngine(){
+  const p=page();
+  if(!/(mortgage|loan-repayment|mortgage-amortization|loan-payment)/.test(p)) return;
+
+  const baseLoan=getPrimary('principal',500000);
+  const baseRate=getPrimary('rate',6);
+  const baseYears=getPrimary('years',30);
+
+  const node=insert(makeShell(
+    'Advanced repayment comparison',
+    'Compare two repayment scenarios side by side and see how payment, interest, payoff time and balance change.',
+    input('cwAiLoan','Loan amount',baseLoan)+
+    range('cwAiRateA','Scenario A rate (%)',baseRate,0,15,0.1)+
+    range('cwAiRateB','Scenario B rate (%)',Math.max(0,baseRate-0.5),0,15,0.1)+
+    range('cwAiYearsA','Scenario A years',baseYears,1,40,1)+
+    range('cwAiYearsB','Scenario B years',Math.max(1,baseYears-5),1,40,1)+
+    input('cwAiExtraB','Extra monthly payment in Scenario B',100)+
+    button(),
+    'cwAiFinanceEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const principal=read('cwAiLoan',baseLoan);
+    const a=amort(principal,read('cwAiRateA',baseRate),read('cwAiYearsA',baseYears),0);
+    const b=amort(principal,read('cwAiRateB',baseRate),read('cwAiYearsB',baseYears),read('cwAiExtraB',0));
+    const interestSaved=a.totalInterest-b.totalInterest;
+    const monthsSaved=a.months-b.months;
+    const output=node.querySelector('[data-cw-ai-output]');
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Monthly payment',money(a.pay))+metric('Interest',money(a.totalInterest))+metric('Payoff',Math.ceil(a.months/12)+' yrs')+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Monthly payment',money(b.pay))+metric('Interest',money(b.totalInterest))+metric('Payoff',Math.ceil(b.months/12)+' yrs')+
+      '</div></div></div>'+
+      lineChart(a.series,b.series,'Balance comparison over time')+
+      '<div class="cw-ai-insight '+(interestSaved>0?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B '+(interestSaved>0?'saves about '+money(interestSaved):'costs about '+money(Math.abs(interestSaved))+' more')+' in interest and '+(monthsSaved>0?'pays off about '+monthsSaved+' months faster.':'does not shorten the payoff time compared with Scenario A.')+'</div>'+
+      table(['Period','Principal repaid','Interest paid','Balance'], b.rows.slice(0,35));
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function growthEngine(){
+  const p=page();
+  if(!/(compound-interest|savings|retirement-savings|investment-return)/.test(p)) return;
+
+  const start=getPrimary('principal',10000);
+  const rate=getPrimary('rate',7);
+  const years=getPrimary('years',20);
+  const contribution=getPrimary('contribution',250);
+
+  const node=insert(makeShell(
+    'Advanced growth comparison',
+    'Compare contribution and rate scenarios to see how long-term growth changes over time.',
+    input('cwAiStart','Starting amount',start)+
+    range('cwAiContribA','Scenario A monthly contribution',contribution,0,5000,50)+
+    range('cwAiContribB','Scenario B monthly contribution',contribution+100,0,5000,50)+
+    range('cwAiGrowthA','Scenario A return (%)',rate,0,15,0.1)+
+    range('cwAiGrowthB','Scenario B return (%)',rate+1,0,15,0.1)+
+    range('cwAiGrowthYears','Years',years,1,50,1)+
+    button(),
+    'cwAiGrowthEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const startVal=read('cwAiStart',start);
+    const yearsVal=read('cwAiGrowthYears',years);
+    const a=growth(startVal,read('cwAiContribA',contribution),read('cwAiGrowthA',rate),yearsVal);
+    const b=growth(startVal,read('cwAiContribB',contribution+100),read('cwAiGrowthB',rate+1),yearsVal);
+    const diff=b.balance-a.balance;
+    const output=node.querySelector('[data-cw-ai-output]');
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Future value',money(a.balance))+metric('Contributed',money(a.contributed))+metric('Growth',money(a.growth))+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Future value',money(b.balance))+metric('Contributed',money(b.contributed))+metric('Growth',money(b.growth))+
+      '</div></div></div>'+
+      lineChart(a.series,b.series,'Growth comparison over time')+
+      '<div class="cw-ai-insight '+(diff>=0?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B finishes about '+money(Math.abs(diff))+' '+(diff>=0?'higher':'lower')+' than Scenario A over '+yearsVal+' years.</div>'+
+      table(['Period','Contributed','Growth','Balance'], b.rows.slice(0,45));
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function debtEngine(){
+  const p=page();
+  if(!/(debt-payoff|credit-card-payoff|debt-avalanche|debt-snowball)/.test(p)) return;
+
+  const balance=getPrimary('principal',10000);
+  const rate=getPrimary('rate',18);
+  const paymentVal=getPrimary('payment',300);
+
+  const node=insert(makeShell(
+    'Advanced payoff comparison',
+    'Compare payment scenarios to see how monthly payment changes payoff time and total interest.',
+    input('cwAiDebt','Debt balance',balance)+
+    range('cwAiDebtRate','APR (%)',rate,0,40,0.1)+
+    range('cwAiPayA','Scenario A monthly payment',paymentVal,50,5000,25)+
+    range('cwAiPayB','Scenario B monthly payment',paymentVal+100,50,5000,25)+
+    button(),
+    'cwAiDebtEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const bal=read('cwAiDebt',balance);
+    const apr=read('cwAiDebtRate',rate);
+    const a=payoff(bal,apr,read('cwAiPayA',paymentVal));
+    const b=payoff(bal,apr,read('cwAiPayB',paymentVal+100));
+    const output=node.querySelector('[data-cw-ai-output]');
+
+    if(!a.finished || !b.finished){
+      output.innerHTML='<div class="cw-ai-insight cw-ai-warning"><strong>Payment warning:</strong> One scenario does not reduce the balance. Increase the payment and try again.</div>';
+      return;
+    }
+
+    const interestSaved=a.interest-b.interest;
+    const monthsSaved=a.months-b.months;
+
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Payoff months',a.months)+metric('Interest',money(a.interest))+metric('Total paid',money(a.total))+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Payoff months',b.months)+metric('Interest',money(b.interest))+metric('Total paid',money(b.total))+
+      '</div></div></div>'+
+      lineChart(a.series,b.series,'Debt balance comparison')+
+      '<div class="cw-ai-insight '+(interestSaved>0?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B saves about '+money(Math.max(0,interestSaved))+' in interest and pays off about '+Math.max(0,monthsSaved)+' months faster.</div>'+
+      table(['Period','Principal repaid','Interest paid','Balance'], b.rows.slice(0,45));
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function salaryEngine(){
+  const p=page();
+  if(!/(salary-calculator|salary-to-hourly|hourly-to-salary|pay-raise)/.test(p)) return;
+
+  const salary=getPrimary('salary',80000);
+  const hours=getPrimary('hours',40);
+
+  const node=insert(makeShell(
+    'Advanced pay comparison',
+    'Compare salary scenarios by annual income, weekly hours and real hourly value.',
+    input('cwAiSalaryA','Scenario A annual salary',salary)+
+    input('cwAiSalaryB','Scenario B annual salary',salary*1.1)+
+    range('cwAiHoursA','Scenario A weekly hours',hours,1,80,1)+
+    range('cwAiHoursB','Scenario B weekly hours',hours+2,1,80,1)+
+    button(),
+    'cwAiSalaryEngine'
+  ));
+  if(!node) return;
+
+  function render(){
+    const aSal=read('cwAiSalaryA',salary), bSal=read('cwAiSalaryB',salary*1.1);
+    const aHours=read('cwAiHoursA',hours), bHours=read('cwAiHoursB',hours+2);
+    const aHourly=aSal/(aHours*52), bHourly=bSal/(bHours*52);
+    const output=node.querySelector('[data-cw-ai-output]');
+    output.innerHTML=
+      '<div class="cw-ai-split"><div class="cw-ai-scenario"><h4>Scenario A</h4><div class="cw-ai-metrics">'+
+      metric('Annual',money(aSal))+metric('Weekly',money(aSal/52))+metric('Hourly',money(aHourly))+
+      '</div></div><div class="cw-ai-scenario"><h4>Scenario B</h4><div class="cw-ai-metrics">'+
+      metric('Annual',money(bSal))+metric('Weekly',money(bSal/52))+metric('Hourly',money(bHourly))+
+      '</div></div></div>'+
+      '<div class="cw-ai-insight '+(bHourly>aHourly?'cw-ai-positive':'cw-ai-warning')+'"><strong>Insight:</strong> Scenario B has '+(bHourly>aHourly?'a higher':'a lower')+' real hourly equivalent by about '+money(Math.abs(bHourly-aHourly))+' per hour.</div>'+
+      table(['Scenario','Annual','Weekly hours','Hourly equivalent'],[
+        '<tr><td>A</td><td>'+money(aSal)+'</td><td>'+number(aHours,1)+'</td><td>'+money(aHourly)+'</td></tr>',
+        '<tr><td>B</td><td>'+money(bSal)+'</td><td>'+number(bHours,1)+'</td><td>'+money(bHourly)+'</td></tr>'
+      ]);
+  }
+  bindRanges(node,render);
+  render();
+}
+
+function init(){
+  financeEngine();
+  growthEngine();
+  debtEngine();
+  salaryEngine();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
+
+/* ===== CalculatorWorks Authority + Performance Engine ===== */
+
+(function(){
+'use strict';
+
+function addTrendingTools(){
+  if(document.querySelector('.cw-trending-tools')) return;
+
+  const page = (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+
+  const groups = {
+    finance: [
+      ['/mortgage-calculator','Mortgage calculator'],
+      ['/compound-interest-calculator','Compound interest'],
+      ['/salary-calculator','Salary calculator'],
+      ['/debt-payoff-calculator','Debt payoff'],
+      ['/credit-card-payoff-calculator','Credit card payoff'],
+      ['/loan-repayment-calculator','Loan repayment']
+    ],
+    conversion: [
+      ['/feet-to-metres','Feet to metres'],
+      ['/metres-to-feet','Metres to feet'],
+      ['/cm-to-inches','CM to inches'],
+      ['/inches-to-cm','Inches to CM']
+    ],
+    health: [
+      ['/bmi-calculator','BMI calculator'],
+      ['/calorie-calculator','Calorie calculator'],
+      ['/tdee-calculator','TDEE calculator']
+    ]
+  };
+
+  let set = groups.finance;
+
+  if(/bmi|health|calorie|weight/.test(page)) set = groups.health;
+  if(/feet|metres|meters|inch|cm|kg|lb|mile|km|convert/.test(page)) set = groups.conversion;
+
+  const section = document.createElement('section');
+  section.className = 'cw-trending-tools';
+  section.innerHTML =
+    '<h2>Popular calculators</h2>' +
+    '<div class="cw-trending-grid">' +
+    set.map(function(item){
+      return '<a href="'+item[0]+'">'+item[1]+'<span>Related high-use calculator</span></a>';
+    }).join('') +
+    '</div>';
+
+  const main = document.querySelector('main');
+  if(main){
+    main.appendChild(section);
+  }
+}
+
+function markExternalLinks(){
+  document.querySelectorAll('a[href^="http"]').forEach(function(a){
+    if(!a.hasAttribute('rel')){
+      a.setAttribute('rel','noopener');
+    }
+  });
+}
+
+function smoothAnchorScroll(){
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click', function(e){
+      const id = a.getAttribute('href');
+      if(!id || id === '#') return;
+      const target = document.querySelector(id);
+      if(target){
+        e.preventDefault();
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+}
+
+function deferNonCritical(){
+  requestAnimationFrame(function(){
+    addTrendingTools();
+    markExternalLinks();
+    smoothAnchorScroll();
+  });
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', deferNonCritical);
+}else{
+  deferNonCritical();
+}
+
+})();
+
+/* ===== CalculatorWorks Multilingual + Longtail Authority Layer ===== */
+
+(function(){
+'use strict';
+
+function page(){
+  return (location.pathname.split('/').filter(Boolean).pop() || 'index').replace(/\.html$/,'');
+}
+
+function addScenarioLibrary(){
+  if(document.querySelector('.cw-scenario-library')) return;
+
+  const p = page();
+  let html = '';
+
+  if(/mortgage|loan/.test(p)){
+    html = `
+    <section class="cw-scenario-library">
+      <h2>Popular repayment scenarios</h2>
+      <p>Explore common borrowing situations to understand how rates, loan terms and extra repayments can affect long-term cost.</p>
+      <div class="cw-scenario-cards">
+        <a class="cw-scenario-card" href="/mortgage-calculator?loan=300000&rate=6&years=30">300k mortgage<span>30 years at 6%</span></a>
+        <a class="cw-scenario-card" href="/mortgage-calculator?loan=500000&rate=5.5&years=25">500k mortgage<span>25 years at 5.5%</span></a>
+        <a class="cw-scenario-card" href="/loan-repayment-calculator?loan=25000&rate=8&years=5">25k personal loan<span>5 years at 8%</span></a>
+      </div>
+    </section>`;
+  }
+
+  if(/compound-interest|savings|retirement/.test(p)){
+    html = `
+    <section class="cw-scenario-library">
+      <h2>Popular savings and growth examples</h2>
+      <p>Compare long-term contribution and compounding examples using realistic savings and investment scenarios.</p>
+      <div class="cw-scenario-cards">
+        <a class="cw-scenario-card" href="/compound-interest-calculator?principal=10000&rate=7&years=20">10k growth example<span>20 years at 7%</span></a>
+        <a class="cw-scenario-card" href="/savings-calculator?feet=5000&inches=5&decimals=10">Savings growth<span>5% annual growth over 10 years</span></a>
+        <a class="cw-scenario-card" href="/retirement-savings-calculator?principal=50000&rate=8&years=30">Retirement projection<span>30 year growth scenario</span></a>
+      </div>
+    </section>`;
+  }
+
+  if(/salary|paycheck|pay-raise/.test(p)){
+    html = `
+    <section class="cw-scenario-library">
+      <h2>Popular income comparisons</h2>
+      <p>Compare annual salary, hourly value and pay-raise examples.</p>
+      <div class="cw-scenario-cards">
+        <a class="cw-scenario-card" href="/salary-calculator?salary=80000&hours=40">80k salary<span>40 hour work week</span></a>
+        <a class="cw-scenario-card" href="/pay-raise-calculator?feet=70000&inches=10">10% pay raise<span>70k salary example</span></a>
+        <a class="cw-scenario-card" href="/salary-to-hourly-calculator?salary=95000&hours=45">Salary to hourly<span>95k annual salary</span></a>
+      </div>
+    </section>`;
+  }
+
+  if(!html) return;
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+  const node = wrap.firstElementChild;
+
+  const target = document.querySelector('.cw-ai-engine') ||
+                 document.querySelector('.cw-viz-engine') ||
+                 document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend', node);
+  }
+}
+
+function addLanguageNotice(){
+  if(document.querySelector('.cw-language-strip')) return;
+
+  const html = `
+    <div class="cw-language-strip">
+      CalculatorWorks calculators are being expanded across multiple languages so users can access finance, conversion, health and percentage tools more easily.
+    </div>
+  `;
+
+  const wrap = document.createElement('div');
+  wrap.innerHTML = html;
+
+  const target = document.querySelector('.hero') || document.querySelector('main');
+
+  if(target){
+    target.insertAdjacentElement('afterend', wrap.firstElementChild);
+  }
+}
+
+function init(){
+  addScenarioLibrary();
+  addLanguageNotice();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+
+})();
+
+/* ===== CalculatorWorks Finance Authority Expansion ===== */
+
+(function(){
+'use strict';
+
+function addFinanceAuthority(){
+  if(document.querySelector('.cw-finance-cluster')) return;
+
+  const page=(location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+  if(!/mortgage|loan|salary|debt|retirement|compound|savings|refinance|investment/.test(page)) return;
+
+  let title='Finance planning toolkit';
+  let intro='Use related finance calculators to compare borrowing, saving, investing and repayment scenarios from multiple angles.';
+  let cards=[
+    ['Compare scenarios','Changing rate, term, payment or contribution assumptions can materially change long-term outcomes.'],
+    ['Check total cost','Monthly payment alone is not enough for major financial decisions.'],
+    ['Use related tools','Mortgage, debt, savings and salary calculators often work best together.']
+  ];
+
+  const section=document.createElement('section');
+  section.className='cw-finance-cluster';
+  section.innerHTML=
+    '<h2>'+title+'</h2><p>'+intro+'</p>'+
+    '<div class="cw-finance-grid">'+
+    cards.map(function(c){
+      return '<div class="cw-finance-card"><strong>'+c[0]+'</strong><span>'+c[1]+'</span></div>';
+    }).join('')+
+    '</div>'+
+    '<div class="cw-finance-links">'+
+      '<a href="/mortgage-calculator">Mortgage</a>'+
+      '<a href="/refinance-calculator">Refinance</a>'+
+      '<a href="/debt-payoff-calculator">Debt Payoff</a>'+
+      '<a href="/compound-interest-calculator">Compound Interest</a>'+
+      '<a href="/retirement-savings-calculator">Retirement Savings</a>'+
+      '<a href="/salary-calculator">Salary</a>'+
+    '</div>';
+
+  const target=document.querySelector('.cw-ai-engine') ||
+               document.querySelector('.cw-viz-engine') ||
+               document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend',section);
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',addFinanceAuthority);
+}else{
+  addFinanceAuthority();
+}
+
+})();
+
+/* ===== CalculatorWorks Report + Export Layer ===== */
+
+(function(){
+'use strict';
+
+function money(v){
+  if(!isFinite(v)) return '$0.00';
+  return '$'+Number(v).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function page(){
+  return (location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+}
+
+function read(id){
+  const el=document.getElementById(id);
+  if(!el) return NaN;
+  const v=parseFloat(el.value);
+  return Number.isFinite(v)?v:NaN;
+}
+
+function createLayer(){
+  if(document.querySelector('.cw-report-layer')) return null;
+
+  const layer=document.createElement('section');
+  layer.className='cw-report-layer';
+
+  layer.innerHTML=
+    '<h2>Report & export tools</h2>'+
+    '<p>Save, print or share calculator scenarios for later comparison and planning.</p>'+
+    '<div class="cw-report-actions">'+
+      '<button type="button" class="cw-report-btn" data-cw-print>Print summary</button>'+
+      '<button type="button" class="cw-report-btn" data-cw-copy>Copy share link</button>'+
+      '<button type="button" class="cw-report-btn" data-cw-summary>Generate summary</button>'+
+    '</div>'+
+    '<div class="cw-report-summary" data-cw-summary-box style="display:none"></div>';
+
+  const target=document.querySelector('.cw-ai-engine') ||
+               document.querySelector('.cw-viz-engine') ||
+               document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend',layer);
+  }
+
+  return layer;
+}
+
+function monthlyPayment(principal,apr,years){
+  const n=years*12;
+  const r=apr/100/12;
+  if(n<=0||principal<=0) return NaN;
+  if(r===0) return principal/n;
+  return principal*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1);
+}
+
+function buildFinanceSummary(){
+  const loan=read('loan');
+  const rate=read('rate');
+  const years=read('years');
+
+  if(Number.isFinite(loan)&&Number.isFinite(rate)&&Number.isFinite(years)){
+    const pay=monthlyPayment(loan,rate,years);
+    const total=pay*years*12;
+    return [
+      'Estimated monthly payment: '+money(pay),
+      'Estimated total interest: '+money(total-loan),
+      'Estimated total paid: '+money(total),
+      'Loan term used: '+years+' years'
+    ];
+  }
+
+  const principal=read('principal');
+  if(Number.isFinite(principal)&&Number.isFinite(rate)&&Number.isFinite(years)){
+    let balance=principal;
+    const r=rate/100/12;
+    for(let i=0;i<years*12;i++){
+      balance*=1+r;
+    }
+    return [
+      'Estimated future value: '+money(balance),
+      'Starting amount: '+money(principal),
+      'Annual return used: '+rate+'%',
+      'Projection length: '+years+' years'
+    ];
+  }
+
+  const salary=read('salary');
+  const hours=read('hours');
+
+  if(Number.isFinite(salary)&&Number.isFinite(hours)&&hours>0){
+    return [
+      'Annual salary: '+money(salary),
+      'Estimated hourly equivalent: '+money(salary/(hours*52)),
+      'Estimated weekly pay: '+money(salary/52),
+      'Weekly hours used: '+hours
+    ];
+  }
+
+  return [
+    'Calculator scenario saved.',
+    'Use the copy link button to return to this scenario later.'
+  ];
+}
+
+function initLayer(){
+  const layer=createLayer();
+  if(!layer) return;
+
+  const printBtn=layer.querySelector('[data-cw-print]');
+  const copyBtn=layer.querySelector('[data-cw-copy]');
+  const summaryBtn=layer.querySelector('[data-cw-summary]');
+  const box=layer.querySelector('[data-cw-summary-box]');
+
+  printBtn.addEventListener('click',function(){
+    window.print();
+  });
+
+  copyBtn.addEventListener('click',function(){
+    const params=new URLSearchParams();
+
+    document.querySelectorAll('input,select').forEach(function(el){
+      if(el.id&&el.value){
+        params.set(el.id,el.value);
+      }
+    });
+
+    const url=window.location.origin+window.location.pathname.replace(/\.html$/,'')+(params.toString()?'?'+params.toString():'');
+
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(url).then(function(){
+        copyBtn.textContent='Copied';
+        setTimeout(function(){
+          copyBtn.textContent='Copy share link';
+        },1400);
+      });
+    }
+  });
+
+  summaryBtn.addEventListener('click',function(){
+    const items=buildFinanceSummary();
+    box.style.display='block';
+    box.innerHTML='<ul>'+items.map(function(i){return '<li>'+i+'</li>';}).join('')+'</ul>';
+  });
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initLayer);
+}else{
+  initLayer();
+}
+
+})();
+
+/* ===== CalculatorWorks Advanced Finance Depth Expansion ===== */
+
+(function(){
+'use strict';
+
+function addDepthSection(){
+  if(document.querySelector('.cw-depth-engine')) return;
+
+  const page=(location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+
+  let html='';
+
+  if(/mortgage|refinance/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Mortgage and refinance planning depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Rate sensitivity</strong><span>Even a 0.5% rate change can materially affect lifetime mortgage cost.</span></div>
+        <div class="cw-depth-card"><strong>Refinance break-even</strong><span>Compare refinance costs against potential monthly savings.</span></div>
+        <div class="cw-depth-card"><strong>Extra repayments</strong><span>Additional principal payments can shorten payoff time significantly.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Factor</th><th>What to compare</th></tr></thead>
+        <tbody>
+          <tr><td>Interest rate</td><td>Current rate vs refinance offer</td></tr>
+          <tr><td>Loan term</td><td>Shorter term vs lower payment</td></tr>
+          <tr><td>Fees</td><td>Refinance and establishment costs</td></tr>
+          <tr><td>Offset savings</td><td>Cash offset vs extra repayment</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(/retirement|investment|compound-interest/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Long-term growth planning depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Inflation impact</strong><span>Future purchasing power may differ from nominal account value.</span></div>
+        <div class="cw-depth-card"><strong>Contribution consistency</strong><span>Regular contributions often matter more than perfect timing.</span></div>
+        <div class="cw-depth-card"><strong>Return assumptions</strong><span>Compare conservative and optimistic return scenarios.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Projection</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Inflation-adjusted value</td><td>Helps estimate future purchasing power</td></tr>
+          <tr><td>Contribution growth</td><td>Shows long-term savings discipline impact</td></tr>
+          <tr><td>Withdrawal planning</td><td>Important for retirement sustainability</td></tr>
+          <tr><td>Return variation</td><td>Long-term averages can differ from yearly performance</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(/salary|paycheck|tax/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Income and paycheck planning depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Gross vs net</strong><span>Take-home pay can differ significantly from salary headline numbers.</span></div>
+        <div class="cw-depth-card"><strong>Overtime impact</strong><span>Longer working hours can reduce effective hourly value.</span></div>
+        <div class="cw-depth-card"><strong>Compensation mix</strong><span>Bonuses, benefits and retirement contributions affect total compensation.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Comparison</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Salary vs contractor</td><td>Benefits and tax treatment differ</td></tr>
+          <tr><td>Base pay vs overtime</td><td>Hours affect real hourly earnings</td></tr>
+          <tr><td>Current vs new role</td><td>Commute and workload affect effective compensation</td></tr>
+          <tr><td>Tax withholding</td><td>Estimated net pay may vary by region</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(/debt|credit-card/.test(page)){
+    html=`
+    <section class="cw-depth-engine">
+      <h2>Debt reduction strategy depth</h2>
+      <div class="cw-depth-grid">
+        <div class="cw-depth-card"><strong>Avalanche strategy</strong><span>Prioritizes highest-interest balances to reduce total cost.</span></div>
+        <div class="cw-depth-card"><strong>Snowball strategy</strong><span>Focuses on smaller balances to build momentum.</span></div>
+        <div class="cw-depth-card"><strong>Payment discipline</strong><span>Consistency is often more important than perfect optimization.</span></div>
+      </div>
+      <table class="cw-depth-table">
+        <thead><tr><th>Decision</th><th>Typical effect</th></tr></thead>
+        <tbody>
+          <tr><td>Higher monthly payment</td><td>Shorter payoff and lower interest</td></tr>
+          <tr><td>Lower APR</td><td>Lower borrowing cost</td></tr>
+          <tr><td>Balance transfers</td><td>May reduce interest temporarily</td></tr>
+          <tr><td>New debt</td><td>Can extend payoff timeline significantly</td></tr>
+        </tbody>
+      </table>
+    </section>`;
+  }
+
+  if(!html) return;
+
+  const wrap=document.createElement('div');
+  wrap.innerHTML=html;
+
+  const target=document.querySelector('.cw-report-layer') ||
+               document.querySelector('.cw-ai-engine') ||
+               document.querySelector('.cw-viz-engine') ||
+               document.querySelector('.calculator-card');
+
+  if(target){
+    target.insertAdjacentElement('afterend',wrap.firstElementChild);
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',addDepthSection);
+}else{
+  addDepthSection();
+}
+
+})();
+
+/* ===== CalculatorWorks Public Copy Polish Guard ===== */
+
+(function(){
+'use strict';
+
+function run(){
+  if(!document.body) return;
+  document.querySelectorAll('.cw-ai-note-static strong, .cw-viz-note-static strong').forEach(function(label){
+    var text=(label.textContent || '').trim().toLowerCase();
+    if(text === 'comparison tool:') label.textContent='Compare scenarios:';
+    if(text === 'new:') label.textContent='Visual guide:';
+  });
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',run);
+}else{
+  run();
+}
+
+})();
+
+/* ===== CalculatorWorks Safe Consistency Propagation ===== */
+
+(function(){
+'use strict';
+
+function currentPage(){
+  return (location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'');
+}
+
+function buildConsistency(){
+  if(document.querySelector('.cw-consistency-block')) return;
+
+  const p=currentPage();
+  let html='';
+
+  if(/percentage|discount|margin|markup/.test(p)){
+    html='<section class="cw-consistency-block"><h2>Related percentage calculators</h2><div class="cw-consistency-grid"><div class="cw-consistency-card"><strong>Discount calculations</strong><span>Estimate sale price and savings.</span></div><div class="cw-consistency-card"><strong>Percentage change</strong><span>Compare increases and decreases.</span></div><div class="cw-consistency-card"><strong>Business percentages</strong><span>Compare margin and markup calculations.</span></div></div></section>';
+  }
+
+  if(/feet|metres|meters|inch|cm|kg|lb|mile|km|convert/.test(p)){
+    html='<section class="cw-consistency-block"><h2>Popular conversion tools</h2><div class="cw-consistency-grid"><div class="cw-consistency-card"><strong>Distance conversion</strong><span>Convert miles, kilometres and metres.</span></div><div class="cw-consistency-card"><strong>Weight conversion</strong><span>Convert kilograms and pounds.</span></div><div class="cw-consistency-card"><strong>Temperature conversion</strong><span>Convert Celsius and Fahrenheit.</span></div></div></section>';
+  }
+
+  if(/bmi|calorie|health|weight/.test(p)){
+    html='<section class="cw-consistency-block"><h2>Health and fitness tools</h2><div class="cw-consistency-grid"><div class="cw-consistency-card"><strong>Body measurements</strong><span>Compare BMI, body fat and ideal weight estimates.</span></div><div class="cw-consistency-card"><strong>Nutrition planning</strong><span>Estimate calorie and protein targets.</span></div><div class="cw-consistency-card"><strong>Activity planning</strong><span>Compare TDEE and related estimates.</span></div></div></section>';
+  }
+
+  if(/business|vat|roi|profit/.test(p)){
+    html='<section class="cw-consistency-block"><h2>Business planning tools</h2><div class="cw-consistency-grid"><div class="cw-consistency-card"><strong>Profit analysis</strong><span>Compare margin, markup and ROI calculations.</span></div><div class="cw-consistency-card"><strong>Tax tools</strong><span>Estimate VAT and sales tax scenarios.</span></div><div class="cw-consistency-card"><strong>Business forecasting</strong><span>Review contribution and break-even estimates.</span></div></div></section>';
+  }
+
+  if(!html) return;
+
+  const wrap=document.createElement('div');
+  wrap.innerHTML=html;
+
+  const target=document.querySelector('.calculator-card') || document.querySelector('main');
+  if(target){
+    target.insertAdjacentElement('afterend',wrap.firstElementChild);
+  }
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',buildConsistency);
+}else{
+  buildConsistency();
+}
+
+})();
+
+
+/* ===== CalculatorWorks Duplicate Search Fix ===== */
+
+(function(){
+'use strict';
+
+function dedupeSearchButtons(){
+  const triggers = Array.prototype.slice.call(document.querySelectorAll('[data-cw-search-trigger], .search-trigger'));
+  if(triggers.length <= 1) return;
+
+  let primary = triggers.find(function(btn){
+    return btn.hasAttribute('data-cw-search-trigger');
+  }) || triggers[0];
+
+  triggers.forEach(function(btn){
+    if(btn !== primary){
+      btn.remove();
+    }
+  });
+
+  primary.classList.add('search-trigger');
+  primary.setAttribute('data-cw-search-trigger','true');
+  primary.textContent = primary.textContent && primary.textContent.trim() ? primary.textContent.trim() : 'Search';
+}
+
+function run(){
+  dedupeSearchButtons();
+  setTimeout(dedupeSearchButtons,100);
+  setTimeout(dedupeSearchButtons,500);
+  setTimeout(dedupeSearchButtons,1200);
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded',run);
+}else{
+  run();
+}
+
+})();
+
+
+
+/* ===== CalculatorWorks Final Search Dedupe Pass ===== */
+
+(function(){
+'use strict';
+
+function removeExtraSearchButtons(){
+  var buttons = Array.prototype.slice.call(
+    document.querySelectorAll('.search-trigger,[data-cw-search-trigger]')
+  );
+
+  if(buttons.length <= 1) return;
+
+  var keep = buttons[0];
+
+  buttons.forEach(function(btn, index){
+    if(index > 0){
+      btn.remove();
+    }
+  });
+
+  keep.textContent = 'Search';
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', removeExtraSearchButtons);
+}else{
+  removeExtraSearchButtons();
+}
+
+setTimeout(removeExtraSearchButtons, 300);
+setTimeout(removeExtraSearchButtons, 1200);
+
+})();
+
+
+/* ===== CalculatorWorks Premium Result Guidance Layer ===== */
+(function(){
+'use strict';
+function el(id){return document.getElementById(id);} 
+function num(id){var x=el(id); if(!x) return NaN; return parseFloat(x.value);} 
+function money(v){return '$'+Number(v||0).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
+function monthsText(m){if(!isFinite(m)||m<0)return 'Not payable with these inputs';var y=Math.floor(m/12), mo=Math.ceil(m%12);return (y?y+' years ':'')+(mo?mo+' months':'') || '0 months';}
+function loanPayment(p,apr,years){var m=years*12,r=apr/100/12;return r===0?p/m:p*r*Math.pow(1+r,m)/(Math.pow(1+r,m)-1);} 
+function loanMonths(p,apr,pay){var r=apr/100/12;if(pay<=0)return NaN;if(r===0)return Math.ceil(p/pay);if(pay<=p*r)return NaN;return Math.ceil(-Math.log(1-r*p/pay)/Math.log(1+r));}
+function card(label,value){return '<div class="cw-plan-card"><span>'+label+'</span><strong>'+value+'</strong></div>';}
+function render(primary,cards,insight,next){var out=el('result'); if(!out) return; out.classList.add('cw-plan-result'); out.innerHTML='<div class="cw-plan-primary">'+primary+'</div><div class="cw-plan-grid">'+cards.join('')+'</div><div class="cw-plan-insight"><strong>Interpretation:</strong> '+insight+'</div>'+(next?'<div class="cw-plan-next"><strong>Try next:</strong> '+next+'</div>':'');}
+function page(){return (location.pathname.split('/').filter(Boolean).pop()||'index').replace(/\.html$/,'').toLowerCase();}
+function mortgage(){var loan=num('loan'), rate=num('rate'), years=num('years'), extra=num('extra')||0;if(!isFinite(loan)||!isFinite(rate)||!isFinite(years)||loan<=0||years<=0)return;var months=years*12,pay=loanPayment(loan,rate,years),total=pay*months,interest=total-loan,rateUp=loanPayment(loan,rate+1,years),shorter=years>1?loanPayment(loan,rate,Math.max(1,years-5)):pay,withExtra=extra>0?loanMonths(loan,rate,pay+extra):NaN,save=extra>0?interest-((pay+extra)*withExtra-loan):0;render('Estimated monthly repayment: '+money(pay),[card('Total interest',money(interest)),card('Total paid',money(total)),card('If rate rises 1%',money(rateUp-pay)+' / month more'),card('5-year shorter term',years>5?money(shorter)+' / month':'Not applicable')],extra>0?'The extra repayment shortens the estimated payoff by '+monthsText(months-withExtra)+' and may save about '+money(Math.max(0,save))+' in interest.':'The monthly repayment is only the first pressure point. Compare a higher rate, shorter term, and optional extra repayment before treating the result as affordable.','Compare this with affordability, refinance, extra repayment and rent-vs-buy calculators.');}
+function loan(){var principal=num('feet'), rate=num('inches'), years=num('decimals');if(!isFinite(principal)||!isFinite(rate)||!isFinite(years)||principal<=0||years<=0)return;var pay=loanPayment(principal,rate,years),months=years*12,total=pay*months,interest=total-principal,fastYears=Math.max(1,years-1),fastPay=loanPayment(principal,rate,fastYears);render('Estimated monthly repayment: '+money(pay),[card('Total repayment',money(total)),card('Total interest',money(interest)),card('Interest share',total>0?(interest/total*100).toFixed(1)+'%':'0%'),card('One year faster',money(fastPay)+' / month')], 'The term controls the trade-off: a longer term lowers the monthly pressure but usually increases total interest. A shorter term raises the payment but can reduce the lifetime cost.', 'Test a shorter term, then compare the result with debt payoff and debt-to-income tools.');}
+function compound(){var p=num('feet'), rate=num('inches'), years=num('decimals');if(!isFinite(p)||!isFinite(rate)||!isFinite(years)||p<0||years<=0)return;var v=p*Math.pow(1+rate/100,years),growth=v-p,low=p*Math.pow(1+Math.max(0,rate-2)/100,years),high=p*Math.pow(1+(rate+2)/100,years);render('Estimated future value: '+money(v),[card('Starting balance',money(p)),card('Estimated growth',money(growth)),card('Lower return case',money(low)),card('Higher return case',money(high))], 'The range between lower and higher return assumptions is often more useful than a single projection, especially over long time periods.', 'Compare this result with savings, investment return and inflation calculators.');}
+function savings(){var p=num('feet'), rate=num('inches'), years=num('decimals');if(!isFinite(p)||!isFinite(rate)||!isFinite(years)||p<0||years<=0)return;var v=p*Math.pow(1+rate/100,years),growth=v-p;render('Projected savings balance: '+money(v),[card('Starting amount',money(p)),card('Estimated growth',money(growth)),card('Annualised assumption',rate.toFixed(2)+'%'),card('Timeline',years+' years')], 'This is useful for comparing timelines and rate assumptions, but real savings outcomes can change with fees, tax, inflation and withdrawal timing.', 'Use savings goal and compound interest tools to compare target-based plans.');}
+function retirement(){var p=num('feet'), rate=num('inches'), years=num('decimals');if(!isFinite(p)||!isFinite(rate)||!isFinite(years)||p<0||years<=0)return;var v=p*Math.pow(1+rate/100,years),monthlyGuide=v*0.04/12,low=p*Math.pow(1+Math.max(0,rate-2)/100,years);render('Projected retirement balance: '+money(v),[card('Lower return case',money(low)),card('Estimated growth',money(v-p)),card('4% monthly guide',money(monthlyGuide)),card('Time horizon',years+' years')], 'A retirement estimate should be stress-tested. Lower returns, inflation and withdrawal timing can materially change the usable income.', 'Compare lower-return cases and run a savings contribution scenario before relying on one projection.');}
+function run(){var p=page(); if(p==='mortgage-calculator') mortgage(); else if(p==='loan-repayment-calculator'||p==='loan-payment') loan(); else if(p==='compound-interest-calculator'||p==='compound-interest') compound(); else if(p==='savings-calculator') savings(); else if(p==='retirement-savings-calculator'||p==='retirement-savings') retirement();}
+function attach(){var btn=el('calculateBtn'); if(btn && !btn.dataset.cwPlanLayer){btn.dataset.cwPlanLayer='true'; btn.addEventListener('click',function(){setTimeout(run,30);});} document.querySelectorAll('input,select').forEach(function(input){if(!input.dataset.cwPlanEnter){input.dataset.cwPlanEnter='true';input.addEventListener('keydown',function(e){if(e.key==='Enter')setTimeout(run,35);});}});}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',attach); else attach();
+})();
