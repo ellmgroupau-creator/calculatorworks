@@ -1343,7 +1343,7 @@ color:#64748b;
 line-height:1.4;
 }
 
-/* ===== CalculatorWorks Multilingual + Longtail Authority Layer ===== */
+/* ===== CalculatorWorks Multilingual Expansion ===== */
 
 .cw-scenario-library{
 margin:28px 0;
@@ -2612,3 +2612,8 @@ th{
   border-radius:16px;
   box-shadow:none;
 }
+
+
+/* Premium planning pathways */
+.cw-decision-pathways{background:linear-gradient(180deg,#ffffff 0%,#f7faff 100%);border:1px solid var(--line);border-radius:24px;box-shadow:0 18px 45px rgba(23,32,51,.07);padding:28px;margin:0 0 24px}
+.cw-decision-pathways>p{color:var(--muted);max-width:760px;margin-top:0}.cw-pathway-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:18px}.cw-pathway-card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}.cw-pathway-card:hover{transform:translateY(-2px);border-color:#9bbcff;box-shadow:0 14px 32px rgba(23,32,51,.08)}.cw-pathway-card strong{display:block;font-size:1.02rem;margin-bottom:6px}.cw-pathway-card span{display:block;color:var(--muted);font-size:.94rem;line-height:1.5}.cw-page-brief{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin:18px 0 22px}.cw-page-brief h2{font-size:1.35rem}.cw-page-brief ul{margin:10px 0 0;padding-left:20px}.cw-page-brief li{margin:6px 0;color:var(--muted)}
