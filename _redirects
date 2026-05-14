@@ -1,7 +1,7 @@
-# CalculatorWorks routing fix v2
-# Canonical URLs are clean extensionless URLs.
-# Only redirect explicit .html source URLs to clean public URLs.
-# Do not redirect trailing-slash URLs here; that caused redirect loops on Cloudflare Pages.
+# CalculatorWorks hardened routing
+# Cloudflare Pages serves clean URLs from .html files.
+# Only explicit .html URLs redirect to canonical clean URLs.
+# No 200 rewrites and no trailing-slash redirects.
 /index.html / 301
 /about.html /about 301
 /age-calculator.html /age-calculator 301
