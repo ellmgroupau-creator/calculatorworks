@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /cdn-cgi/
 Allow: /
 
 Sitemap: https://calculatorworks.io/sitemap.xml

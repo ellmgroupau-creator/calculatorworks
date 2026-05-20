@@ -1,7 +1,9 @@
 # CalculatorWorks routing fix v4
 # Cloudflare Pages clean URLs are handled by the platform.
 # Do not add .html-to-clean or trailing-slash redirects here; they can create loops.
-# GSC cleanup for stale malformed URLs
+
+# GSC stale/malformed URL cleanup
 /es/es/percentage /es/percentage 301
 /es/es/percentage/ /es/percentage 301
 /cdn-cgi/l/email-protection /contact 301
+/cdn-cgi/l/email-protection* /contact 301
