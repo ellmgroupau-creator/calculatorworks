@@ -6,6 +6,10 @@
 /es/es/percentage/ /es/percentage 301
 /cdn-cgi/l/email-protection /contact 301
 /cdn-cgi/l/email-protection* /contact 301
+/loan-calculator.html /loan-repayment-calculator.html 301
+/retirement-calculator.html /retirement-savings-calculator.html 301
+/loan-calculator /loan-repayment-calculator.html 301
+/retirement-calculator /retirement-savings-calculator.html 301
 /site-quality-guidelines.html /guides.html 301
 /crawl-index-policy.html /guides.html 301
 /adsense-readiness.html /guides.html 301
