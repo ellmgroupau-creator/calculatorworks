@@ -7,3 +7,8 @@
 /es/es/percentage/ /es/percentage 301
 /cdn-cgi/l/email-protection /contact 301
 /cdn-cgi/l/email-protection* /contact 301
+
+# Cleanup redirects for internal/obsolete technical pages
+/site-quality-guidelines.html /guides.html 301
+/crawl-index-policy.html /guides.html 301
+/adsense-readiness.html /guides.html 301
