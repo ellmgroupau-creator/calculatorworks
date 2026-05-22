@@ -4047,3 +4047,39 @@ body > footer p:last-child a{display:inline-flex;align-items:center;margin:0 4px
     gap:14px !important;
   }
 }
+
+
+/* ===== CalculatorWorks Input Guidance Repair =====
+   Makes opaque inputs such as multipliers, factors, adjustments, buffers and
+   allowances understandable directly inside the calculator form. */
+.field-help{
+  display:block;
+  margin:8px 0 0;
+  color:var(--cw-product-muted,#64748b);
+  font-size:.92rem;
+  line-height:1.48;
+  max-width:58ch;
+}
+
+.field label + select,
+.field label + input,
+.field label + textarea{
+  margin-top:0;
+}
+
+.field select[aria-describedby],
+.field input[aria-describedby],
+.field textarea[aria-describedby]{
+  margin-bottom:0;
+}
+
+.calculator-card .form-grid{
+  align-items:start;
+}
+
+@media (max-width:560px){
+  .field-help{
+    font-size:.9rem;
+    line-height:1.45;
+  }
+}
