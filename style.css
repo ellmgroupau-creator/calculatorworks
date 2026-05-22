@@ -3891,3 +3891,159 @@ body > footer a:hover{
 .logo{display:inline-flex;align-items:center;max-width:100%;}
 body > footer p:last-child{display:block !important;}
 body > footer p:last-child a{display:inline-flex;align-items:center;margin:0 4px;}
+
+/* ===== CalculatorWorks Premium Spacing + Card Rhythm Repair =====
+   Repairs post-polish inline title/body collisions and card rhythm across
+   production content blocks without changing architecture or calculator logic. */
+.cw-helpfulness-grid{
+  gap:clamp(16px,2vw,22px) !important;
+}
+
+.cw-helpfulness-card,
+.calculator-link-card,
+.cw-pathway-card,
+.cw-engine-card,
+.cw-clean-card,
+.cw-scenario-card,
+.cw-scenario-btn,
+.cw-feature-pill,
+.cw-finance-card,
+.cw-depth-card,
+.cw-methodology-card,
+.cw-retention-card,
+.cw-consistency-card{
+  line-height:1.5 !important;
+}
+
+.cw-helpfulness-card > strong,
+.calculator-link-card > strong,
+.cw-pathway-card > strong,
+.cw-engine-card > strong,
+.cw-clean-card > strong,
+.cw-scenario-card > strong,
+.cw-scenario-btn > strong,
+.cw-feature-pill > strong,
+.cw-finance-card > strong,
+.cw-depth-card > strong,
+.cw-methodology-card > strong,
+.cw-retention-card > strong,
+.cw-consistency-card > strong{
+  display:block !important;
+  margin:0 0 8px !important;
+  color:var(--cw-product-ink,#111827) !important;
+  font-weight:850 !important;
+  line-height:1.22 !important;
+  letter-spacing:-.025em !important;
+}
+
+.cw-helpfulness-card > span,
+.calculator-link-card > span,
+.cw-pathway-card > span,
+.cw-engine-card > span,
+.cw-clean-card > span,
+.cw-scenario-card > span,
+.cw-scenario-btn > span,
+.cw-feature-pill > span,
+.cw-finance-card > span,
+.cw-depth-card > span,
+.cw-methodology-card > span,
+.cw-retention-card > span,
+.cw-consistency-card > span{
+  display:block !important;
+  margin:0 !important;
+  color:var(--cw-product-muted,#64748b) !important;
+  font-weight:500 !important;
+  line-height:1.6 !important;
+  letter-spacing:0 !important;
+}
+
+.feature-card h3,
+.tool-card h3,
+.link-card h3,
+.calculator-link-card h3,
+.info-grid h3{
+  margin:0 0 10px !important;
+  line-height:1.22 !important;
+}
+
+.feature-card p,
+.tool-card p,
+.link-card p,
+.calculator-link-card p,
+.info-grid p{
+  margin:0 !important;
+  line-height:1.62 !important;
+}
+
+.related-links a,
+.cw-smart-related-grid a,
+.cw-cluster-links a,
+.cw-finance-links a,
+.cw-collection-links a,
+.cw-consistency-links a{
+  align-items:flex-start !important;
+  justify-content:flex-start !important;
+  line-height:1.35 !important;
+  white-space:normal !important;
+}
+
+.cw-topic-cluster-pack ul{
+  gap:clamp(14px,2vw,18px) !important;
+}
+
+.cw-topic-cluster-pack li{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:flex-start !important;
+  gap:7px !important;
+  padding:18px 20px !important;
+  line-height:1.55 !important;
+  min-height:auto !important;
+}
+
+.cw-topic-cluster-pack li a{
+  display:block !important;
+  margin:0 !important;
+  color:var(--cw-product-blue-dark,#1d4ed8) !important;
+  font-weight:850 !important;
+  line-height:1.24 !important;
+  letter-spacing:-.02em !important;
+}
+
+.cw-topic-cluster-pack li span{
+  display:block !important;
+  margin:0 !important;
+  color:var(--cw-product-muted,#64748b) !important;
+  font-weight:500 !important;
+  line-height:1.58 !important;
+}
+
+.cw-topic-cluster-pack li::marker{
+  content:"";
+}
+
+.section-card > * + *,
+.calculator-guide > * + *,
+.seo-section > * + *{
+  margin-top:14px;
+}
+
+.section-card > h2 + *,
+.calculator-guide > h2 + *,
+.seo-section > h2 + *{
+  margin-top:0;
+}
+
+@media (max-width:760px){
+  .cw-helpfulness-card,
+  .calculator-link-card,
+  .cw-pathway-card,
+  .cw-topic-cluster-pack li{
+    padding:18px !important;
+  }
+
+  .cw-helpfulness-grid,
+  .cw-topic-cluster-pack ul{
+    gap:14px !important;
+  }
+}
