@@ -2393,3 +2393,67 @@ body > footer p:last-child a{display:inline-flex;align-items:center;margin:0 4px
     font-size:.9rem;
     line-height:1.45;
   }}
+
+/* Premium card title/description hardening: keeps card headings and descriptions visually separated even when generated from compact HTML. */
+.cw-card-title{
+  display:block !important;
+  margin:0 0 8px !important;
+  color:var(--cw-product-ink,#111827) !important;
+  font-weight:850 !important;
+  line-height:1.22 !important;
+  letter-spacing:-.025em !important;
+}
+.cw-card-description{
+  display:block !important;
+  margin:0 !important;
+  color:var(--cw-product-muted,#64748b) !important;
+  font-weight:500 !important;
+  line-height:1.6 !important;
+  letter-spacing:0 !important;
+}
+.cw-helpfulness-card > .cw-card-title,
+.calculator-link-card > .cw-card-title,
+.cw-pathway-card > .cw-card-title,
+.cw-engine-card > .cw-card-title,
+.cw-clean-card > .cw-card-title,
+.cw-scenario-card > .cw-card-title,
+.cw-scenario-btn > .cw-card-title,
+.cw-feature-pill > .cw-card-title,
+.cw-finance-card > .cw-card-title,
+.cw-depth-card > .cw-card-title,
+.cw-methodology-card > .cw-card-title,
+.cw-retention-card > .cw-card-title,
+.cw-consistency-card > .cw-card-title{
+  display:block !important;
+}
+.cw-helpfulness-card > .cw-card-description,
+.calculator-link-card > .cw-card-description,
+.cw-pathway-card > .cw-card-description,
+.cw-engine-card > .cw-card-description,
+.cw-clean-card > .cw-card-description,
+.cw-scenario-card > .cw-card-description,
+.cw-scenario-btn > .cw-card-description,
+.cw-feature-pill > .cw-card-description,
+.cw-finance-card > .cw-card-description,
+.cw-depth-card > .cw-card-description,
+.cw-methodology-card > .cw-card-description,
+.cw-retention-card > .cw-card-description,
+.cw-consistency-card > .cw-card-description{
+  display:block !important;
+}
+
+.search-result-title{
+  display:block !important;
+  font-size:16px !important;
+  font-weight:850 !important;
+  line-height:1.25 !important;
+  margin:0 0 4px !important;
+  color:var(--cw-product-ink,var(--ink,#111827)) !important;
+}
+.search-result-description{
+  display:block !important;
+  font-size:14px !important;
+  line-height:1.45 !important;
+  color:var(--cw-product-muted,var(--muted,#64748b)) !important;
+  margin:0 !important;
+}

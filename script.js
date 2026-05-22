@@ -328,8 +328,8 @@ function renderResults(query) {
   if (!matches.length) {
     results.innerHTML = `
       <div class="search-result-item" role="status">
-        <strong>No calculators found</strong>
-        <span>Try a broader search such as mortgage, loan, salary, percentage, BMI, savings, or conversion.</span>
+        <span class="search-result-title">No calculators found</span>
+        <span class="search-result-description">Try a broader search such as mortgage, loan, salary, percentage, BMI, savings, or conversion.</span>
       </div>
     `;
     return;
@@ -337,8 +337,8 @@ function renderResults(query) {
 
   results.innerHTML = matches.map(item => `
     <a class="search-result-item" href="${item.url}">
-      <strong>${cleanTitle(item.title)}</strong>
-      <span>${item.category}${item.description ? ' — ' + item.description : ''}</span>
+      <span class="search-result-title">${cleanTitle(item.title)}</span>
+      <span class="search-result-description">${item.category}${item.description ? ' — ' + item.description : ''}</span>
     </a>
   `).join('');
 }
