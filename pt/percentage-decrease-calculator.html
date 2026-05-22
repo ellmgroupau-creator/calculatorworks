@@ -113,16 +113,16 @@
 </div>
 <div class="field">
 <label for="decimals">Casas decimais</label>
-<select id="decimals">
+<select aria-describedby="decimals-help" id="decimals">
 <option value="2">2 casas decimais</option>
 <option selected="" value="3">3 casas decimais</option>
 <option value="4">4 casas decimais</option>
-</select>
+</select><p class="field-help" id="decimals-help">Controla apenas o arredondamento apresentado; não altera o cálculo interno.</p>
 </div>
 </div>
 <div class="button-row">
-<button type="button" class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
-<button type="button" class="calc-btn calc-btn-secondary" id="resetBtn">Repor</button>
+<button class="calc-btn calc-btn-primary" id="calculateBtn" type="button">Calcular</button>
+<button class="calc-btn calc-btn-secondary" id="resetBtn" type="button">Repor</button>
 </div>
 <div class="result-box">
 <span class="result-label">Resultado</span>
