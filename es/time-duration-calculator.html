@@ -105,16 +105,16 @@
 <div class="form-grid">
 <div class="field">
 <label for="feet">Hora de inicio</label>
-<input id="feet" type="time"/>
+<input aria-describedby="feet-help" id="feet" type="time"/><p class="field-help" id="feet-help">Punto de inicio del intervalo. En campos de 24 horas, usa 9,0 para 9:00 y 17,5 para 17:30.</p>
 </div>
 <div class="field">
 <label for="inches">Hora de finalización</label>
-<input id="inches" type="time"/>
+<input aria-describedby="inches-help" id="inches" type="time"/><p class="field-help" id="inches-help">Punto final del intervalo. Debe estar después del inicio para calcular una duración positiva.</p>
 </div>
 </div>
 <div class="button-row">
-<button type="button" class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
-<button type="button" class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button>
+<button class="calc-btn calc-btn-primary" id="calculateBtn" type="button">Calcular</button>
+<button class="calc-btn calc-btn-secondary" id="resetBtn" type="button">Restablecer</button>
 </div>
 <div class="result-box">
 <span class="result-label">Resultado</span>

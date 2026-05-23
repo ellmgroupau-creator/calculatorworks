@@ -95,7 +95,7 @@
 <p>Introduce los valores necesarios para obtener el resultado al instante.</p>
 <div class="form-grid">
 <div class="field"><label for="feet">Importe principal</label><input id="feet" min="0" placeholder="Ejemplo: 10000" step="any" type="number"/></div>
-<div class="field"><label for="inches">Tasa de interés anual (%)</label><input id="inches" min="0" placeholder="Ejemplo: 5" step="any" type="number"/></div>
+<div class="field"><label for="inches">Tasa de interés anual (%)</label><input aria-describedby="inches-help" id="inches" min="0" placeholder="Ejemplo: 5" step="any" type="number"/><p class="field-help" id="inches-help">Introduce la tasa como porcentaje, no como decimal. Por ejemplo, usa 5 para 5%.</p></div>
 <div class="field"><label for="decimals">Años</label><select id="decimals"><option value="1">1 decimal</option><option value="2">2 decimales</option><option value="3">3 decimales</option><option selected="" value="5">5 años</option><option value="10">10 años</option><option value="15">15 años</option><option value="20">20 años</option><option value="30">30 años</option></select></div>
 </div>
 <div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn" type="button">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn" type="button">Restablecer</button></div>
