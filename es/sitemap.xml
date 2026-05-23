@@ -2,332 +2,538 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://calculatorworks.io/es/about</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/age-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/age-difference-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/auto-loan</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/average-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/bmi-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/bmr-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/body-surface-area-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/break-even-calculator</loc>
-  </url>
-  <url>
-    <loc>https://calculatorworks.io/es/business-days-calculator</loc>
-  </url>
-  <url>
-    <loc>https://calculatorworks.io/es/business-profit-planner-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/business</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/business-days-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/business-profit-planner-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/calculators</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/calorie-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/celsius-to-fahrenheit</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/cm-to-inches</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/commission-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/compound-interest-calculator</loc>
+    <loc>https://calculatorworks.io/es/compound-interest</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/concrete-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/contact</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/contractor-rate-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/contribution-margin-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/countdown-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/credit-card-payoff-calculator</loc>
+    <loc>https://calculatorworks.io/es/credit-card-payoff</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/credit-utilization-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/cups-to-ml-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/current-ratio-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/date-add-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/date-difference</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/date-time</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/days-between-dates-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/debt-avalanche</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/debt-payoff</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/debt-payoff-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/debt-to-income-calculator</loc>
+    <loc>https://calculatorworks.io/es/debt-snowball</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/debt-to-income</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/depreciation-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/discount-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/down-payment-calculator</loc>
+    <loc>https://calculatorworks.io/es/down-payment</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/due-date-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/editorial-standards</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/emergency-fund-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/everyday</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/extra-payment-mortgage</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/fahrenheit-to-celsius</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/feet-to-metres</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/fence-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/finance</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/fire</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/flooring</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/flooring-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/gallons-to-litres-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/gpa-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/gravel-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/health</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/hourly-to-salary</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/hourly-to-salary-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/hours-between-dates-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/household</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/ideal-weight-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/inches-to-cm</loc>
-  </url>
-  <url>
-    <loc>https://calculatorworks.io/es/</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/inflation-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/investment-return</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/kg-to-lb</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/km-to-miles</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/kph-to-mph-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/lb-to-kg</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/lean-body-mass-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/leave-payout-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/litres-per-square-metre-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/litres-to-gallons-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/loan-repayment-calculator</loc>
+    <loc>https://calculatorworks.io/es/loan-payment</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/margin-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/markup-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/math</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/measurement</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/median-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/metres-to-feet</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/midpoint-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/miles-to-km</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/ml-to-cups-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/mode-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/mortgage-affordability-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/mortgage-amortization</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/mortgage-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/mph-to-kph-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/mulch-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/net-worth-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/offset-account-savings</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/one-rep-max-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/overtime-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/ovulation-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/pace-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/paint-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/pay-raise-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/paycheck</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/paycheck-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/percent-change-calculator</loc>
-  </url>
-  <url>
-    <loc>https://calculatorworks.io/es/percentage-calculator</loc>
-  </url>
-  <url>
-    <loc>https://calculatorworks.io/es/percentage-decrease-calculator</loc>
-  </url>
-  <url>
-    <loc>https://calculatorworks.io/es/percentage-increase-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/percentage</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/privacy-policy</loc>
+    <loc>https://calculatorworks.io/es/percentage-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/percentage-decrease-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/percentage-increase-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/privacy</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/protein-intake-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/quick-ratio-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/ratio-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
-    <loc>https://calculatorworks.io/es/refinance-savings-calculator</loc>
+    <loc>https://calculatorworks.io/es/refinance-savings</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/rent-vs-buy</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/retirement-savings</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/roi-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/roofing-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/room-perimeter-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/salary-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/sales-tax-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/savings-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/savings-goal</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/savings-goal-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/simple-interest-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/slope-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/square-feet-to-square-metres-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/square-footage-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/square-metres-to-square-feet-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/standard-deviation-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/terms</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/tile-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/time-duration-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/tip-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/unit-conversion</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/vat-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/waist-to-hip-ratio-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/water-intake-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/weeks-between-dates-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
   <url>
     <loc>https://calculatorworks.io/es/weighted-average-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
+  </url>
+  <url>
+    <loc>https://calculatorworks.io/es/work-hours-calculator</loc>
+    <lastmod>2026-05-23</lastmod>
   </url>
 </urlset>
