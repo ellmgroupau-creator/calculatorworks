@@ -103,16 +103,16 @@
 <div class="form-grid">
 <div class="field">
 <label for="feet">fecha inicial</label>
-<input id="feet" type="date"/>
+<input aria-describedby="feet-help" id="feet" type="date"/><p class="field-help" id="feet-help">Selecciona la fecha u hora inicial del periodo que quieres medir.</p>
 </div>
 <div class="field">
 <label for="inches">fecha final</label>
-<input id="inches" type="date"/>
+<input aria-describedby="inches-help" id="inches" type="date"/><p class="field-help" id="inches-help">Selecciona la fecha u hora final del periodo que quieres medir.</p>
 </div>
 </div>
 <div class="button-row">
-<button type="button" class="calc-btn calc-btn-primary" id="calculateBtn">Calcular</button>
-<button type="button" class="calc-btn calc-btn-secondary" id="resetBtn">Restablecer</button>
+<button class="calc-btn calc-btn-primary" id="calculateBtn" type="button">Calcular</button>
+<button class="calc-btn calc-btn-secondary" id="resetBtn" type="button">Restablecer</button>
 </div>
 <div class="result-box">
 <span class="result-label">Resultado</span>

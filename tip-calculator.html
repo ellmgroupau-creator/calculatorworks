@@ -113,7 +113,7 @@
 <div class="form-grid">
 <div class="field">
 <label for="feet">Bill Amount</label>
-<input id="feet" min="0" placeholder="Example: 120" step="any" type="number"/>
+<input aria-describedby="feet-help" id="feet" min="0" placeholder="Example: 120" step="any" type="number"/><p class="field-help" id="feet-help">Enter the amount in the currency you are using. Keep the same currency across money fields.</p>
 </div>
 <div class="field">
 <label for="inches">Tip Percentage</label>
@@ -121,7 +121,7 @@
 </div>
 <div class="field">
 <label for="decimals">People to Split</label>
-<select id="decimals">
+<select aria-describedby="decimals-help" id="decimals">
 <option value="1">1 person</option>
 <option value="2">2 people</option>
 <option selected="" value="3">3 people</option>
@@ -130,7 +130,7 @@
 <option value="6">6 people</option>
 <option value="8">8 people</option>
 <option value="10">10 people</option>
-</select>
+</select><p class="field-help" id="decimals-help">Enter the number requested for this field.</p>
 </div>
 </div>
 <div class="button-row">

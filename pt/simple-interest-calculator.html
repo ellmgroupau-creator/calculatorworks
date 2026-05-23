@@ -94,9 +94,9 @@
 <h2>Calculadora de juros simples</h2>
 <p>Introduza os valores necessários para obter o resultado imediatamente.</p>
 <div class="form-grid">
-<div class="field"><label for="feet">Montante inicial</label><input id="feet" min="0" placeholder="Exemplo: 10000" step="any" type="number"/></div>
+<div class="field"><label for="feet">Montante inicial</label><input aria-describedby="feet-help" id="feet" min="0" placeholder="Exemplo: 10000" step="any" type="number"/><p class="field-help" id="feet-help">Introduza o valor na moeda que está a usar. Mantenha a mesma moeda em todos os campos monetários.</p></div>
 <div class="field"><label for="inches">Taxa de juro anual (%)</label><input aria-describedby="inches-help" id="inches" min="0" placeholder="Exemplo: 5" step="any" type="number"/><p class="field-help" id="inches-help">Introduza a taxa como percentagem, não como decimal. Por exemplo, use 5 para 5%.</p></div>
-<div class="field"><label for="decimals">Anos</label><select id="decimals"><option value="1">1 casa decimal</option><option value="2">2 casas decimais</option><option value="3">3 casas decimais</option><option selected="" value="5">5 anos</option><option value="10">10 anos</option><option value="15">15 anos</option><option value="20">20 anos</option><option value="30">30 anos</option></select></div>
+<div class="field"><label for="decimals">Anos</label><select aria-describedby="decimals-help" id="decimals"><option value="1">1 casa decimal</option><option value="2">2 casas decimais</option><option value="3">3 casas decimais</option><option selected="" value="5">5 anos</option><option value="10">10 anos</option><option value="15">15 anos</option><option value="20">20 anos</option><option value="30">30 anos</option></select><p class="field-help" id="decimals-help">Introduza a duração do período na unidade indicada.</p></div>
 </div>
 <div class="button-row"><button class="calc-btn calc-btn-primary" id="calculateBtn" type="button">Calcular</button><button class="calc-btn calc-btn-secondary" id="resetBtn" type="button">Repor</button></div>
 <div class="result-box"><span class="result-label">Resultado</span><div class="result-value" id="result">Introduza um valor para começar</div></div>
