@@ -33,7 +33,6 @@ h3{margin:0 0 8px}
 .tool-card:hover{border-color:#9bbcff;transform:translateY(-1px)}
 .related-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}
 .related-links a{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:12px;text-decoration:none;color:var(--ink);font-weight:700}
-.ad-box{background:#f1f5f9;border:1px dashed #94a3b8;border-radius:16px;color:#64748b;min-height:120px;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:800}
 .toc a{color:var(--brand);text-decoration:none}
 .site-footer{background:#101827;color:#dbe4f0;padding:34px 0}
 .footer-grid{display:grid;grid-template-columns:1fr auto;gap:24px}
