@@ -2719,3 +2719,18 @@ html, body{
     min-height:36px;
   }
 }
+
+/* CalculatorWorks accessibility and calculation details, October 2026. */
+.cw-languages{display:flex;justify-content:flex-end;flex-wrap:wrap;gap:1rem;padding-top:.35rem;padding-bottom:.65rem;font-size:.875rem}
+.cw-languages a[aria-current="page"]{font-weight:700;text-decoration:underline;text-underline-offset:4px}
+.hero-grid.cw-hero-single{grid-template-columns:minmax(0,1fr)}
+.cw-debt-list{grid-column:1 / -1}
+.cw-debt-list textarea{box-sizing:border-box;width:100%;max-width:100%;min-height:8rem;padding:.8rem;border:1px solid #cbd5e1;border-radius:10px;font:inherit;line-height:1.6;resize:vertical;background:#fff;color:#172033}
+.cw-table-wrap{max-width:100%;overflow-x:auto;margin-top:1.25rem}
+.cw-table-wrap table{width:100%;border-collapse:collapse;text-align:left;font-size:.9rem}
+.cw-table-wrap caption{text-align:left;font-weight:700;padding:.5rem 0}
+.cw-table-wrap th,.cw-table-wrap td{padding:.65rem;border-bottom:1px solid #dbe3ef;white-space:nowrap}
+.formula-box{overflow-wrap:anywhere;line-height:1.7}
+.result-value{overflow-wrap:anywhere}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #2563eb;outline-offset:3px}
+@media(max-width:600px){.cw-languages{justify-content:flex-start}.cw-table-wrap th,.cw-table-wrap td{padding:.5rem}.content-grid>div{min-width:0}}

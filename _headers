@@ -1,9 +1,15 @@
-# CalculatorWorks production headers
-# Temporary deployment-reset policy: force browsers/CDN edges to revalidate all production routes while stale HTML/folder-index variants are being cleared.
+# CalculatorWorks response headers
 /*
-  Cache-Control: no-store, max-age=0, must-revalidate
-  Pragma: no-cache
-  X-CalculatorWorks-Build: cw-2026-05-24-deployment-reset-v1
+  Cache-Control: public, max-age=0, must-revalidate
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-CalculatorWorks-Build: cw-2026-10-26-quality-v1
+/style.css
+  Cache-Control: public, max-age=3600, must-revalidate
+/script.js
+  Cache-Control: public, max-age=3600, must-revalidate
+/logo.png
+  Cache-Control: public, max-age=86400
 
 # Force extensionless hub aliases to be served as HTML
 /finance-calculators

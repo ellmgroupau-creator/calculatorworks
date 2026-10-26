@@ -1,7 +1,4 @@
-# CalculatorWorks routing fix v4
-# Cloudflare Pages clean URLs are handled by the platform.
-# Do not add .html-to-clean or trailing-slash redirects here; they can create loops.
-# GSC stale/malformed URL cleanup
+# CalculatorWorks legacy redirects. Clean HTML URLs are handled by Cloudflare Pages.
 /es/es/percentage /es/percentage 301
 /es/es/percentage/ /es/percentage 301
 /cdn-cgi/l/email-protection /contact 301
@@ -13,7 +10,6 @@
 /site-quality-guidelines.html /guides 301
 /crawl-index-policy.html /guides 301
 /adsense-readiness.html /guides 301
-# Legacy alias consolidation
 /all-calculators /calculators 301
 /all-calculators/ /calculators 301
 /all-calculators.html /calculators 301
@@ -80,7 +76,6 @@
 /pt/calculadoras-online-gratis-por-categoria /pt/calculators 301
 /pt/calculadoras-online-gratis-por-categoria/ /pt/calculators 301
 /pt/calculadoras-online-gratis-por-categoria.html /pt/calculators 301
-# Calculator duplicate alias consolidation
 /age /age-calculator 301
 /age/ /age-calculator 301
 /age.html /age-calculator 301
@@ -327,9 +322,6 @@
 /weighted-average /weighted-average-calculator 301
 /weighted-average/ /weighted-average-calculator 301
 /weighted-average.html /weighted-average-calculator 301
-
-
-# Additional alias redirects generated from noindex/meta-refresh wrapper pages
 /es/acerca-de /es/about 301
 /es/acerca-de/ /es/about 301
 /es/acerca-de.html /es/about 301
